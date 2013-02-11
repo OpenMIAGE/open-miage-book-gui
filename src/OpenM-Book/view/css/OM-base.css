@@ -1,0 +1,59 @@
+body {
+
+    background-color: white;
+}
+.input-micro {
+  width: 30px;
+}
+.form-custom {
+    padding: 19px 29px 29px;
+    background-color: whitesmoke;
+}
+
+/** css pour affichage mobile
+*/
+@media (max-width: 767px){
+    body {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    .navbar {
+        margin-bottom: 0px;
+    }
+    .form-custom {
+       /* padding-left: 10px;
+        padding-right: 10px;*/
+        margin: 0px;
+    }
+    .hero-unit{
+        padding: 20px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+          border-radius: 0px;
+          margin-bottom: 0px;
+        
+    }
+}
+
+/** css pour affichage ordinateur
+*/
+@media (min-width: 767px) {
+.form-custom {
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 5px 5px 5px #888;
+        -moz-box-shadow: 5px 5px 5px #888;
+        box-shadow: 5px 5px 5px #888;
+    }
+}
+
+@media (min-width: 1380px) {
+    .form-custom {
+       padding-left: 150px;
+    }
+}
+
+
+
