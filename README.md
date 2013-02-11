@@ -1,19 +1,19 @@
-=OpenMIAGE GUI=
+OpenMIAGE GUI
 
-OpenMIAGE GUI est l'implémentation graphique des API d'OpenMIAGE.
+OpenMIAGE GUI est l'implÃ©mentation graphique des API d'OpenMIAGE.
 
 OpenMIAGE fourni pour l'instant:
-  * un système d'authentification : OpenM-ID / OpenM-SSO
+  * un systÃ¨me d'authentification : OpenM-ID / OpenM-SSO
   * un annuaire : OpenM-Book
 
 Viendrons s'y ajouter tout un ensemble d'autres services.
 
-OpenMIAGE est globalement un projet *open-sources* découpé en deux projets open-sources :
+OpenMIAGE est globalement un projet open-sources dÃ©coupÃ© en deux projets open-sources :
   * OpenMIAGE API
   * OpenMIAGE GUI
 
-Séparer les deux projets assure une indépendance dans le *développement* et dans l'*architecture*/*déploiement* (déployés sur des machines séparées ou non).
+SÃ©parer les deux projets assure une indÃ©pendance dans le dÃ©veloppement et dans l'architecture/dÃ©ploiement (dÃ©ployÃ©s sur des machines sÃ©parÃ© ou non).
 
-_Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'objet d'un export sous google code._
+_Pour l'instant seul OpenMIAGE GUI est suffisamment documentÃ© pour faire l'objet d'un export sous google code._
 
-Vous pouvez suivre l'avancé de nos développements sur [http://www.open-miage.org www.open-miage.org]
+Vous pouvez suivre l'avancÃ© de nos dÃ©veloppements sur www.open-miage.org
