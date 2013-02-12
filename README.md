@@ -14,6 +14,6 @@ OpenMIAGE est globalement un projet open-sources découpé en deux projets open-
 
 Séparer les deux projets assure une indépendance dans le développement et dans l'architecture/déploiement (déployés sur des machines séparé ou non).
 
-_Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'objet d'un export sous google code._
+_Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'objet d'un export sous github._
 
 Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
