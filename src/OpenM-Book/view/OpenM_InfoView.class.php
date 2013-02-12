@@ -9,8 +9,18 @@ Import::php("OpenM-Book.view.OpenM_BookView");
  */
 class OpenM_InfoView extends OpenM_BookView {
     
-    public function _default() {
+    
+    public function index(){
+        $this->addLinks();
+        $this->addNavBarItems();
+        $this->smarty->display("index.tpl");
         
+        
+    }
+    
+    
+    public function _default() {
+        $this->index();
     }
 
 }

@@ -82,8 +82,6 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         if (!method_exists($class, $form))
             throw new OpenM_ViewDefaultServerException(OpenM_URLViewController::FORM . " not found");
         
-
-        
         self::$url = new OpenM_URLViewController($class, $form);
         return self::$url;
     }
