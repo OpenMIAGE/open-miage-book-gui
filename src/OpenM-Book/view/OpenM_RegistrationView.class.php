@@ -2,6 +2,7 @@
 
 Import::php("OpenM-Book.view.OpenM_BookView");
 Import::php("OpenM-Controller.view.OpenM_URLViewController");
+Import::php("OpenM-Services.client.OpenM_ServiceSSOClientImpl");
 
 /**
  * 
@@ -31,12 +32,13 @@ class OpenM_RegistrationView extends OpenM_BookView {
     }
 
     public function login() {
+
         if ($this->sso_book->isConnected()) {
-/**
- * @todo test existance dans OpenM_Book, si oui on redirige vers index, si non vers register
- */            
+            /**
+             * @todo test existance dans OpenM_Book, si oui on redirige vers index, si non vers register
+             */
             //OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
-            
+
             $this->register();
         } else {
             $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
@@ -44,17 +46,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
     }
 
     public function register() {
-        
-        if (!$this->sso_book->isConnected())
-            $this->login ();
-            
-        /**
-         * @todo  finir le test sur la date ! 
-         */
-        
+
+        $this->isConnected(TRUE);
+
         $error = FALSE;
         $param = HashtableString::from($_POST);
-        if ($param->containsKey("submit")) { 
+        if ($param->containsKey("submit")) {
             if ($param->get(self::LAST_NAME) == "") {
                 $error = TRUE;
                 $error_message = "veuillez saisir votre nom";
@@ -62,25 +59,20 @@ class OpenM_RegistrationView extends OpenM_BookView {
             if ($param->get(self::FIRST_NAME) == "") {
                 $error = TRUE;
                 $error_message = "veuillez saisir votre prénom";
-            }      
-            if ($param->get(self::DAY) == ""
-                    || $param->get(self::YEAR) == ""
-                    || $param->get(self::MONTHNUM)->toInt() === 0) {
-                
+            }
+
+            $day = $param->get(self::DAY)->toInt();
+            $month = $param->get(self::MONTHNUM)->toInt();
+            $year = $param->get(self::YEAR)->toInt();
+            if ($day === 0 || $year === 0 || $month === 0) {
                 $error = TRUE;
-                $error_message = "veuillez saisir votre date de naissance correctement 1";
-            } else if (!Float::isNumber($param->get(self::DAY))
-                    || !Float::isNumber($param->get(self::MONTHNUM))
-                    || !Float::isNumber($param->get(self::YEAR))) {
-                $error = TRUE;
-                $error_message = "veuillez saisir votre date de naissance correctement 2";
+                $error_message = "veuillez saisir votre date de naissance correctement";
             } else {
-                $time = mktime(0, 0, 0, $param->get(self::DAY)->toInt(), $param->get(self::MONTHNUM)->toInt(), $param->get(self::YEAR)->toInt());
+                $time = mktime(0, 0, 0, $day, $month, $year);
                 if ($time === FALSE) {
                     $error = TRUE;
-                    $error_message = "veuillez saisir votre date de naissance correctement 3";
+                    $error_message = "veuillez saisir votre date de naissance correctement";
                 }
-                $date = new Date();
             }
             $mail = $param->get(self::EMAIL);
             if ($mail == "") {
@@ -96,14 +88,25 @@ class OpenM_RegistrationView extends OpenM_BookView {
                 $error_message = "veuillez accepter la charte pour continuer";
             }
 
-            
-            
-            echo "<pre>";
-            var_dump($param);
-            echo "</pre>";
-
             if (!$error) {
-//            $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+                try {
+                //  $retour =  $clientBook->registerMe($param->get(self::FIRST_NAME) , $param->get(self::LAST_NAME) , $time);
+                 
+                  
+                //  echo "<pre>";
+               //   var_dump($retour);
+                 // echo "</pre>";
+                    
+                    
+                } catch (Exception $e) {
+                  //  echo "<pre>";
+                  //  var_dump($e);
+                   // echo "</pre>";
+                }
+
+
+                
 //            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
             }
         }
@@ -137,7 +140,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
                 "key" => self::MONTH,
                 "label" => self::MONTH,
                 "idHiden" => self::MONTHNUM
-            ),self::EMAIL => array(
+            ), self::EMAIL => array(
                 "key" => self::EMAIL,
                 "label" => self::EMAIL,
                 "value" => $mail
@@ -152,10 +155,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
             $this->smarty->assign(self::ERROR_MESSAGE, $error_message);
         }
 
-        
-        
-        
-        
         $this->addLinks();
         $this->addNavBarItems();
         $this->smarty->display('inscription.tpl');
