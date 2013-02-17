@@ -10,7 +10,10 @@ Import::php("OpenM-Book.view.OpenM_BookView");
 class OpenM_InfoView extends OpenM_BookView {
     
     public function _default() {
-        
+        $connected = $this->isConnected();
+        if($connected){
+            
+        }
     }
 
 }
