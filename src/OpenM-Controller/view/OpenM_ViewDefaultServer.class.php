@@ -31,20 +31,29 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         $class = $url->getClass();
         $object = new $class();
         $form = $url->getMethod();
-        $object->$form();
+        $value = $url->getValue();
+        if ($value != "" && $value != null)
+            $object->$form($value);
+        else
+            $object->$form();
     }
 
+    /**
+     * 
+     * @return OpenM_URLViewController
+     * @throws OpenM_ViewDefaultServerException
+     */
     private static function init() {
         if (self::$url != null)
             return self::$url;
-        
+
         $p = Properties::fromFile(self::CONFIG_FILE_NAME);
         $root = $p->get(self::ROOT);
         if ($root == null)
             throw new OpenM_ViewDefaultServerException(self::ROOT . " not defined in " . self::CONFIG_FILE_NAME);
-       
+
         OpenM_URLViewController::setRoot($root);
-                
+
         $lang = $p->get(self::DEFAULT_LANG);
         if ($lang != null && $lang != "")
             OpenM_URLViewController::setLang($lang);
@@ -68,7 +77,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
             throw new OpenM_ViewDefaultServerException("Class path not correctly initialised");
         if (!class_exists($class))
             throw new OpenM_ViewDefaultServerException(OpenM_URLViewController::VIEW . " not correctly named");
-        
+
         if (!isset($_GET[OpenM_URLViewController::FORM])) {
             $p = Properties::fromFile(self::CONFIG_FILE_NAME);
             $form = $p->get(self::DEFAULT_FORM);
@@ -81,9 +90,9 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
             throw new OpenM_ViewDefaultServerException(OpenM_URLViewController::FORM . " in bad format");
         if (!method_exists($class, $form))
             throw new OpenM_ViewDefaultServerException(OpenM_URLViewController::FORM . " not found");
-        
 
-        
+
+
         self::$url = new OpenM_URLViewController($class, $form);
         return self::$url;
     }
@@ -91,6 +100,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
     public function _default() {
         die("forbidden method called");
     }
+
 }
 
 ?>
