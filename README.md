@@ -17,3 +17,6 @@ Séparer les deux projets assure une indépendance dans le développement et dan
 _Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'objet d'un export sous github._
 
 Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
+
+
+RQ: Pour installer les lib nécessaire à l'exécution des sources, lancer préalablement ./install.lib.php
