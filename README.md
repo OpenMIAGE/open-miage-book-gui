@@ -19,4 +19,4 @@ _Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'obje
 Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
 
 
-RQ: Pour installer les lib nécessaire à l'exécution des sources, lancer préalablement ./install.lib.php
+RQ: Pour installer les lib nécessaires à l'exécution des sources, lancer préalablement ./install.lib.php
