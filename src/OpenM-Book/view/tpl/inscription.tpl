@@ -65,11 +65,11 @@
                                 <input type="email" class="input-large" required id="{$register_form.email.key}" name="{$register_form.email.key}" value="{$register_form.email.value}" placeholder="{$register_form.email.label}">
                             </div>
                         </div>
-                        <input id="{$register_form.month.key}" name="{$register_form.month.key}" value="0" type="hidden">
+                        <input id="{$register_form.month.idHiden}" name="{$register_form.month.idHiden}" value="0" type="hidden">
                         <div class="control-group">
                             <div class="controls">
                                 <label class="checkbox">
-                                    <input name="charte" required type="checkbox"> J'accepte les <a href="{$register_form_condition}" target="_blank">Conditions d'utilisation</a> ainsi que les <a href="#">Règles de confidentialité</a> d'Open-MIAGE
+                                    <input name="{$register_form.cgu}" required type="checkbox"> J'accepte les <a href="{$register_form_condition}" target="_blank">Conditions d'utilisation</a> ainsi que les <a href="#">Règles de confidentialité</a> d'Open-MIAGE
                                 </label>
                                 <br>
                                 <button type="submit" class="btn btn-success btn-large" name="submit"><i class="icon-white icon-ok"></i> Enregistrer</button>
@@ -95,8 +95,8 @@
         {literal}
             <script>
                 function majMonthName($month,$num){
-                    document.getElementById("MonthName").innerHTML = $month;
-                    document.getElementById("mois").setAttribute('value', $num);
+                    document.getElementById("{/literal}{$register_form.month.key}{literal}").innerHTML = $month;
+                    document.getElementById("{/literal}{$register_form.month.idHiden}{literal}").setAttribute('value', $num);
                 }
                 $(function (){
                     $('.close').click(function() {
