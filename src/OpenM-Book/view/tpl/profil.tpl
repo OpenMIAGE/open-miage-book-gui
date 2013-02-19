@@ -10,7 +10,7 @@
     <div class="row-fluid">  
         <div class="alert alert-info alert-block span4 offset4">
             <button type="button" class="close">x</button>
-            <h4>Bravo!</h4> Vous venez de vous enregistrer :)
+            <h4>Hello!</h4> Welcom on your profile !
         </div> 
     </div>  
       <div class="row-fluid"> 

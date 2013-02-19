@@ -14,6 +14,7 @@ class OpenM_ProfileView extends OpenM_BookView {
 
     public function view() {
         $this->addLinks();
+        $this->addNavBarItems();
         $this->smarty->display('profil.tpl');
     }
 
