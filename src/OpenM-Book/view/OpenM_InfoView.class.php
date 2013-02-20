@@ -23,7 +23,7 @@ class OpenM_InfoView extends OpenM_BookView {
             //1er arrivée sur la page (faut tester si connecté et si existe
             // if ($this->isConnected()){
                  //je suis connecté
-                 
+                 //test
                  
                  //redirection vers le profil
                 //  OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL() );    
