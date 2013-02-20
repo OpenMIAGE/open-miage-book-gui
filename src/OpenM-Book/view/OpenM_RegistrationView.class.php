@@ -36,29 +36,30 @@ class OpenM_RegistrationView extends OpenM_BookView {
      * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
      */
     public function login() {
-       OpenM_Log::debug("Methode LOGIN", __CLASS__, __METHOD__, __LINE__);
+       		OpenM_Log::debug("Methode LOGIN", __CLASS__, __METHOD__, __LINE__);
        
-       //envois vers la page de connection OpenM_ID
+       		//envois vers la page de connection OpenM_ID
             $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
+           
            //apres le succes de login
             
             /**
              * @todo test existance dans OpenM_Book, si oui on redirige vers index, si non vers register
              */
             
-             $this->register();
+        try {
+            $me = $this->bookClient->getUserProperties();
+            //todo saved in session $me and redirect
+            OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
+        } catch (Exception $e) {
+            OpenM_Header::redirect(OpenM_URLViewController::from(self::getClass(), self::REGISTER_FORM)->getURL());
+        }
     }
 
     public function register() {
 
-        OpenM_Log::debug("Methode REGISTER", __CLASS__, __METHOD__, __LINE__);
-        
-        
-     //   echo "<pre>";
-     //   var_dump( $this->isConnected(FALSE));
-      //  echo "</pre>"; 
+        $this->isConnected();
 
-        
         $error = FALSE;
         $param = HashtableString::from($_POST);
         if ($param->containsKey("submit")) {
@@ -100,20 +101,15 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
             if (!$error) {
                 $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
-             
                 try {
-                //  $retour =  $clientBook->registerMe($param->get(self::FIRST_NAME) , $param->get(self::LAST_NAME) , $time);
-                 
-                  
-                //  echo "<pre>";
-               //   var_dump($retour);
-                 // echo "</pre>";
-                    
-                    
+                    //  $retour =  $clientBook->registerMe($param->get(self::FIRST_NAME) , $param->get(self::LAST_NAME) , $time);
+                    //  echo "<pre>";
+                    //   var_dump($retour);
+                    // echo "</pre>";
                 } catch (Exception $e) {
-                  //  echo "<pre>";
-                  //  var_dump($e);
-                   // echo "</pre>";
+                    //  echo "<pre>";
+                    //  var_dump($e);
+                    // echo "</pre>";
                 }
 
 

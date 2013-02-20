@@ -13,28 +13,21 @@ Import::php("OpenM-Book.view.OpenM_RegistrationView");
 class OpenM_InfoView extends OpenM_BookView {
 
     public function index() {
-        $this->addLinks();
-        $this->addNavBarItems();
-
-        OpenM_Log::debug("ACCES page index", __CLASS__, __METHOD__, __LINE__);
-        
+       
         
         if (isset($_GET["conn"])) {
             $this->isConnected(TRUE);
         } else {
-            //1er arrivée sur la page (faut tester si connecté et si existe
-           
             if ($this->isConnected(FALSE)) {
-                //je suis connecté
-                //redirection vers le profil
-                 OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL() );    
-            } else {
-                //je ne suis pas connecté
+                //je suis connecté redirection vers profil ...
+               $profil_view = new OpenM_ProfileView();
+               $profil_view->_default();
+          } else {
+                $this->addLinks();
+                $this->addNavBarItems();
+                $this->smarty->display("index.tpl");
             }
         }
-
-
-        $this->smarty->display("index.tpl");
     }
 
     public function _default() {

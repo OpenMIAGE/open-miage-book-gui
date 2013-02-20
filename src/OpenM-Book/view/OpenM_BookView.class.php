@@ -12,12 +12,16 @@ Import::php("OpenM-Services.view.OpenM_ServiceViewSSO");
 abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected $sso_book;
+    protected $bookClient;
+    protected $groupClient;
 
     public function __construct() {
         parent::__construct();
         $p2 = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
         $api_name = $p2->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso_book = $this->manager->get($api_name, FALSE);
+        $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+        $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Groups");
         $this->setDirs();
     }
 
@@ -29,7 +33,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      */
     protected function isConnected($redirectToLogin = true) {
         $isConnected = $this->sso_book->isConnected();
-        OpenM_Log::debug("Methode isConnected : ".  String::cast($isConnected), __CLASS__, __METHOD__, __LINE__);
         
         if (!$isConnected && $redirectToLogin)
             OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, OpenM_RegistrationView::LOGIN_FORM)->getURL());
