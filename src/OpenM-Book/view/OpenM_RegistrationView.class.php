@@ -31,24 +31,34 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $this->login();
     }
 
+    /***
+     * Méthode permetant d'envoyer l'utilisateur vers la page d'authetification (OpenM_ID) 
+     * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
+     */
     public function login() {
-
-        if ($this->sso_book->isConnected()) {
+       OpenM_Log::debug("Methode LOGIN", __CLASS__, __METHOD__, __LINE__);
+       
+       //envois vers la page de connection OpenM_ID
+            $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
+           //apres le succes de login
+            
             /**
              * @todo test existance dans OpenM_Book, si oui on redirige vers index, si non vers register
              */
-            //OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
-
-            $this->register();
-        } else {
-            $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
-        }
+            
+             $this->register();
     }
 
     public function register() {
 
-        $this->isConnected(TRUE);
+        OpenM_Log::debug("Methode REGISTER", __CLASS__, __METHOD__, __LINE__);
+        
+        
+     //   echo "<pre>";
+     //   var_dump( $this->isConnected(FALSE));
+      //  echo "</pre>"; 
 
+        
         $error = FALSE;
         $param = HashtableString::from($_POST);
         if ($param->containsKey("submit")) {
@@ -90,6 +100,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
             if (!$error) {
                 $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+             
                 try {
                 //  $retour =  $clientBook->registerMe($param->get(self::FIRST_NAME) , $param->get(self::LAST_NAME) , $time);
                  
