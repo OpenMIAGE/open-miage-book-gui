@@ -10,9 +10,6 @@
             <div class="row">
                 <div class="span11 offset1">
                     <div class="alert alert-error">
-
-
-
                         <div class="row">
                                 <div class="span2 offset1">
                                     <img src="{$resources_dir}OpenM-Book/view/img/error_cross.png" title="erreur" ALT="image erreur" align="center"  width="100" >
