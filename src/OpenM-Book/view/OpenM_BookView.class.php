@@ -35,7 +35,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $isConnected = $this->sso_book->isConnected();
         
         if (!$isConnected && $redirectToLogin)
-            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, "login")->getURL());
+            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, OpenM_RegistrationView::LOGIN_FORM)->getURL());
         else
             return $isConnected;
     }

@@ -31,10 +31,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $this->login();
     }
 
+    /*
+     * Méthode permetant d'envoyer l'utilisateur vers la page d'authetification (OpenM_ID) 
+     * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
+     */
     public function login() {
-        if (!$this->sso_book->isConnected()) {
-            $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
-        }
+        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
         try {
             $me = $this->bookClient->getUserProperties();
             //todo saved in session $me and redirect
