@@ -102,16 +102,16 @@ class OpenM_URLViewController {
         if ($this->class != null || self::$lang != null) {
             $return .= "?";
             if ($this->class != null) {
-                $return .= self::VIEW . "=" . self::viewFromClass($this->class) . "&";
+                $return .= self::VIEW . "=" . self::viewFromClass($this->class) . "&amp;";
                 if ($this->method != null)
-                    $return .= self::FORM . "=" . $this->method . "&";
+                    $return .= self::FORM . "=" . $this->method . "&amp;";
                 if ($this->value != null)
-                    $return .= self::VALUE . "=" . $this->value . "&";
+                    $return .= self::VALUE . "=" . $this->value . "&amp;";
             }
             if (self::$lang != null)
-                $return .= self::LANG . "=" . self::$lang . "&";
+                $return .= self::LANG . "=" . self::$lang . "&amp;";
 
-            $return = substr($return, 0, -1);
+            $return = substr($return, 0, -5);
         }
         return $return;
     }

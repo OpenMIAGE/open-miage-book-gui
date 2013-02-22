@@ -7,6 +7,6 @@
 <link href="{$resources_dir}OpenM-Book/view/css/OM-base.css" rel="stylesheet" type="text/css" rel="stylesheet">
 
 <link rel="shortcut icon" href="{$resources_dir}OpenM-Book/view/img/favicon.png">
-<!--[if lt IE 9]>
+<!--[if lt IE9]>
         <script src="{$resources_dir}js/html5shiv.js"></script>
 <![endif]-->

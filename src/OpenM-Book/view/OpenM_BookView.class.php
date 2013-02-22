@@ -4,12 +4,16 @@ if (!Import::php("Smarty"))
     throw new ImportException("Smarty");
 
 Import::php("OpenM-Services.view.OpenM_ServiceViewSSO");
+Import::php("util.session.OpenM_SessionController");
 
 /**
  * 
  * @author Nicolas Rouzeaud & Gael SAUNIER
  */
 abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
+
+    const ALERT = "alert";
+    const MY_DATA = "me";
 
     protected $sso_book;
     protected $bookClient;
@@ -25,7 +29,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->setDirs();
     }
 
-    
     /**
      * Permet de savoir si on est connecté au sso
      * @param Boolean $redirectToLogin si TRUE redirige vers la page de login
@@ -33,7 +36,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      */
     protected function isConnected($redirectToLogin = true) {
         $isConnected = $this->sso_book->isConnected();
-        
+
         if (!$isConnected && $redirectToLogin)
             OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, OpenM_RegistrationView::LOGIN_FORM)->getURL());
         else
@@ -48,6 +51,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     }
 
     protected function addLinks() {
+        
         $this->smarty->assign("links", array(
             "default" => OpenM_URLViewController::from()->getURL(),
             "root" => OpenM_URLViewController::getRoot(),
@@ -85,6 +89,18 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     )
             ))
         ));
+    }
+
+    protected function showAlert() {
+        if (OpenM_SessionController::contains(self::ALERT)) {
+            OpenM_Log::debug("There is an alert : " . OpenM_SessionController::get(self::ALERT), __CLASS__, __METHOD__, __LINE__);
+            $this->smarty->assign(self::ALERT, OpenM_SessionController::get(self::ALERT));
+            OpenM_SessionController::remove(self::ALERT);
+        }
+    }
+    
+    protected  function setAlert($message){
+         OpenM_SessionController::set(self::ALERT,$message);
     }
 
 }

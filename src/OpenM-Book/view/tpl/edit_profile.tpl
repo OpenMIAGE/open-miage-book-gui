@@ -7,19 +7,20 @@
     <body>
         {include file='include/navBar.tpl'}
         
-        <nav class="navbar navbar-inverse navbar-tablette hidden-desktop">
+        
+    <nav class="navbar navbar-inverse navbar-tablette hidden-desktop">
                     <div class="navbar-inner">
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
-                        <a class="brand" href="#">{$prenom}<br> {$nom}</a>
+                        <a class="brand" href="#">{$prenom} <br>{$nom}</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li class="divider-vertical"></li>
-                                <li class="active"><a href="{$links.profile}">Mon Profil</a></li>
-                                <li ><a href="{$links.edit_profile}">Edition</a></li>
+                                <li ><a href="{$links.profile}">Mon Profil</a></li>
+                                <li class="active"><a href="{$links.edit_profile}">Edition</a></li>
                                 <li><a href="#">Communauté</a></li>
                             </ul>
                         </div> 
@@ -39,15 +40,15 @@
                             </li>
                            {* <li class="divider-onglet"></li>*}
                              <hr>
-                            <li class="active"><a href="{$links.profile}" >Mon Profil</a></li>
-                            <li ><a href="{$links.edit_profile}" >Edition</a></li>
+                            <li ><a href="{$links.profile}" >Mon Profil</a></li>
+                            <li class="active"><a href="{$links.edit_profile}" >Edition</a></li>
                             <li ><a href="#">Communauté</a></li>
                         </ul>        
                     </div>
                 </nav>
-                            
-                
-                
+
+
+
                 <div class="span9 offset1">
                     {if $alert}
                         <div class="row-fluid">  
@@ -59,21 +60,24 @@
                     {/if}
                     <div class="row-fluid">
                         <div class="span9">
-                            <img width="750" src="{$resources_dir}OpenM-Book/view/img/exemple_Profil.PNG">
+                            <h3>Page d'édition du profil</h3> 
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <div class="span9">
-                            <p id="monNom" contenteditable="true">  {$nom} </p>
+                        <div class="span4">
+                            <span>Nom : </span> <p class="edit" id="monNom" contenteditable="true">  {$nom} </p>
                         </div>
-                    </div>
+                        <div class="span4">
+                            <span>Prénom :</span><p class="edit" id="prenom" contenteditable="true">  {$prenom} </p>
+                        </div>
+                    </div>   
+                </div>  
 
-                </div>
+
             </div>
-
-
-
         </div>
+
+
         {include file='include/ressource_js.tpl'}
         {literal}
             <script>

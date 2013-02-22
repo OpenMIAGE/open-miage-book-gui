@@ -35,7 +35,7 @@
                         <div class="control-group">
                             <label class="control-label" for="{$register_form.birthday}">{$register_form.birthday}</label>
                             <div class="controls">
-                                <input type="text" style="vertical-align: top" class="input-micro" name="{$register_form.day.key}" value="{$register_form.day.value}" required id="{$register_form.day.key}" placeholder="{$register_form.day.label}">
+                                <input type="number" style="vertical-align: top" class="input-micro" name="{$register_form.day.key}" value="{$register_form.day.value}" required id="{$register_form.day.key}" placeholder="{$register_form.day.label}">
                                 <div class="btn-group" style="vertical-align: top">
                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                                         <span id="{$register_form.month.key}"> {$register_form.month.label}</span>
@@ -56,7 +56,7 @@
                                         <li><a href="#" onClick="majMonthName('Décembre',12);">Décembre</a></li>
                                     </ul>
                                 </div>
-                                <input type="text" style="vertical-align: top" class="input-mini" required name="{$register_form.year.key}" id="{$register_form.year.key}" value="{$register_form.year.value}" placeholder="{$register_form.year.label}">
+                                        <input type="number" style="vertical-align: top" class="input-mini" required name="{$register_form.year.key}" id="{$register_form.year.key}" value="{$register_form.year.value}" placeholder="{$register_form.year.label}">
                             </div> 
                         </div>
                         <div class="control-group">

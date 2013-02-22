@@ -1,14 +1,64 @@
 body {
-
     background-color: white;
 }
 .input-micro {
-  width: 30px;
+    width: 40px;
 }
 .form-custom {
     padding: 19px 29px 29px;
     background-color: whitesmoke;
 }
+
+
+
+/*
+[class*="span"]{
+    border: black solid 1px;
+}
+
+[class*="row"]{
+    border: #3333ff solid 1px;
+}*/
+
+.nav-tabs-custom{
+    background-color: #1B1B1B;
+    background-image: linear-gradient(to bottom,#111111, #222222 );
+    background-repeat: repeat-x;
+    padding-left: 5px;
+    word-break: break-all;
+}
+
+.edit:hover {
+    border: darkgoldenrod solid 1px;
+}
+
+
+
+.cadre-nom{
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #777777;
+}
+
+.navbar-inner{
+    border-radius: 0px;
+}
+
+
+
+
+/*
+.tabbable-custom{
+   background-color: #888;
+    
+}
+
+[class*="span"] {
+border-left: activeborder solid thin;
+border-right: activeborder solid thin;
+border-bottom: activeborder solid thin;
+border-top: activeborder solid thin;
+}*/
 
 /** css pour affichage mobile
 */
@@ -21,24 +71,27 @@ body {
         margin-bottom: 0px;
     }
     .form-custom {
-       /* padding-left: 10px;
-        padding-right: 10px;*/
+        /* padding-left: 10px;
+         padding-right: 10px;*/
         margin: 0px;
     }
     .hero-unit{
         padding: 20px;
         -webkit-border-radius: 0px;
         -moz-border-radius: 0px;
-          border-radius: 0px;
-          margin-bottom: 0px;
-        
+        border-radius: 0px;
+        margin-bottom: 0px;
     }
+    .container-custom{
+        clear: both;
+    }
+    
 }
 
 /** css pour affichage ordinateur
 */
 @media (min-width: 767px) {
-.form-custom {
+    .form-custom {
         border: 1px solid #e5e5e5;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -47,12 +100,41 @@ body {
         -moz-box-shadow: 5px 5px 5px #888;
         box-shadow: 5px 5px 5px #888;
     }
+
+    .container-custom{
+        margin-top:  -20px;
+        padding-left: 0px;
+    }
+
+    
+    .nav-tabs-custom{
+        min-height: 100%;
+        margin-right: 20px;
+        
+        position: absolute;
+     
+        
+        
+    }
+
 }
+
+/** Pour affichage tablette */
+@media (min-width: 768px) and (max-width: 979px) {
+    .navbar-tablette{
+        margin-top: -20px;
+    }
+
+}
+
+
 
 @media (min-width: 1380px) {
     .form-custom {
-       padding-left: 150px;
+        padding-left: 150px;
     }
+
+
 }
 
 
