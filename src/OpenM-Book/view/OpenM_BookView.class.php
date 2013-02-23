@@ -14,6 +14,16 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     const ALERT = "alert";
     const MY_DATA = "me";
+    
+    const ALERT_TYPE = "alert_type";
+    const ALERT_TYPE_DISPLAY_INFO = "alert-info";
+    const ALERT_TYPE_DISPLAY_ERROR = "alert-error";
+    const ALERT_TYPE_DISPLAY_DEFAULT = ""; //vide d'origine
+    const ALERT_TYPE_DISPLAY_SUCCES = "alert-success";
+    const ALERT_TITLE = "alert_title";
+    
+    const MENU_PROFILE= "menu_profile";
+    const MENU_PROFILE_EDIT = "menu_profile_edit";
 
     protected $sso_book;
     protected $bookClient;
@@ -51,10 +61,12 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     }
 
     protected function addLinks() {
-        
+
         $this->smarty->assign("links", array(
             "default" => OpenM_URLViewController::from()->getURL(),
             "root" => OpenM_URLViewController::getRoot(),
+            "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
+            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL()
         ));
     }
 
@@ -91,16 +103,50 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         ));
     }
 
-    protected function showAlert() {
-        if (OpenM_SessionController::contains(self::ALERT)) {
-            OpenM_Log::debug("There is an alert : " . OpenM_SessionController::get(self::ALERT), __CLASS__, __METHOD__, __LINE__);
-            $this->smarty->assign(self::ALERT, OpenM_SessionController::get(self::ALERT));
-            OpenM_SessionController::remove(self::ALERT);
+    /**
+     * Affiche une alert, peut etre utilisé deux deux façons. 
+     * 1 - avec les parametres, affichage normal
+     * 2 - sans parametre, irra chercher le message/titre/type dans la session 
+     * (utiliser avant $this->setAlert(...))
+     * L'affichage avec parametre prime sur le second
+     * Les variables de session sont vidé si il y en a
+     * @param string $message
+     * @param string $titre
+     * @param string $type
+     */
+    protected function showAlert($message = null, $titre = null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
+        if ($message) {
+            $this->smarty->assign(self::ALERT, $message);
+            $this->smarty->assign(self::ALERT_TYPE, $type);
+            if ($titre)
+                $this->smarty->assign(self::ALERT_TITLE, $titre);
+            if (OpenM_SessionController::contains(self::ALERT)) {
+                OpenM_SessionController::remove(self::ALERT);
+                OpenM_SessionController::remove(self::ALERT_TITLE);
+                OpenM_SessionController::remove(self::ALERT_TYPE);
+            }
+        } else {
+            if (OpenM_SessionController::contains(self::ALERT)) {
+                OpenM_Log::debug("There is an alert : " . OpenM_SessionController::get(self::ALERT), __CLASS__, __METHOD__, __LINE__);
+                $this->smarty->assign(self::ALERT, OpenM_SessionController::get(self::ALERT));
+                OpenM_SessionController::remove(self::ALERT);
+                if (OpenM_SessionController::contains(self::ALERT_TITLE)) {
+                    $this->smarty->assign(self::ALERT_TITLE, OpenM_SessionController::get(self::ALERT_TITLE));
+                    OpenM_SessionController::remove(self::ALERT_TITLE);
+                }
+                if (OpenM_SessionController::contains(self::ALERT_TYPE)) {
+                    $this->smarty->assign(self::ALERT_TYPE, OpenM_SessionController::get(self::ALERT_TYPE));
+                    OpenM_SessionController::remove(self::ALERT_TYPE);
+                }
+            }
         }
     }
-    
-    protected  function setAlert($message){
-         OpenM_SessionController::set(self::ALERT,$message);
+
+    protected function setAlert($message, $titre=null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
+        OpenM_SessionController::set(self::ALERT, $message);
+        if ($titre)
+            OpenM_SessionController::set(self::ALERT_TITLE, $titre);
+        OpenM_SessionController::set(self::ALERT_TYPE, $type);
     }
 
 }

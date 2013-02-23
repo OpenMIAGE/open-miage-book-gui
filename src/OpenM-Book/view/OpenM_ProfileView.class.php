@@ -16,6 +16,7 @@ class OpenM_ProfileView extends OpenM_BookView {
     }
 
     public function view() {
+         $this->smarty->assign(self::MENU_PROFILE,TRUE);
         $this->initPage();
         
         
@@ -25,18 +26,22 @@ class OpenM_ProfileView extends OpenM_BookView {
         $this->smarty->assign("prenom",$me->get("UFN"));
         
         
+        $this->showAlert();
         $this->smarty->display('profil.tpl');
     }
     
     public function edit(){
+        $this->smarty->assign(self::MENU_PROFILE_EDIT,TRUE);
         $this->initPage();
         
         $me = OpenM_SessionController::get(self::MY_DATA);
         $this->smarty->assign("nom",$me->get("ULN"));
         $this->smarty->assign("prenom",$me->get("UFN"));
         
-        $this->smarty->display('edit_profile.tpl');
+    
         
+        $this->showAlert();
+        $this->smarty->display('edit_profile.tpl');
     }
     
     
@@ -45,15 +50,6 @@ class OpenM_ProfileView extends OpenM_BookView {
         
         $this->addLinks();
         $this->addNavBarItems();
-        
-        $this->showAlert();
-        
-        $links = $this->smarty->getTemplateVars("links");  // Variable("links");
-        $links['profile'] = OpenM_URLViewController::from(self::getClass())->getURL();
-        $links['edit_profile'] = OpenM_URLViewController::from(self::getClass(), self::EDIT_FROM)->getURL();
-        $this->smarty->assign("links",$links);
-        
-        
         
         
     }

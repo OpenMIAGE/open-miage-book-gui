@@ -7,15 +7,8 @@
     <body>
         {include file='include/navBar.tpl'}
         <div class="container-fluid">
-            {if $error === TRUE}
-                <div class="row-fluid">  
-                    <div class="alert alert-error alert-block span4 offset4">
-                        <button type="button" class="close">x</button>
-                        <h4>Attention, information absente</h4> 
-                        {$error_message}
-                    </div> 
-                </div>
-            {/if}
+            {include file='include/alert.tpl'}
+
             <div class="row-fluid">
                 <div class="span5 offset1">
                     <form class="form-custom " method="POST" action="{$links.registration}">

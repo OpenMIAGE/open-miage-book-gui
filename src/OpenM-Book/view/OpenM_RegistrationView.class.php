@@ -55,11 +55,11 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
         $this->isConnected();
 
-        if (OpenM_SessionController::contains(self::MY_DATA)) {
+  /**      if (OpenM_SessionController::contains(self::MY_DATA)) {
             OpenM_Log::debug("Useralready registred, redirect to Profile", __CLASS__, __METHOD__, __LINE__);
              $this->setAlert( "Vous êtes déjà enregistrer.");
             OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
-        }
+        }*/
 
         $error = FALSE;
         $param = HashtableString::from($_POST);
@@ -101,19 +101,20 @@ class OpenM_RegistrationView extends OpenM_BookView {
             }
 
             if (!$error) {
-                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+              $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
                 try {
-                    $retour = $clientBook->registerMe($param->get(self::FIRST_NAME), $param->get(self::LAST_NAME), $time);
+                     $clientBook->registerMe($param->get(self::FIRST_NAME), $param->get(self::LAST_NAME), $time);
                     /**
-                     * @todo faire code, récupération ID de la propriété email
+                     * @todo faire code, récupération ID de la propriété email, ici property_id = 2 en dur
                      */
-                    $retour = $clientBook->addPropertyValue(2, ($param->get(self::EMAIL)));
+                    $clientBook->addPropertyValue(2, ($param->get(self::EMAIL)));
 
-                    $me = $clientBook->getUserProperties();
-                    OpenM_SessionController::set(self::MY_DATA, $me);
+                   $me = $clientBook->getUserProperties();
+                   OpenM_SessionController::set(self::MY_DATA, $me);
 
                     //le message du succes d'enregistrement
-                    OpenM_SessionController::set(self::ALERT, "<h4>Succès de l'enregistrement</h4>Bienvenue sur votre profil.<br>Nous vous conseillons de mettre à jours vos informations");
+                    $this->setAlert("Nous vous conseillons de mettre à jours vos informations","Succès de l'enregistrement", self::ALERT_TYPE_DISPLAY_SUCCES);
+    
                     //tous c'est bien passé, on redirige vers le profil
                     OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
                 } catch (Exception $e) {
@@ -163,8 +164,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $this->smarty->assign(self::SMARTY_REGISTER_KEYS_ARRAY . "_condition", OpenM_URLViewController::from(self::getClass(), self::CONDITION_FORM)->getURL());
 
         if ($error) {
-            $this->smarty->assign(self::ERROR, $error);
-            $this->smarty->assign(self::ERROR_MESSAGE, $error_message);
+            $this->showAlert($error_message,null,  self::ALERT_TYPE_DISPLAY_ERROR);
         }
 
         $this->addLinks();

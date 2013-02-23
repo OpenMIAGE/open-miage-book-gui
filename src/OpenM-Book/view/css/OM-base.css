@@ -9,72 +9,62 @@ body {
     background-color: whitesmoke;
 }
 
-
-
+.edit:hover {
+    border: darkgoldenrod solid 1px;
+}
+.navbar-inner{
+    border-radius: 0px;
+}
+.nav-tabs-menunavigation{
+    position: absolute;
+    margin-top: -20px;
+    padding-left: 10px;
+    min-height: 100%;
+    width: 162px;
+    background-color: #1B1B1B;
+    background-image: linear-gradient(to bottom,#111111, #222222 );
+    background-repeat: repeat-x;
+    word-break: break-all;
+}
+.cadre-nom{
+    padding-right: 20px;
+    color: #777777;
+}
+.menunavigation-phone{
+    margin-top: -20px;
+}
 /*
 [class*="span"]{
     border: black solid 1px;
+    background-color: lightgreen;
+    margin-bottom: 10px;
+    border-radius: 5px 5px 5px 5px;
+    line-height: 80px;
+    text-align: center;
 }
 
 [class*="row"]{
     border: #3333ff solid 1px;
-}*/
-
-.nav-tabs-custom{
-    background-color: #1B1B1B;
-    background-image: linear-gradient(to bottom,#111111, #222222 );
-    background-repeat: repeat-x;
-    padding-left: 5px;
-    word-break: break-all;
 }
-
-.edit:hover {
-    border: darkgoldenrod solid 1px;
-}
-
-
-
-.cadre-nom{
-    padding-left: 20px;
-    padding-right: 20px;
-    color: #777777;
-}
-
-.navbar-inner{
-    border-radius: 0px;
-}
+*/
 
 
 
 
-/*
-.tabbable-custom{
-   background-color: #888;
-    
-}
 
-[class*="span"] {
-border-left: activeborder solid thin;
-border-right: activeborder solid thin;
-border-bottom: activeborder solid thin;
-border-top: activeborder solid thin;
-}*/
-
-/** css pour affichage mobile
+/**
+* css pour affichage mobile
 */
 @media (max-width: 767px){
     body {
         padding-right: 0px;
         padding-left: 0px;
     }
-    .navbar {
-        margin-bottom: 0px;
-    }
+
     .form-custom {
-        /* padding-left: 10px;
-         padding-right: 10px;*/
         margin: 0px;
     }
+
     .hero-unit{
         padding: 20px;
         -webkit-border-radius: 0px;
@@ -82,13 +72,10 @@ border-top: activeborder solid thin;
         border-radius: 0px;
         margin-bottom: 0px;
     }
-    .container-custom{
-        clear: both;
-    }
-    
 }
 
-/** css pour affichage ordinateur
+/** 
+* css pour affichage à partir tablette
 */
 @media (min-width: 767px) {
     .form-custom {
@@ -100,35 +87,27 @@ border-top: activeborder solid thin;
         -moz-box-shadow: 5px 5px 5px #888;
         box-shadow: 5px 5px 5px #888;
     }
-
-    .container-custom{
-        margin-top:  -20px;
-        padding-left: 0px;
-    }
-
-    
-    .nav-tabs-custom{
-        min-height: 100%;
-        margin-right: 20px;
-        
-        position: absolute;
-     
-        
-        
-    }
-
 }
 
-/** Pour affichage tablette */
+/** Pour affichage seulement tablette */
+/*
 @media (min-width: 768px) and (max-width: 979px) {
-    .navbar-tablette{
-        margin-top: -20px;
-    }
 
 }
+*/
 
+/**
+Pour affichage seulement Ordinateur
+*/
+@media (min-width : 979px){
+    .container-withmenunavigation{
+        margin-left: 162px;
+    }
+}
 
-
+/**
+Pour affichage grand écrant
+*/
 @media (min-width: 1380px) {
     .form-custom {
         padding-left: 150px;
