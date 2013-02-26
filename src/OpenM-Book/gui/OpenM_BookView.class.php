@@ -3,7 +3,7 @@
 if (!Import::php("Smarty"))
     throw new ImportException("Smarty");
 
-Import::php("OpenM-Services.view.OpenM_ServiceViewSSO");
+Import::php("OpenM-Services.gui.OpenM_ServiceViewSSO");
 Import::php("util.session.OpenM_SessionController");
 
 /**
@@ -151,6 +151,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
 }
 
-Import::php("OpenM-Book.view.OpenM_RegistrationView");
-Import::php("OpenM-Book.view.OpenM_InfoView");
+Import::php("OpenM-Book.gui.OpenM_RegistrationView");
+Import::php("OpenM-Book.gui.OpenM_InfoView");
 ?>

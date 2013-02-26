@@ -1,7 +1,7 @@
 <?php
 
-Import::php("OpenM-Book.view.OpenM_BookView");
-Import::php("OpenM-Controller.view.OpenM_URLViewController");
+Import::php("OpenM-Book.gui.OpenM_BookView");
+Import::php("OpenM-Controller.gui.OpenM_URLViewController");
 Import::php("OpenM-Services.client.OpenM_ServiceSSOClientImpl");
 Import::php("util.session.OpenM_SessionController");
 

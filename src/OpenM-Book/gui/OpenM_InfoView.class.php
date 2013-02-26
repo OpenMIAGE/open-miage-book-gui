@@ -1,7 +1,7 @@
 <?php
 
-Import::php("OpenM-Book.view.OpenM_BookView");
-Import::php("OpenM-Book.view.OpenM_ProfileView");
+Import::php("OpenM-Book.gui.OpenM_BookView");
+Import::php("OpenM-Book.gui.OpenM_ProfileView");
 /**
  * 
  *
