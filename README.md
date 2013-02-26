@@ -1,6 +1,6 @@
-OpenMIAGE GUI
+OpenMIAGE Book GUI 
 
-OpenMIAGE GUI est l'implémentation graphique des API d'OpenMIAGE.
+OpenMIAGE Book GUI est l'implémentation graphique de l'API d'OpenMIAGE Book.
 
 OpenMIAGE fourni pour l'instant:
   * un système d'authentification : OpenM-ID / OpenM-SSO
