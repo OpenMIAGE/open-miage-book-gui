@@ -12,7 +12,7 @@
                 <ul class="nav">
                     <li class="divider-vertical"></li>
                     {foreach from=$nav_bar item=menu}
-                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="{$menu.link}"> {$menu.label} {if $menu.items}<b class="caret">{/if}</b> </a>
+                        <li class="dropdown"><a class="dropdown-toggle"  {if $menu.items} data-toggle="dropdown"{/if} href="{$menu.link}"> {$menu.label} {if $menu.items}<b class="caret"></b>{/if} </a>
                             {if $menu.items}
                                 <ul class="dropdown-menu">
                                     {foreach from=$menu.items item=item}

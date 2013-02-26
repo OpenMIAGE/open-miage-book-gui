@@ -3,6 +3,7 @@
 Import::php("OpenM-Book.view.OpenM_BookView");
 Import::php("OpenM-Controller.view.OpenM_URLViewController");
 Import::php("OpenM-Services.client.OpenM_ServiceSSOClientImpl");
+Import::php("util.session.OpenM_SessionController");
 
 /**
  * 
@@ -35,11 +36,15 @@ class OpenM_RegistrationView extends OpenM_BookView {
      * Méthode permetant d'envoyer l'utilisateur vers la page d'authetification (OpenM_ID) 
      * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
      */
+
     public function login() {
         $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
         try {
             $me = $this->bookClient->getUserProperties();
             //todo saved in session $me and redirect
+            OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
+
+            OpenM_SessionController::set(self::MY_DATA, $me);
             OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
         } catch (Exception $e) {
             OpenM_Header::redirect(OpenM_URLViewController::from(self::getClass(), self::REGISTER_FORM)->getURL());
@@ -49,6 +54,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function register() {
 
         $this->isConnected();
+
+  /**      if (OpenM_SessionController::contains(self::MY_DATA)) {
+            OpenM_Log::debug("Useralready registred, redirect to Profile", __CLASS__, __METHOD__, __LINE__);
+             $this->setAlert( "Vous êtes déjà enregistrer.");
+            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
+        }*/
 
         $error = FALSE;
         $param = HashtableString::from($_POST);
@@ -90,21 +101,26 @@ class OpenM_RegistrationView extends OpenM_BookView {
             }
 
             if (!$error) {
-                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+              $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
                 try {
-                    //  $retour =  $clientBook->registerMe($param->get(self::FIRST_NAME) , $param->get(self::LAST_NAME) , $time);
-                    //  echo "<pre>";
-                    //   var_dump($retour);
-                    // echo "</pre>";
+                     $clientBook->registerMe($param->get(self::FIRST_NAME), $param->get(self::LAST_NAME), $time);
+                    /**
+                     * @todo faire code, récupération ID de la propriété email, ici property_id = 2 en dur
+                     */
+                    $clientBook->addPropertyValue(2, ($param->get(self::EMAIL)));
+
+                   $me = $clientBook->getUserProperties();
+                   OpenM_SessionController::set(self::MY_DATA, $me);
+
+                    //le message du succes d'enregistrement
+                    $this->setAlert("Nous vous conseillons de mettre à jours vos informations","Succès de l'enregistrement", self::ALERT_TYPE_DISPLAY_SUCCES);
+    
+                    //tous c'est bien passé, on redirige vers le profil
+                    OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
                 } catch (Exception $e) {
-                    //  echo "<pre>";
-                    //  var_dump($e);
-                    // echo "</pre>";
+                    $error = TRUE;
+                    $error_message = $e->getMessage();
                 }
-
-
-
-//            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
             }
         }
         else
@@ -148,8 +164,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $this->smarty->assign(self::SMARTY_REGISTER_KEYS_ARRAY . "_condition", OpenM_URLViewController::from(self::getClass(), self::CONDITION_FORM)->getURL());
 
         if ($error) {
-            $this->smarty->assign(self::ERROR, $error);
-            $this->smarty->assign(self::ERROR_MESSAGE, $error_message);
+            $this->showAlert($error_message,null,  self::ALERT_TYPE_DISPLAY_ERROR);
         }
 
         $this->addLinks();
