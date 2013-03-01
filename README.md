@@ -1,6 +1,9 @@
-OpenMIAGE GUI
+OpenMIAGE Book GUI
+=====================
 
-OpenMIAGE GUI est l'implémentation graphique des API d'OpenMIAGE.
+Description
+=====================
+OpenMIAGE Book GUI est l'implémentation graphique des API d'OpenMIAGE Book.
 
 OpenMIAGE fourni pour l'instant:
   * un système d'authentification : OpenM-ID / OpenM-SSO
@@ -12,13 +15,18 @@ OpenMIAGE est globalement un projet open-sources découpé en deux projets open-
   * OpenMIAGE API
   * OpenMIAGE GUI
 
-Séparer les deux projets assure une indépendance dans le développement et dans l'architecture/déploiement (déployés sur des machines séparé ou non).
+Vous pouvez suivre l'avancé de nos développements sur [www.open-miage.org](http://www.open-miage.org)
 
-_Pour l'instant seul OpenMIAGE GUI est suffisamment documenté pour faire l'objet d'un export sous github._
+Prerequis
+=====================
+ * PHP 5.2.x min
+ * CURL extension.
+ * GMP extension (or Bcmath, but GMP is mutch faster)
 
-Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
+Dependencies
+=====================
+        launch ./install.lib.php before all to install dependencies (See ./lib/* for dependencies)
 
-
-RQ: Pour installer les lib nécessaires à l'exécution des sources, lancer préalablement ./install.lib.php
-
-RQ2: ces développements sont fait sous netbeans : http://netbeans.org/downloads/
+Remarques
+=====================
+ * ces développements sont fait sous netbeans : [netbeans.org/downloads](http://netbeans.org/downloads/)
