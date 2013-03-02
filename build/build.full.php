@@ -31,7 +31,7 @@ foreach ($file_array as $value) {
 }
 
 Import::php("util.Properties");
-$util = Properties::fromFile("../lib/OpenM.util.version");
+$util = Properties::fromFile("../lib/openm.util.dependencies");
 $e = $util->getAll()->keys();
 while ($e->hasNext()) {
     $dir = $e->next();
@@ -40,17 +40,9 @@ while ($e->hasNext()) {
         echo " - $dir <b>correctly copied to</b> $temp/lib<br>";
     }
 }
-$ext_lib = Properties::fromFile("../lib/install.ext.lib.version");
-$e = $ext_lib->getAll()->keys();
-while ($e->hasNext()) {
-    $dir = $e->next();
-    if (is_dir("../../lib/$dir")) {
-        OpenM_Dir::cp("../../lib/$dir", $temp . "lib/$dir");
-        echo " - $dir <b>correctly copied to</b> $temp/lib<br>";
-    }
-}
-$int_lib = Properties::fromFile("../lib/install.int.lib.version");
-$e = $int_lib->getAll()->keys();
+Import::php("util.pkg.OpenM_Dependencies");
+$d = new OpenM_Dependencies("../lib");
+$e = $d->explore()->keys();
 while ($e->hasNext()) {
     $dir = $e->next();
     if (is_dir("../../lib/$dir")) {
