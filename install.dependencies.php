@@ -54,5 +54,11 @@ else
  */
 Import::php("util.pkg.OpenM_Dependencies");
 $dependencies = new OpenM_Dependencies("lib");
-$dependencies->install("./temp", true);
+$dependencies->install("./temp", OpenM_Dependencies::RUN, true);
+echo "<b>RUN dependencies correctly installed</b><br>";
+$dependencies->install("./temp", OpenM_Dependencies::TEST, true);
+echo "<b>TEST dependencies correctly installed</b><br>";
+$dependencies->install("./temp", OpenM_Dependencies::DISPLAY, true);
+echo "<b>DISPLAY dependencies correctly installed</b><br>";
+OpenM_Dir::rm("./temp");
 ?>

@@ -5,7 +5,7 @@ require_once dirname(dirname(dirname(__FILE__))) . "/lib/".$util_version[0]."/Im
 Import::php("util.file.OpenM_Dir");
 Import::php("util.file.OpenM_Zip");
 $temp = "temp/";
-$version = file_get_contents("build.version");
+$version = file_get_contents("../lib/version");
 $count = intval(file_get_contents("build.count"));
 $build_config = explode("=",file_get_contents("build.config"));
 $dir = $temp."lib/".$build_config[0]."/$version";

@@ -16,10 +16,17 @@ if (!class_exists("Import")) {
         require_once dirname(dirname(dirname(__FILE__))) . $util_suffix;
     else
         throw new Exception("lib $utilVersion not found");
-    
-    if(is_dir("../src"))
-        Import::addClassPath ("../src");
-}
 
-require_once 'lib.php';
+    if (is_dir(dirname(__DIR__) . "/src"))
+        Import::addClassPath(dirname(__DIR__) . "/src");
+    else if (is_file(dirname(__DIR__) . "/lib/version")) {
+        $version = file_get_contents(dirname(__DIR__) . "/lib/version");
+        if (is_dir(dirname(__DIR__) . "/lib/$version"))
+            Import::addClassPath(dirname(__DIR__) . "/lib/$version");
+        else
+            throw new ImportException(dirname(__DIR__) . "/lib/$version not found");
+    }
+    else
+        throw new ImportException("sources dir not found not found");
+}
 ?>
