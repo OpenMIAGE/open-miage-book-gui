@@ -1,14 +1,15 @@
 <?php
 
 $util_version = explode("=", file_get_contents("../lib/openm.util.dependencies"));
-require_once dirname(dirname(dirname(__FILE__))) . "/lib/".$util_version[0]."/Import.class.php";
+require_once dirname(dirname(dirname(__FILE__))) . "/lib/" . $util_version[0] . "/Import.class.php";
 Import::php("util.file.OpenM_Dir");
 Import::php("util.file.OpenM_Zip");
 $temp = "temp/";
-$version = file_get_contents("../lib/version");
+$versionArray = explode("/", file_get_contents("../lib/version"));
+$version = $versionArray[2];
 $count = intval(file_get_contents("build.count"));
-$build_config = explode("=",file_get_contents("build.config"));
-$dir = $temp."lib/".$build_config[0]."/$version";
+$build_config = explode("=", file_get_contents("build.config"));
+$dir = $temp . "lib/" . $build_config[0] . "/$version";
 if (is_dir($temp)) {
     OpenM_Dir::rm($temp);
     echo " - $temp <b>correctly removed</b><br>";
@@ -32,7 +33,7 @@ foreach ($file_array as $value) {
     else
         die("$path$value is not a file or a directory");
 }
-$target_file_name = $build_config[1]."_$version" . "_$count.zip";
+$target_file_name = $build_config[1] . "_$version" . "_$count.zip";
 OpenM_Zip::zip($temp, $target_file_name);
 echo " - $temp <b>correctly ziped to</b> $target_file_name<br>";
 OpenM_Dir::rm($temp);

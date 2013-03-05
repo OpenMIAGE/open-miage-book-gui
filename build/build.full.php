@@ -42,7 +42,7 @@ while ($e->hasNext()) {
 }
 Import::php("util.pkg.OpenM_Dependencies");
 $d = new OpenM_Dependencies("../lib");
-$e = $d->explore()->keys();
+$e = $d->explore(OpenM_Dependencies::RUN)->putAll($d->explore(OpenM_Dependencies::DISPLAY))->keys();
 while ($e->hasNext()) {
     $dir = $e->next();
     if (is_dir("../../lib/$dir")) {
