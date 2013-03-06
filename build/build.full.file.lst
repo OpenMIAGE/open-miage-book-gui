@@ -1,2 +1,4 @@
 lib/openm.util.dependencies
 lib/version
+lib/openm.dependencies.run.compiled
+lib/openm.dependencies.display.compiled
