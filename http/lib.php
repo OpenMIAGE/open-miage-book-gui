@@ -1,8 +1,6 @@
 <?php
 
-Import::addLibPath("OpenM-SSO/client/1.0.3");
-Import::addLibPath("Smarty/3.1.13");
-Import::addLibPath("openid/2.0.2");
-Import::addLibPath("OpenM-Commons/gui/1.0.0");
-Import::addLibPath("OpenM-Book/api/1.0.0");
+Import::php("util.pkg.OpenM_Dependencies");
+$dependencies = new OpenM_Dependencies(dirname(__DIR__) . "/lib");
+$dependencies->addInClassPath(OpenM_Dependencies::RUN, is_dir(dirname(__DIR__) . "/src"));
 ?>

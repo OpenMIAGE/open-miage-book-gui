@@ -1,10 +1,11 @@
 <?php
 
 if (!class_exists("Import")) {
-    if (is_file(dirname(__DIR__) . "/lib/OpenM.util.version"))
-        $version = file_get_contents(dirname(__DIR__) . "/lib/OpenM.util.version");
+    $util = dirname(__DIR__) . "/lib/openm.util.dependencies";
+    if (is_file($util))
+        $version = file_get_contents($util);
     else
-        throw new Exception("lib OpenM.util version not found");
+        throw new Exception("lib OpenM.util version not found ($util)");
 
     $utilVersion = explode("=", $version);
     $utilVersion = $utilVersion[0];
@@ -15,7 +16,17 @@ if (!class_exists("Import")) {
         require_once dirname(dirname(dirname(__FILE__))) . $util_suffix;
     else
         throw new Exception("lib $utilVersion not found");
-}
 
-require_once 'lib.php';
+    if (is_dir(dirname(__DIR__) . "/src"))
+        Import::addClassPath(dirname(__DIR__) . "/src");
+    else if (is_file(dirname(__DIR__) . "/lib/version")) {
+        $version = file_get_contents(dirname(__DIR__) . "/lib/version");
+        if (is_dir(dirname(__DIR__) . "/lib/$version"))
+            Import::addClassPath(dirname(__DIR__) . "/lib/$version");
+        else
+            throw new ImportException(dirname(__DIR__) . "/lib/$version not found");
+    }
+    else
+        throw new ImportException("sources dir not found not found");
+}
 ?>
