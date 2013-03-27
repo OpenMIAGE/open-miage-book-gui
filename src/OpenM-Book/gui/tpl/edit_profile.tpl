@@ -34,14 +34,5 @@
 
 
         {include file='include/ressource_js.tpl'}
-        {literal}
-            <script>
-                $(function (){
-                    $('.close').click(function() {
-                        $('.alert').hide('slow');
-                        $('#afficher').show();
-                    });});
-            </script>
-        {/literal}
     </body>
 </html>

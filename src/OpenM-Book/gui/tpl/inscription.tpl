@@ -91,11 +91,6 @@
                     document.getElementById("{/literal}{$register_form.month.key}{literal}").innerHTML = $month;
                     document.getElementById("{/literal}{$register_form.month.idHiden}{literal}").setAttribute('value', $num);
                 }
-                $(function (){
-                    $('.close').click(function() {
-                        $('.alert').hide('slow');
-                        $('#afficher').show();
-                    });});
             </script>
         {/literal}
     </body>

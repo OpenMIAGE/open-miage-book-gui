@@ -13,7 +13,7 @@
             
             <div class="row-fluid">
                 <div class="span9">
-                    <img width="750" src="{$resources_dir}OpenM-Book/view/img/exemple_Profil.PNG">
+                    <img width="750" src="{$resources_dir}OpenM-Book/gui/img/exemple_Profil.PNG">
                 </div>
             </div>
             <div class="row-fluid">
@@ -48,14 +48,5 @@
 
 
         {include file='include/ressource_js.tpl'}
-        {literal}
-            <script>
-                $(function (){
-                    $('.close').click(function() {
-                        $('.alert').hide('slow');
-                        $('#afficher').show();
-                    });});
-            </script>
-        {/literal}
     </body>
 </html>

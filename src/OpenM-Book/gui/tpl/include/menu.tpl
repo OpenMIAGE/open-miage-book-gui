@@ -1,12 +1,12 @@
 {*Bare navigation mobile*}
-<nav class="navbar navbar-inverse menunavigation-phone hidden-desktop">
+<nav class="navbar navbar menunavigation-phone hidden-desktop">
     <div class="navbar-inner">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">Nicolas{*$prenom*} <br>Rouzeaud{*$nom*}</a>
+        <a class="brand" href="#">{$prenom} <br>{$nom}</a>
         <div class="nav-collapse collapse">
             <ul class="nav">
                 <li class="divider-vertical"></li>
@@ -28,7 +28,7 @@
             <hr>
               <li {if $menu_profile}class="active"{/if}><a href="{$links.profile}">Mon Profil</a></li>
              <li {if $menu_profile_edit}class="active"{/if}><a href="{$links.edit_profile}">Edition</a></li>
-            <li ><a href="#">Communauté</a></li>
+            <li {if $menu_community}class="active"{/if}><a href="{$links.community}">Communauté</a></li>
         </ul>        
     </div>
 </nav>

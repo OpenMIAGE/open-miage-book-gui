@@ -38,6 +38,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     
     const MENU_PROFILE= "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
+    const MENU_COMMUNITY = "menu_community";
+    
 
     protected $sso_book;
     protected $bookClient;
@@ -80,7 +82,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "default" => OpenM_URLViewController::from()->getURL(),
             "root" => OpenM_URLViewController::getRoot(),
             "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
-            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL()
+            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
+            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL()
         ));
     }
 
@@ -167,4 +170,5 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
 Import::php("OpenM-Book.gui.OpenM_RegistrationView");
 Import::php("OpenM-Book.gui.OpenM_InfoView");
+Import::php("OpenM-Book.gui.OpenM_CommunityView");
 ?>
