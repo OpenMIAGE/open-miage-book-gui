@@ -30,14 +30,14 @@ class OpenM_ProfileView extends OpenM_BookView {
     }
 
     public function view() {
-         $this->smarty->assign(self::MENU_PROFILE,TRUE);
-        $this->initPage();
+         $this->initPage();
         
         
         
         $me = OpenM_SessionController::get(self::MY_DATA);
-        $this->smarty->assign("nom",$me->get("ULN"));
-        $this->smarty->assign("prenom",$me->get("UFN"));
+        $this->smarty->assign(self::MENU_PROFILE,TRUE);
+        $this->smarty->assign("nom",$me->get(OpenM_Book::RETURN_USER_LAST_NAME_PARAMETER));
+        $this->smarty->assign("prenom",$me->get(OpenM_Book::RETURN_USER_FIRST_NAME_PARAMETER));
         
         
         $this->showAlert();
