@@ -6,21 +6,21 @@
 
         <style type="text/css">
             {literal}
-                [class*="span"]{
-                    border: black solid 1px;
-                    background-color: lightgreen;
-                    margin-bottom: 10px;
-                    border-radius: 5px 5px 5px 5px;
-                    /*   line-height: 80px;*/
-                    text-align: center;
+                /*[class*="span"]{
+                border: black solid 1px;
+                background-color: lightgreen;
+                margin-bottom: 10px;
+                border-radius: 5px 5px 5px 5px;
+
+                text-align: center;
                 }
 
                 [class*="row"]{
-                    border: #3333ff solid 1px;
-                }
+                border: #3333ff solid 1px;
+                }*/
             {/literal}
         </style>
-
+        <link href="{$resources_dir}OpenM-Book/gui/css/css-community.css" rel="stylesheet" type="text/css" rel="stylesheet">
     </head>
     <body>
         {include file='include/navBar.tpl'}
@@ -37,27 +37,32 @@
                     <p id="monNom" contenteditable="true">{$nom} </p>
                 </div>
             </div>
-            <div class="row-fluid">
-                <div class="span4 offset4" >
-                    <a id="ajoutLigneCommu" href="#" class="btn btn-info btn-large"><i class="icon-white icon-plus"></i> Ajouter ligne</a>
-                    <a id="supprLigneCommu" href="#" class="btn btn-danger btn-large"><i class="icon-white icon-remove"></i> Supprimer ligne</a>
-                    <br>
-                    <a id="addcomu" href="#" class="btn btn-inverse btn-large"><i class="icon-white icon-thumbs-up"></i> +1 commu</a>
+
+
+            <div class="hero-unit">     
+                <div class="row-fluid">
+                    <div id="navigation_div" class="span12">
+                        navigation communauté<br><br>
+                        <ul id="navigation_community" class="breadcrumb">
+                        </ul>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        communauté contenu :<br><br>
+                        <div id="zone_community">
+
+                        </div>                    
+                    </div>
                 </div>
             </div>
-            <br><br>
 
             <div class="row-fluid">
                 <div class="span12">
-                    communauté<br><br>
-
-                    <div id="end_commu" ></div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span12">
-                    Utilisateur dans la communauté
+                    Utilisateur dans la communauté<br><br>
+                    <div id="user_community">
+                    
+                    </div>
                 </div>
             </div>
 
@@ -65,15 +70,20 @@
                 <div class="span12">
                     utilisateur à valider
                 </div>
-            </div>
-
+            </div>    
+            
         </div>
 
 
         {include file='include/ressource_js.tpl'}
+        <script src="{$resources_dir}OpenM-Book/gui/js/js-community.js""></script>
         <script type="text/javascript">
-            {literal}
-            
+            //START
+$(function(){
+  addBranchCommunity(community01);
+});
+         {literal}
+            /*
             nbLigne = 0;
             nbCommu = 0;
             oldNbCommu = 0;
@@ -102,11 +112,11 @@
                 var newCommu = "<div id='Commu"+ nbLigne  + "-"   +  nbCommu +"' class=' span3'>Communauté "+ nbLigne  + "-"   +  nbCommu +"</div>";
               $("#newLigneCommu"+nbLigne).append(newCommu);
                    return false;
-            });
+            });*/
             {/literal}
-        </script>
+            </script>
 
 
 
-    </body>
-</html>
+        </body>
+    </html>
