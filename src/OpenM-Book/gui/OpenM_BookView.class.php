@@ -5,6 +5,7 @@ if (!Import::php("Smarty"))
 
 Import::php("OpenM-Services.gui.OpenM_ServiceViewSSO");
 Import::php("util.session.OpenM_SessionController");
+Import::php("OpenM-Book.api.OpenM_Book");
 
 /**
  * 
