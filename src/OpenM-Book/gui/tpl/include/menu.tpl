@@ -12,7 +12,7 @@
                 <li class="divider-vertical"></li>
                 <li {if $menu_profile}class="active"{/if}><a href="{$links.profile}">Mon Profil</a></li>
                 <li {if $menu_profile_edit}class="active"{/if}><a href="{$links.edit_profile}">Edition</a></li>
-                <li><a href="#">Communauté</a></li>
+                <li {if $menu_community}class="active"{/if}><a href="{$links.community}">Communauté</a></li>
             </ul>
         </div> 
     </div>
