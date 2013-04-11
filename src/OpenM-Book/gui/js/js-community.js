@@ -2,12 +2,10 @@
 function select_community(communityId){
     var community = AllCommunities[communityId];
     if (community){
-        if (community.nbChild() !=0)
-            addBranchCommunity(community, community.childSortedByName());
-        else
-            alert("niveau final !");
+        showLoading();
+        OpenM_Book.getCommunityChilds(community.id, retourGetCommunityChilds);                        
     }else{
-        alert("community id : " + communityId + " est inconnu ...");
+        showError("community id : " + communityId + " est inconnu ...");
     }  
     return false;
 }
@@ -17,10 +15,14 @@ function select_community_navigation(communityId){
     if (community){
         addBranchCommunity(community, community.child);
     }else{
-       alert("community id : " + communityId + " est inconnu ...");     
+       showError("community id : " + communityId + " est inconnu ...");     
     }
     return false;
 }
+function addCommunityAJAX(){
+    alert("Ajout d'une communauté !");
+}
+
 
 //Ajoute une communauté (graphique) à la div ZONE
 function addCommunity(community){
@@ -32,61 +34,163 @@ function addCommunity(community){
 function addBranchCommunity(community, communityChilds){
    //on supprime le contenu de la Zone COMmunity
    $(divId_zone_community).empty();   
-   if (!communityChilds && community.nbAncestor() ==0 ){
+   if (!communityChilds && community.nbAncestor ==0 ){
        //1er communauté. pas de navigation
        $(divId_navigation_div).hide();
        addCommunity(community);
    }else{
-       //la navigation       
-       $(divId_navigation_div).show();
-       $(divId_navigation_community).empty();
-       if (community.nbAncestor() != 0){
-           //on utilise ces propres ancetre
-           for (i in community.ancestor){
-               $(divId_navigation_community).append(community.ancestor[i].ToNavigationHTML());
-           }           
-       }      
-       $(divId_navigation_community).append(community.ToNavigationHTML(true));
-       //LA zone community
-       for (idarray in communityChilds){ 
-           addCommunity(communityChilds[idarray]);
-       }        
+       
+       if (community.nbChild != 0){
+           //la navigation       
+        $(divId_navigation_div).show();
+        $(divId_navigation_community).empty();
+        if (community.nbAncestor != 0){
+            //on utilise ces propres ancetre
+            for (i in community.ancestor){
+                $(divId_navigation_community).append(community.ancestor[i].ToNavigationHTML());
+            }           
+        }      
+        $(divId_navigation_community).append(community.ToNavigationHTML(true));
+        //LA zone community
+        for (idarray in communityChilds){ 
+            addCommunity(communityChilds[idarray]);
+        }
+        //if (community.usrCanAddSubCommu){
+           var ajout = "<div class='span3'><a href='#' onclick='addCommunityAJAX();' class='btn btn-inverse btn-large'><i class='icon-white icon-plus'></i>&nbsp;Ajout communauté</a></div>";
+            //<div id='community-"+ this.id +"' class='community span3'
+            $(divId_zone_community).append(ajout);
+        //}                
+       }
+       else{
+           //pas d'enfant donc on laisse la communauté'
+           //addCommunity(community);
+           addBranchCommunity(community.lastAncestor,community.lastAncestor.child );
+       }   
    }
 }
 
+ 
+ //transforme l'obj JSON rettourner par GetCommunityChild en objet javaScript community
+ function castJsonToCommunity(data){
+     try
+  {
+  data = JSON.parse(data);         
+     if (data.STATUS == OpenM_Book.RETURN_STATUS_OK_VALUE){
+      //Création communauté en cours
+      var commuEnCour;
+      
+       if (!AllCommunities[data.CPP.CID]){
+              commuEnCour = new Community(data.CPP.CID, data.CPP.CNA);
+              AllCommunities[commuEnCour.id] = commuEnCour; 
+          }else{
+            commuEnCour = AllCommunities[data.CPP.CID];
+          }          
+          commuEnCour.name = data.CPP.CNA;
+          commuEnCour.usrCanAddSubCommu = (data.UCAC == "1")?true:false;
+          commuEnCour.usrCanRegisterInto = (data.UCR == "1" )?true:false;
+          commuEnCour.loaded = true;
+      
 
+      for (var i=0;i<data.CCP.length;i++)
+      {           
+          var community = AllCommunities[data.CCP[i].CID];
+          if (!community){
+              community = new Community(data.CCP[i].CID, data.CCP[i].CNA);
+              community.ancestor = commuEnCour.ancestorClone(); 
+              AllCommunities[community.id] = community; 
+          }
+          community.addAncestor(commuEnCour);
+          commuEnCour.addChild(community); 
+      }
+       return commuEnCour;    
+     }else{
+         var message = data.ERROR_MESSAGE;
+         var str ="Une erreur c'est produit lors du chargement des communautées...";
+         str += (message)?", message : "+message:"";
+        showError(str); 
+        return false; 
+     } 
+  }
+catch(err)
+  {
+     var message = "Une erreur est survenu lors du chargement des données. message :" + err;
+     showError(message);
+     return false; 
+  } 
+ }
 
+//Est executer au retour de la fonction GetCommunityChilds
+ function retourGetCommunityChilds(data){
+    $("#retourJSON").html(data);
+    var commuEnCour = castJsonToCommunity(data);
+    if (commuEnCour){
+        if (commuEnCour.child)
+            addBranchCommunity(commuEnCour, commuEnCour.child);
+    }        
+ }
 
+function showError(message){
+    $(divId_alert).append("<div class='alert alert-error alert-block span4 offset4'><button type='button' class='close'>x</button><h4>Erreur :</h4>" +message+ "</div>");      
+    $(".close").on("click", function(event){  
+        $('.alert').hide('slow');
+    });
+}
+
+function showLoading(){
+    $(divId_zone_community).empty(); 
+    $(divId_zone_community).html("<img src='"+ressources_dir+"OpenM-Book/gui/img/ajax-loader.gif'>");
+} 
 
 //Class Community   
-function Community(id, name, url) { 
+function Community(id, name, usrCanAddSubCommu, usrCanRegisterInto ,url) { 
     if (!url) { url ="#"; } 
+    if (!name) { name ="Community : "+id; } 
+    if (!usrCanAddSubCommu){ usrCanAddSubCommu = false;}
+    if (!usrCanRegisterInto){usrCanRegisterInto = false;}
     
     this.id = id; 
     this.name = name;
     this.url = url;
     this.child = new Array();
     this.ancestor = new Array();
+    this.usrCanAddSubCommu = usrCanAddSubCommu; 
+    this.usrCanRegisterInto = usrCanRegisterInto;
+    this.nbChild = 0;
+    this.nbAncestor = 0;
+    this.lastAncestor=undefined;
+    this.loaded = false;
      
      
     this.addChild = function(community){
-        this.child.push(community);
+        this.child[community.id]= community;
+        this.nbChild++;
     } 
-    this.nbChild = function(){
-        return this.child.length;
-    }
     
     this.addAncestor = function(community){
-        this.ancestor.push(community);
-    }
-    
-    this.nbAncestor = function (){
-        return this.ancestor.length;
+        this.ancestor[community.id]= community;
+        this.nbAncestor++;
+        this.lastAncestor = community;
     }
      
     this.ToZoneHTML = function() { 
-        return "<div id='community-"+ this.id +"' class='community span3' onclick='select_community("+ this.id +");' >"+ this.name +"</div>";
-    } 
+        var str = "";
+        if (!this.loaded){            
+           str="<div id='community-"+ this.id +"' class='community span3' onclick='select_community("+ this.id +");' >"+ this.name +"</div>"; 
+        }else
+        {
+           if (this.usrCanAddSubCommu){
+               str="<div id='community-"+ this.id +"' class='community span3' onclick='select_community("+ this.id +");' >"+ this.name +"</div>";         
+           }else{
+               if (this.nbChild >0){
+                   str="<div id='community-"+ this.id +"' class='community span3' onclick='select_community("+ this.id +");' >"+ this.name +"</div>";                    
+               }else{
+                   str="<div id='community-"+ this.id +"' class='community span3' onclick='alert("+ this.id +");' >"+ this.name +"</div>";                    
+               }
+           }           
+        }
+        return str;
+    }
+    
     this.ToNavigationHTML = function(active){
         if (!active) { active =false; } 
         if (active){
@@ -101,7 +205,15 @@ function Community(id, name, url) {
            return a.name.localeCompare(b.name);
        });
        return childSorted;
-   } 
+   }
+   
+   this.ancestorClone = function(){
+       var clone = new Array();
+       for (var i in this.ancestor){
+           clone[i] = this.ancestor[i];
+       }
+       return clone;
+   }
 } 
 
 
@@ -109,12 +221,14 @@ function Community(id, name, url) {
 divId_zone_community = "#zone_community";
 divId_navigation_community = "#navigation_community";    
 divId_navigation_div = "#navigation_div";
+divId_alert = "#div_alert";
 AllCommunities = new Array();  
  
    
    
    
  /* Jeux de données */  
+ /*
 community01 = new Community(1, "Miage", "#"); 
 AllCommunities[community01.id] = community01;
 community02 = new Community(2, "Paris", "#");
@@ -270,7 +384,7 @@ community16.addAncestor(community01);
 community17.addAncestor(community09);
 community17.addAncestor(community04);
 community17.addAncestor(community01);
-
+*/
 /* FIN jeux de données */
 
 

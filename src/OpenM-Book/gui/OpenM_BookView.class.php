@@ -40,7 +40,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const MENU_PROFILE= "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
     const MENU_COMMUNITY = "menu_community";
-    
 
     protected $sso_book;
     protected $bookClient;
@@ -84,8 +83,11 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "root" => OpenM_URLViewController::getRoot(),
             "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
             "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
-            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL()
+            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL(),
+            "js_client" =>OpenM_URLViewController::getRoot()."/client/?api_gen="
         ));
+        
+        OpenM_Log::debug(OpenM_URLViewController::getRoot()."client/?api_gen=", __CLASS__, __METHOD__,__LINE__);
     }
 
     protected function addNavBarItems() {
