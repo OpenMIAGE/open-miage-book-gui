@@ -7,16 +7,9 @@
     padding-bottom: 10px;
     padding-left: 5px;
     padding-right: 5px;
-    
     margin-bottom: 10px;
-   
-    
-     
     word-break: break-all;
     text-align: center;
-    
-    
-  
 }
 .community:after{
     margin-left: 0px;
@@ -33,19 +26,3 @@
     background-image: linear-gradient(center bottom, #dacdb1 11%, #f0e8d8 56%);
    */    
 }
-
-
-/*[class*="span"]{
-    border: black solid 1px;
-    background-color: lightgreen;
-    margin-bottom: 10px;
-
-      line-height: 80px;
-    
-}*/
-
-
-/*
-[class*="row"]{
-    border: #3333ff solid 1px;
-}*/

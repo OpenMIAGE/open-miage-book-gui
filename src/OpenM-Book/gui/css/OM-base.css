@@ -8,7 +8,6 @@ body {
     padding: 19px 29px 29px;
     background-color: whitesmoke;
 }
-
 .edit:hover {
     border: darkgoldenrod solid 1px;
 }
@@ -32,6 +31,10 @@ body {
 }
 .menunavigation-phone{
     margin-top: -20px;
+}
+
+.simple-cadre{
+    
 }
 /*
 [class*="span"]{
