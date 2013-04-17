@@ -35,9 +35,9 @@
             <!-- Zone communauté  -->
             <div class="hero-unit">                
                 <div class="row-fluid">
-                    <div id="navigation_div" class="span10 well" style="display: none">
+                    <div id="navigation_community" class="span10 well" style="display: none">
                         <span>Communauté en cours :</span><br><br>
-                        <ul id="navigation_community" class="breadcrumb">
+                        <ul id="navigation_community_container" class="breadcrumb">
                         </ul>
                     </div>
                 </div>
@@ -93,6 +93,7 @@
 
         {include file='include/ressource_js.tpl'}
         <script src="{$resources_dir}OpenM-Book/gui/js/js-community.js"></script>
+        <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
         <script src="{$links.js_client}OpenM_Book"></script>
         
         <script type="text/javascript">            
@@ -100,7 +101,7 @@
             ressources_dir = "{/literal}{$resources_dir}{literal}";
                 
             showLoading();
-            OpenM_Book.getCommunityChilds(null, retourGetCommunityChilds);
+            OpenM_Book.getCommunity(null, retourGetCommunityChilds);
           });
          {/literal}</script>
         </body>

@@ -3,7 +3,7 @@ function select_community(communityId){
     var community = AllCommunities[communityId];
     if (community){
         showLoading();
-        OpenM_Book.getCommunityChilds(community.id, retourGetCommunityChilds);                        
+        OpenM_Book.getCommunity(community.id, retourGetCommunityChilds);                        
     }else{
         showError("community id : " + communityId + " est inconnu ...");
     }  
@@ -115,13 +115,13 @@ function addBranchCommunity(community, communityChilds){
       //Création communauté en cours
       var commuEnCour;
       
-       if (!AllCommunities[data.CPP.CID]){
-              commuEnCour = new Community(data.CPP.CID, data.CPP.CNA);
+       if (!AllCommunities[data.CID]){
+              commuEnCour = new Community(data.CID, data.CNA);
               AllCommunities[commuEnCour.id] = commuEnCour; 
           }else{
-            commuEnCour = AllCommunities[data.CPP.CID];
+            commuEnCour = AllCommunities[data.CID];
           }          
-          commuEnCour.name = data.CPP.CNA;
+          commuEnCour.name = data.CNA;
           commuEnCour.usrCanAddSubCommu = (data.UCAC == "1")?true:false;
           commuEnCour.usrCanRegisterInto = (data.UCR == "1" )?true:false;
           commuEnCour.loaded = true;
@@ -160,8 +160,10 @@ catch(err)
     $("#retourJSON").html(data);
     var commuEnCour = castJsonToCommunity(data);
     if (commuEnCour){
-        if (commuEnCour.child)
-            addBranchCommunity(commuEnCour, commuEnCour.child);
+         OpenM_Book_Gui_Community_Page.setCommunity(commuEnCour);
+         OpenM_Book_Gui_Community_Page.html(commuEnCour);
+        //if (commuEnCour.child)
+        //    addBranchCommunity(commuEnCour, commuEnCour.child);
     }        
  }
 
@@ -271,9 +273,10 @@ function Community(id, name, usrCanAddSubCommu, usrCanRegisterInto ,url) {
    
 } 
 
-
-/**  Variable Globale   **/
 divId_community_container = "#community_container";
+/**  Variable Globale   **/
+/*
+*
 divId_divCommunity_container = "#div_community_container";
 divId_navigation_community = "#navigation_community";    
 divId_navigation_div = "#navigation_div";
@@ -283,6 +286,6 @@ divid_action_container = "#action_container";
 bt_addCommunity = 'bt_addCommunity';
 nb_bt_addCommunity =0;
 input_NewCommunityName = 'inputNameCommunity';
-
+*/
 
 AllCommunities = new Array();
