@@ -33,6 +33,10 @@
             <div class="row-fluid"><div class="span12">Le retour JSON : <br><pre><code id="retourJSON">  </code></pre></div></div>
 
             <!-- Zone communauté  -->
+            <div id="divParent" class="hero-unit"></div>
+            
+            
+          <!--   <br><br><br><br><br><br><br>           
             <div class="hero-unit">                
                 <div class="row-fluid">
                     <div id="navigation_community" class="span10 well" style="display: none">
@@ -73,35 +77,62 @@
                 </div>
               
             </div>
-            <!-- FIN Zone communauté  -->
-            
-            
-            <div class="row-fluid">
-                <div class="span12">
-                    
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span12">
-                    utilisateur à valider
-                </div>
-            </div>    
+        
+        
+            <!-- FIN Zone communauté  -->  
             
         </div>
 
 
-        {include file='include/ressource_js.tpl'}
-        <script src="{$resources_dir}OpenM-Book/gui/js/js-community.js"></script>
-        <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
+       
         <script src="{$links.js_client}OpenM_Book"></script>
+        -->
+         {include file='include/ressource_js.tpl'}
+        <script src="{$resources_dir}OpenM-Book/gui/js/js-OpenM_Book.js"></script>
+       
+        <script src="{$resources_dir}OpenM-Book/gui/js/CommunityControler.js"></script>
+        <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
         
         <script type="text/javascript">            
          {literal}$(function(){
             ressources_dir = "{/literal}{$resources_dir}{literal}";
+            commuId =  "{/literal}{$communityId}{literal}";
+            divParent = "divParent";
+            
+
+            var controler =  OpenM_Book_CommunityPagesControler.init(divParent, commuId);
+            controler.display(commuId);  
+            
+            
+            //test
+          /* com1 = new OpenM_Book_Community(3);
+            com1.name=com1.id;
+            
+            com2 = new OpenM_Book_Community(4);
+            com2.name=com2.id;
+            com2.lastAncestor = com1;
+            
+            com3 = new OpenM_Book_Community(5);
+            com3.name=com3.id;
+            com3.lastAncestor = com2;
                 
-            showLoading();
-            OpenM_Book.getCommunity(null, retourGetCommunityChilds);
+            com4 = new OpenM_Book_Community(6);
+            com4.name=com4.id;
+            com4.lastAncestor = com3;
+                
+            com5 = new OpenM_Book_Community(7);
+            com5.name=com5.id;
+            com5.lastAncestor = com4;
+                
+                
+          var ance =   com5.getAncestor(); 
+             for (var i in ance){
+                alert(ance[i].name); 
+             }*/
+    
+             
+            //showLoading();
+            //OpenM_Book.getCommunity(null, retourGetCommunityChilds);
           });
          {/literal}</script>
         </body>

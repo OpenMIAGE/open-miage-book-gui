@@ -157,7 +157,7 @@ catch(err)
 
 //Est executer au retour de la fonction GetCommunityChilds
  function retourGetCommunityChilds(data){
-    $("#retourJSON").html(data);
+    $("#retourJSON").html(JSON.stringify(data));
     var commuEnCour = castJsonToCommunity(data);
     if (commuEnCour){
          OpenM_Book_Gui_Community_Page.setCommunity(commuEnCour);
