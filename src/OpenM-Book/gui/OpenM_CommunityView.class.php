@@ -19,7 +19,11 @@ class OpenM_CommunityView extends OpenM_BookView {
         $this->smarty->assign(self::MENU_COMMUNITY,TRUE);
         $this->initPage();
         
-        
+        $commuId = null;
+        if (isset($_GET["id"])){
+            $commuId = $_GET["id"];
+        }
+        $this->smarty->assign("communityId",$commuId);
         
         $me = OpenM_SessionController::get(self::MY_DATA);
         
@@ -27,6 +31,7 @@ class OpenM_CommunityView extends OpenM_BookView {
         $this->smarty->assign("prenom",$me->get("UFN"));
         
         
+        OpenM_Log::debug("Community View Open", __CLASS__, __METHOD__, __LINE__);
         $this->showAlert();
         $this->smarty->display('community.tpl');
         
