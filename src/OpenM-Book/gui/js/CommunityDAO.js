@@ -52,19 +52,56 @@ function OpenM_Book_Community(){
         }  
         return tabAncestor;
     }
+
+    //update listener
         
     this.AllCallBack = new Array();
+    this.usersArray = new Array();
+    this.AllUsersCallBack = new Array();
+    this.usersNotValidArray = new Array();
+    this.AllUsersNotValidCallBack = new Array();
     
-    this.addUpdateCallBack = function(CallBack_function){
-        this.AllCallBack.push(callBack_function);
+    this.addUpdateCallBack = function(c){
+        this.AllCallBack.push(c);
     }
+    
+    this.addUpdateUsersCallBack = function(c){
+        this.AllUsersCallBack.push(c);
+    } 
+    
+    this.addUpdateUsersCallBack = function(c){
+        this.AllUsersNotValidCallBack.push(c);
+    }    
     
     this.update = function(){
     //lancer tous les callback
-    }      
+    }          
+    this.updateUsers = function(){
+    //lancer tous les callback
+    }     
+    this.updateUsersNotValid = function(){
+    //lancer tous les callback
+    }     
+    
+    this.getUsers = function (){       
+        OpenM_Book.getCommunityUsers(communtyId, function(data){
+            
+            this.updateUsers();
+        });     
+    }
+    
+    this.getUsersNotValid = function(){       
+        OpenM_Book.getCommunityNotValidUsers(this.id, function(data){
+            
+            this.updateUsersNotValid();
+        });
+    }
 }
 
-
+function OpenM_Book_CommunityUser (id, name){
+    this.id = id;
+    this.name = name;
+}
 
 //Tab qui gére tt les instances de Community
 var OpenM_Book_CommunityDAO = {
@@ -77,7 +114,7 @@ var OpenM_Book_CommunityDAO = {
             community = new OpenM_Book_Community();            
         
         if(!synchro)
-            OpenM_Book.GetCommunity(communtyId, function(data){
+            OpenM_Book.getCommunity(communtyId, function(data){
                 this.parseAndLoad(data, community)
             });
         else
@@ -85,16 +122,12 @@ var OpenM_Book_CommunityDAO = {
         
         return community;     
     },
-    'set': function(communityObject){
-        
-    },    
     'parseAndLoad': function(data, community){        
         community.id = data.CID;
         community.name = data.CNA;
         community.userCanAddSubCommunity = (data.UCAC == "1")?true:false;
         community.userCanRegister =  (data.UCR == "1" )?true:false;
         community.userIsBanned = (data.YAB == "1")?true:false;
-        
         if(data.CCP){
             for (var i=0;i<data.CCP.length;i++) {           
                 var subCommunity = this.allCommunities[data.CCP[i].id];
@@ -110,6 +143,5 @@ var OpenM_Book_CommunityDAO = {
         }
         community.loaded = true;
         community.update();
-    } 
-    
+    }
 }
