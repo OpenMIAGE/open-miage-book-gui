@@ -22,11 +22,11 @@ var OpenM_Book_CommunityPagesControler = {
                 
         var communityControler = this.AllCommunitiesPagesControlers[community.id];
         if (!communityControler){
-            communityControler = new OpenM_Book_CommunityPageController(this.divParentId, community);
-            this.AllCommunitiesPagesControlers[communityId] = communityControler;
+            communityControler = new OpenM_Book_CommunityPageController(community,this.divParentId);
+            this.AllCommunitiesPagesControlers[community.id] = communityControler;
         }
         else
-            communityControler = this.AllCommunitiesPagesControlers[communityId];
+            communityControler = this.AllCommunitiesPagesControlers[community.id];
 
         return communityControler;
     }
@@ -35,18 +35,24 @@ var OpenM_Book_CommunityPagesControler = {
 /**
  * Gére le control de la communauté (en data et en rendu HTML)
  */
-function OpenM_Book_CommunityPageController(id, community){
-    
-    this.id = id+'-community-'+community.id+'-page';
+function OpenM_Book_CommunityPageController(community, divParentId){
+    this.id = community.id+'-community-'+community.id+'-page';
     this.community = community;
-    
+    this.divParentId = divParentId;
     this.gui = new OpenM_Book_CommunityPageGui(this.id);
     
-    this.treeController = new OpenM_Book_CommunityTreeController(this.id+'-tree',community);        
+    
+    
+    this.treeController = new OpenM_Book_CommunityTreeController(this.id+'-tree',community);   
+    this.gui.treeGui = this.treeController.tree;
     this.communityChildsController = new OpenM_Book_CommunityCommunityChildsController(this.id+'-childs',community);
+    this.gui.childsGui = this.communityChildsController.childsGui;
     this.actionController = new OpenM_Book_CommunityActionController(this.id+'-actions',community);
+    this.gui.actionGui = this.actionController.actionGui;
     this.usersController = new OpenM_Book_CommunityUsersController(this.id+'-users',community);
+    this.gui.usersGui = this.usersController.usersGui;
     this.usersNotValidController = new OpenM_Book_CommunityUsersNotValidController(this.id+'-users-not-valid',community);
+    this.gui.usersNotValidGui = this.usersNotValidController.usersNotValidGui;
     
     this.community.addUpdateCallBack(function(){
         this.update();
@@ -66,19 +72,21 @@ function OpenM_Book_CommunityPageController(id, community){
 /**
  * Gére le control pour le Tree, event et HTML
  */
-function OpenM_Book_CommunityTreeController(id, community){
-    this.id = id;
+function OpenM_Book_CommunityTreeController(div_id, community){
+    this.div_id = div_id;
     this.community = community;
-    this.tree = new OpenM_Book_TreeGui(community);
+    this.divParent = '';
+    this.tree = new OpenM_Book_CommunityTreeGui(community);
+    
     this.update = function(){
         
     }
 }
 
-function OpenM_Book_CommunityCommunityChildsController(id, community){
-    this.id = id;
+function OpenM_Book_CommunityCommunityChildsController(div_id, community){
+    this.div_id = div_id;
     this.community = community;
-    this.tree = new OpenM_Book_CommunityTreeGui(id);
+    this.childsGui = new OpenM_Book_CommunityChildGui(div_id);
     this.update = function(){
         
     }    
@@ -97,10 +105,10 @@ function OpenM_Book_CommunityCommunityChildsController(id, community){
     }
 }
 
-function OpenM_Book_CommunityActionController(id, community){
-    this.id = id;
+function OpenM_Book_CommunityActionController(div_id, community){
+    this.div_id = div_id;
     this.community = community;
-    this.tree = new OpenM_Book_CommunityActionsGui(id);
+    this.actionGui = new OpenM_Book_CommunityActionsGui(div_id);
     this.update = function(){
         
     }    
@@ -116,4 +124,18 @@ function OpenM_Book_CommunityActionController(id, community){
             $("#" + this.zoneAction).hide();
         }   
     }
+}
+
+
+function OpenM_Book_CommunityUsersController(div_id, community){
+    this.div_id = div_id;
+    this.community = community;
+    this.usersGui = new OpenM_Book_CommunityUserGui();
+    
+}
+
+function OpenM_Book_CommunityUsersNotValidController(div_id, community){
+    this.div_id = div_id;
+    this.community = community;
+    this.usersNotValidGui = new OpenM_Book_CommunityUserNotValidated();
 }

@@ -1,18 +1,28 @@
 
-function OpenM_Book_CommunityPageGui(id){
-    this.tree = null;
-    this.actions = null;
-    this.childs = null;
-    this.users = null;
-    this.usersNotValid = null;
-    this.id = id;    
+function OpenM_Book_CommunityPageGui(div_id){
+    this.treeGui = null;
+    this.actionsGui = null;
+    this.communityChildsGui = null;
+    this.usersGui = null;
+    this.usersNotValidGui = null;
+    this.div_parent = div_id;    
     this.display = function(enabled){
+        if(enabled===true || enabled === undefined){
+            //on affiche
+             
+        }else{
+            //on chache
+            
+        }
+        
         
     }
 }
 
-function OpenM_Book_CommunityTreeGui(id){    
-    this.id = id;
+function OpenM_Book_CommunityTreeGui(community){    
+    this.community = community;
+    this.htmlGenerated = ""; 
+      
       
     //génére l'html pour la navigation
     this.html = function(){

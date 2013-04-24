@@ -108,17 +108,17 @@ var OpenM_Book_CommunityDAO = {
     'allCommunities': new Array(),
     'get': function(communityId, synchro){
         var community;
-        if(communityId!==undefined)
-            community = this.allCommunities[communityId];
-        if(community===undefined)
-            community = new OpenM_Book_Community();            
+        if(!communityId)
+            community = new OpenM_Book_Community();
+        else
+            community = this.allCommunities[communityId];                      
         
         if(!synchro)
-            OpenM_Book.getCommunity(communtyId, function(data){
+            OpenM_Book.getCommunity(communityId, function(data){
                 this.parseAndLoad(data, community)
             });
         else
-            this.parseAndLoad(OpenM_Book.GetCommunity(communtyId), community);
+            this.parseAndLoad(OpenM_Book.getCommunity(communityId), community);
         
         return community;     
     },
@@ -132,7 +132,7 @@ var OpenM_Book_CommunityDAO = {
             for (var i=0;i<data.CCP.length;i++) {           
                 var subCommunity = this.allCommunities[data.CCP[i].id];
                 
-                if (subCommunity!==undefined){
+                if (!subCommunity){
                     subCommunity = new OpenM_Book_Community();
                     subCommunity.id = data.CCP[i].CID;
                     subCommunity.name = data.CCP[i].CNA;

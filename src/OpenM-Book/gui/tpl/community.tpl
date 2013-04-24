@@ -92,16 +92,18 @@
        
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityControler.js"></script>
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
+        <script src="{$resources_dir}OpenM-Book/gui/js/CommunityDAO.js"></script>
         
         <script type="text/javascript">            
          {literal}$(function(){
             ressources_dir = "{/literal}{$resources_dir}{literal}";
-            commuId =  "{/literal}{$communityId}{literal}";
+            communityId =  "{/literal}{$communityId}{literal}";
             divParent = "divParent";
             
 
-            var controler =  OpenM_Book_CommunityPagesControler.init(divParent, commuId);
-            controler.display(commuId);  
+            OpenM_Book_CommunityPagesControler.init(divParent, communityId);
+          var controler =  OpenM_Book_CommunityPagesControler.communityPage(communityId);
+              controler.display();
             
             
             //test
