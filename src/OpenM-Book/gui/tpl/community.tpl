@@ -88,7 +88,8 @@
         <script src="{$links.js_client}OpenM_Book"></script>
         -->
          {include file='include/ressource_js.tpl'}
-        <script src="{$resources_dir}OpenM-Book/gui/js/js-OpenM_Book.js"></script>
+         
+        <script src="{$links.js_client}OpenM_Book"></script>
        
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityControler.js"></script>
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
