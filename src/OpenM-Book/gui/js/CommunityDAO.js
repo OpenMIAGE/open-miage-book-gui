@@ -15,7 +15,7 @@ function OpenM_Book_Community(){
     this.parent = undefined;
     this.ancestors = new Array();
     this.nbAncestor = 0;
-    this.haveAncestors = true;
+    this.ancestorsLoaded = false;
     
     this.loaded = false;
      
@@ -38,19 +38,22 @@ function OpenM_Book_Community(){
     
     //par récurcivité, récupérent les ancetres, si on n'a pas d'ancetre, on fait une requete au srv'
     this.getAncestor = function(tabAncestor){
-        if (!tabAncestor)
-            tabAncestor = new Array();
-        
-        if (!this.parent){
-            //il n'y a pas d ancetre, on va charger depuis le srv'
-            if (this.haveAncestors){
-                tabAncestor =  tabAncestor.concat(this.loadAncestor());
-            }
-        }else{
-            tabAncestor.push(this.parent);
-            this.parent.getAncestor(tabAncestor);
-        }  
-        return tabAncestor;
+        if(!this.ancestorsLoaded){
+            if (!tabAncestor)
+                tabAncestor = new Array();
+
+            if (!this.parent){
+                if (!this.ancestorsLoaded){
+                    //OpenM_Book_CommunityDAO(communityId, callback_function)
+                    tabAncestor =  tabAncestor.concat(OpenM_Book_CommunityDAO.getAncestors(this, true));
+                }
+            }else{
+                tabAncestor.push(this.parent);
+                this.parent.getAncestor(tabAncestor);
+            }  
+            this.ancestors = tabAncestor;
+        }
+        return this.ancestors;
     }
 
     //update listener
@@ -122,6 +125,15 @@ var OpenM_Book_CommunityDAO = {
         
         return community;     
     },
+    'getAncestors': function(community,synchro){
+         if(!synchro)
+            OpenM_Book.getCommunity(communityId, function(data){
+                this.parseAndLoadAncestors(data, community)
+            });
+        else
+            this.parseAndLoadAncestors(OpenM_Book.getCommunityAncestors(community.id), community);
+        
+    },
     'parseAndLoad': function(data, community){        
         community.id = data.CID;
         community.name = data.CNA;
@@ -143,5 +155,13 @@ var OpenM_Book_CommunityDAO = {
         }
         community.loaded = true;
         community.update();
+    },    
+    'parseAndLoadAncestors': function(data,community){
+        //TODO
+        var ancestors = new Array();
+        
+        
+        community.ancestorsLoaded = true;
+        return ancestors;
     }
 }

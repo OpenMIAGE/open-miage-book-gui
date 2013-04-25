@@ -3,11 +3,20 @@ var OpenM_Book_CommunityPagesControler = {
     'AllCommunitiesPagesControlers': new Array(),
     'divParentId': '',
     'current': null,
-    'init': function(divParentId){
+    'ressource_loader' : "",
+    'ressource_dir': '',
+    'pagesGui': undefined,
+    'init': function(divParentId, ressources_dir){
         if (!divParentId){
             throw "divParent is null"
         }
         this.divParentId = divParentId;
+        this.ressource_dir = ressources_dir;
+        this.ressource_loader = this.ressource_dir+ "OpenM-Book/gui/img/ajax-loader.gif";
+        
+        this.pagesGui = new OpenM_Book_CommunityPagesGui(this.divParentId);
+        this.pagesGui.showPageLoading();
+        
     },
     'communityPage': function(communityId){
         if (this.divParent == ''){
@@ -39,12 +48,12 @@ function OpenM_Book_CommunityPageController(community, divParentId){
     this.id = community.id+'-community-'+community.id+'-page';
     this.community = community;
     this.divParentId = divParentId;
-    this.gui = new OpenM_Book_CommunityPageGui(this.id);
+    this.gui = new OpenM_Book_CommunityPageGui(this.id, this.divParentId);
     
     
     
     this.treeController = new OpenM_Book_CommunityTreeController(this.id+'-tree',community);   
-    this.gui.treeGui = this.treeController.tree;
+    this.gui.treeGui = this.treeController.treeGui;
     this.communityChildsController = new OpenM_Book_CommunityCommunityChildsController(this.id+'-childs',community);
     this.gui.childsGui = this.communityChildsController.childsGui;
     this.actionController = new OpenM_Book_CommunityActionController(this.id+'-actions',community);
@@ -76,7 +85,8 @@ function OpenM_Book_CommunityTreeController(div_id, community){
     this.div_id = div_id;
     this.community = community;
     this.divParent = '';
-    this.tree = new OpenM_Book_CommunityTreeGui(community);
+    this.treeGui = new OpenM_Book_CommunityTreeGui(community);
+    this.treeGui.html();
     
     this.update = function(){
         

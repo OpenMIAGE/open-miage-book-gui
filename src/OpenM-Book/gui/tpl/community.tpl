@@ -97,45 +97,16 @@
         
         <script type="text/javascript">            
          {literal}$(function(){
+            
             ressources_dir = "{/literal}{$resources_dir}{literal}";
             communityId =  "{/literal}{$communityId}{literal}";
             divParent = "divParent";
             
 
-            OpenM_Book_CommunityPagesControler.init(divParent, communityId);
-          var controler =  OpenM_Book_CommunityPagesControler.communityPage(communityId);
-              controler.display();
-            
-            
-            //test
-          /* com1 = new OpenM_Book_Community(3);
-            com1.name=com1.id;
-            
-            com2 = new OpenM_Book_Community(4);
-            com2.name=com2.id;
-            com2.lastAncestor = com1;
-            
-            com3 = new OpenM_Book_Community(5);
-            com3.name=com3.id;
-            com3.lastAncestor = com2;
-                
-            com4 = new OpenM_Book_Community(6);
-            com4.name=com4.id;
-            com4.lastAncestor = com3;
-                
-            com5 = new OpenM_Book_Community(7);
-            com5.name=com5.id;
-            com5.lastAncestor = com4;
-                
-                
-          var ance =   com5.getAncestor(); 
-             for (var i in ance){
-                alert(ance[i].name); 
-             }*/
-    
-             
-            //showLoading();
-            //OpenM_Book.getCommunity(null, retourGetCommunityChilds);
+            OpenM_Book_CommunityPagesControler.init(divParent, ressources_dir);
+            var controler =  OpenM_Book_CommunityPagesControler.communityPage(communityId);
+            controler.display();
+           
           });
          {/literal}</script>
         </body>

@@ -1,27 +1,58 @@
+function OpenM_Book_CommunityPagesGui(div_id){
+    this.div_id = div_id;
+    
+    this.showPageLoading = function(){ 
+        $("#"+this.div_id).empty().append("<img src='"+ OpenM_Book_CommunityPagesControler.ressource_loader +"' >");           
+    }
+    
+    
+}
 
-function OpenM_Book_CommunityPageGui(div_id){
+
+function OpenM_Book_CommunityPageGui(div_id, div_Parent){
     this.treeGui = null;
     this.actionsGui = null;
     this.communityChildsGui = null;
     this.usersGui = null;
     this.usersNotValidGui = null;
-    this.div_parent = div_id;    
+    this.div_id = div_id;
+    this.div_parent = div_Parent; 
+    this.pageHTML = undefined;
+    
     this.display = function(enabled){
         if(enabled===true || enabled === undefined){
             //on affiche
-             
+            
+            //on vide l'affichage'
+            $("#"+this.div_parent).empty();
+          //  if (this.pageHTML){
+                
+                //$("#"+this.div_parent).append()
+                
+           // }else{
+                
+                //On génére la page html
+                var cadre = "<div id='"+this.div_id +"'></div>";            
+                $("#"+this.div_parent).append(cadre); 
+                var rowTree = "<div id='"+this.treeGui.cadre_id+"' class='row-fluid'></div>";
+                $("#"+this.div_id).append(rowTree);
+                $("#"+this.treeGui.cadre_id).append(this.treeGui.htmlGenerated);
+                
+                
+                $this.pageHTML = $("#"+this.div_id).html();
+           // }    
         }else{
             //on chache
-            
-        }
-        
-        
+            $("#"+this.div_id).remove();
+        } 
     }
 }
 
 function OpenM_Book_CommunityTreeGui(community){    
     this.community = community;
-    this.htmlGenerated = ""; 
+    this.htmlGenerated = "";
+    this.cadre_id = this.community.id + "-tree-cadre";
+    this.container_id = this.community.id + "tree-containers";
       
       
     //génére l'html pour la navigation
@@ -30,17 +61,19 @@ function OpenM_Book_CommunityTreeGui(community){
             return false;
         }
         var html = "<div class='span10 well'><span>Communauté en cours :</span><br><br>";
-        html += "<ul id='navigation_community_container' class='breadcrumb'>";
-
-        if (this.community.lastAncestor){
-            
-        //for (var i in this.community.ancestor){
-        //Todo : changer l'evenementiel, sur le Onclick'
-        //   html +=  "<li><a href='#' onclick='select_community_navigation("+ this.community.ancestor[i].id +");'  >"+ this.community.ancestor[i].name+"</a> <span class='divider'>/</span></li>";                
-        //}            
+            html += "<ul id='"+this.container_id+"' class='breadcrumb'>";
+         if (this.community.loaded){
+             var ancestors = this.community.getAncestor();
+           /* for (var i in ancestors){
+            //Todo : changer l'evenementiel, sur le Onclick' onclick='select_community_navigation("+ this.community.ancestor[i].id +");'
+             html +=  "<li><a href='#' >"+ this.community.ancestor[i].name+"</a> <span class='divider'>/</span></li>";                
+            }*/                     
+            html += "<li class='active'>"+ this.community.name +"</li>"                             
+            html += "</ul>";
+        }else{
+            html += "<img src='"+ OpenM_Book_CommunityPagesControler.ressource_loader +"' >"
         }
-        html += "<li class='active'>"+ this.community.name +"</li>"                     
-        html += "</ul></div>"
+        html +="</div>";
         this.htmlGenerated = html;
         return html;
     }   
