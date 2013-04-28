@@ -54,7 +54,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function login() {
         $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
         try {
-            $me = $this->bookClient->getUserProperties();
+            $me = $this->userClient->getUserProperties();
             //todo saved in session $me and redirect
             OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
 
