@@ -30,8 +30,7 @@
         <div class="container-fluid container-withmenunavigation">
             {include file='include/alert.tpl'}
             
-            <div class="row-fluid"><div class="span12">Le retour JSON : <br><pre><code id="retourJSON">  </code></pre></div></div>
-
+           
             <!-- Zone communauté  -->
             <div id="divParent" class="hero-unit"></div>
             
@@ -85,8 +84,7 @@
 
 
        
-        <script src="{$links.js_client}OpenM_Book"></script>
-        -->
+        <script src="{$links.js_client}OpenM_Book"></script>        
          {include file='include/ressource_js.tpl'}
          
         <script src="{$links.js_client}OpenM_Book"></script>
@@ -96,17 +94,15 @@
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityDAO.js"></script>
         
         <script type="text/javascript">            
-         {literal}$(function(){
-            
+         {literal}$(function(){            
             ressources_dir = "{/literal}{$resources_dir}{literal}";
             communityId =  "{/literal}{$communityId}{literal}";
-            divParent = "divParent";
-            
-
+            divParent = "divParent";            
             OpenM_Book_CommunityPagesControler.init(divParent, ressources_dir);
-            var controler =  OpenM_Book_CommunityPagesControler.communityPage(communityId);
-            controler.display();
-           
+         });            
+           $(function(){
+                var controler =  OpenM_Book_CommunityPagesControler.communityPage(communityId);
+                controler.display();               
           });
          {/literal}</script>
         </body>

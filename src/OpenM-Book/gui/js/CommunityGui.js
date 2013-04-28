@@ -1,11 +1,28 @@
-function OpenM_Book_CommunityPagesGui(div_id){
-    this.div_id = div_id;
-    
-    this.showPageLoading = function(){ 
-        $("#"+this.div_id).empty().append("<img src='"+ OpenM_Book_CommunityPagesControler.ressource_loader +"' >");           
-    }
-    
-    
+var OpenM_Book_CommunityPagesGui = {
+    'div_id': '', 
+    'ressource_dir': '',
+    'ressource_loader': "OpenM-Book/gui/img/ajax-loader.gif",
+    'showPageLoading': function(){ 
+        $("#"+this.div_id).empty().append("<img src='"+ this.ressource_dir + this.ressource_loader +"' >");           
+    },
+    'showJSON': function(data){
+        if ($("#cadreRetourJSON").size() == 0){
+             var row = '<div id="cadreRetourJSON" class="row-fluid"><div class="span12">Le retour JSON : <br><pre><code id="retourJSON">  </code></pre></div></div>';
+             $("#"+this.div_id).before(row);                        
+        }
+        $("#retourJSON").append(JSON.stringify(data)).append("<br>");                        
+    },
+    'removeJSON':function(){
+        $("#cadreRetourJSON").remove();
+    },
+    'showError': function(message){
+         
+         $("#div_alert").append("<div class='alert alert-error alert-block span4 offset4' style='display: none;'><button type='button' class='close'>x</button><h4>Erreur :</h4>" +message+ "</div>");      
+         $(".close").on("click", function(event){  
+            $('.alert').hide('slow').remove();     
+        });
+         $(".alert").show("slow");         
+    }   
 }
 
 
@@ -39,12 +56,16 @@ function OpenM_Book_CommunityPageGui(div_id, div_Parent){
                 $("#"+this.treeGui.cadre_id).append(this.treeGui.htmlGenerated);
                 
                 
-                $this.pageHTML = $("#"+this.div_id).html();
+                this.pageHTML = $("#"+this.div_id).html();
            // }    
         }else{
             //on chache
             $("#"+this.div_id).remove();
         } 
+    }
+    
+    this.update = function(){
+        this.pageHTML = undefined;
     }
 }
 
@@ -64,6 +85,11 @@ function OpenM_Book_CommunityTreeGui(community){
             html += "<ul id='"+this.container_id+"' class='breadcrumb'>";
          if (this.community.loaded){
              var ancestors = this.community.getAncestor();
+             if (ancestors.length != 0){
+                 for (var i in ancestors){
+                     html +=  "<li><a href='#' >"+ ancestor[i].name+"</a> <span class='divider'>/</span></li>";  
+                 }
+             }
            /* for (var i in ancestors){
             //Todo : changer l'evenementiel, sur le Onclick' onclick='select_community_navigation("+ this.community.ancestor[i].id +");'
              html +=  "<li><a href='#' >"+ this.community.ancestor[i].name+"</a> <span class='divider'>/</span></li>";                
@@ -71,7 +97,7 @@ function OpenM_Book_CommunityTreeGui(community){
             html += "<li class='active'>"+ this.community.name +"</li>"                             
             html += "</ul>";
         }else{
-            html += "<img src='"+ OpenM_Book_CommunityPagesControler.ressource_loader +"' >"
+            html += "<img src='"+ OpenM_Book_CommunityPagesGui.ressource_dir +  OpenM_Book_CommunityPagesGui.ressource_loader +"' >"
         }
         html +="</div>";
         this.htmlGenerated = html;

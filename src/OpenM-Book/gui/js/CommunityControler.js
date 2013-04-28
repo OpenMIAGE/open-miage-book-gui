@@ -5,18 +5,16 @@ var OpenM_Book_CommunityPagesControler = {
     'current': null,
     'ressource_loader' : "",
     'ressource_dir': '',
-    'pagesGui': undefined,
+    'firstLoad': true,
     'init': function(divParentId, ressources_dir){
         if (!divParentId){
             throw "divParent is null"
         }
         this.divParentId = divParentId;
-        this.ressource_dir = ressources_dir;
-        this.ressource_loader = this.ressource_dir+ "OpenM-Book/gui/img/ajax-loader.gif";
         
-        this.pagesGui = new OpenM_Book_CommunityPagesGui(this.divParentId);
-        this.pagesGui.showPageLoading();
-        
+        OpenM_Book_CommunityPagesGui.div_id = this.divParentId;
+        OpenM_Book_CommunityPagesGui.ressource_dir = ressources_dir;        
+        OpenM_Book_CommunityPagesGui.showPageLoading();
     },
     'communityPage': function(communityId){
         if (this.divParent == ''){
@@ -24,10 +22,11 @@ var OpenM_Book_CommunityPagesControler = {
         }
     
         var community = null;
-        if(!communityId)
+       
+       // if(!communityId)
             community = OpenM_Book_CommunityDAO.get(communityId, true);
-        else
-            community = OpenM_Book_CommunityDAO.get(communityId);
+       // else
+       //     community = OpenM_Book_CommunityDAO.get(communityId);
                 
         var communityControler = this.AllCommunitiesPagesControlers[community.id];
         if (!communityControler){
@@ -38,7 +37,7 @@ var OpenM_Book_CommunityPagesControler = {
             communityControler = this.AllCommunitiesPagesControlers[community.id];
 
         return communityControler;
-    }
+    }        
 }
 
 /**
@@ -49,8 +48,7 @@ function OpenM_Book_CommunityPageController(community, divParentId){
     this.community = community;
     this.divParentId = divParentId;
     this.gui = new OpenM_Book_CommunityPageGui(this.id, this.divParentId);
-    
-    
+        
     
     this.treeController = new OpenM_Book_CommunityTreeController(this.id+'-tree',community);   
     this.gui.treeGui = this.treeController.treeGui;
@@ -64,6 +62,7 @@ function OpenM_Book_CommunityPageController(community, divParentId){
     this.gui.usersNotValidGui = this.usersNotValidController.usersNotValidGui;
     
     this.community.addUpdateCallBack(function(){
+//Ici probléme, quand il est appeler, on a pas acced au this (et donc à update)        
         this.update();
     });
     
@@ -72,6 +71,7 @@ function OpenM_Book_CommunityPageController(community, divParentId){
     }
     
     this.update = function(){
+        this.gui.update();
         this.treeController.update();
         this.actionController.update();
         this.communityChildsController.update();
@@ -89,7 +89,7 @@ function OpenM_Book_CommunityTreeController(div_id, community){
     this.treeGui.html();
     
     this.update = function(){
-        
+        this.treeGui.html();
     }
 }
 
@@ -97,6 +97,8 @@ function OpenM_Book_CommunityCommunityChildsController(div_id, community){
     this.div_id = div_id;
     this.community = community;
     this.childsGui = new OpenM_Book_CommunityChildGui(div_id);
+    
+    
     this.update = function(){
         
     }    
