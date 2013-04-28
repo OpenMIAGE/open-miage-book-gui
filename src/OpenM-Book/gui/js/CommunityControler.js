@@ -23,10 +23,10 @@ var OpenM_Book_CommunityPagesControler = {
     
         var community = null;
        
-       // if(!communityId)
+        if(!communityId)
             community = OpenM_Book_CommunityDAO.get(communityId, true);
-       // else
-       //     community = OpenM_Book_CommunityDAO.get(communityId);
+        else
+            community = OpenM_Book_CommunityDAO.get(communityId);
                 
         var communityControler = this.AllCommunitiesPagesControlers[community.id];
         if (!communityControler){
@@ -55,16 +55,12 @@ function OpenM_Book_CommunityPageController(community, divParentId){
     this.communityChildsController = new OpenM_Book_CommunityCommunityChildsController(this.id+'-childs',community);
     this.gui.childsGui = this.communityChildsController.childsGui;
     this.actionController = new OpenM_Book_CommunityActionController(this.id+'-actions',community);
-    this.gui.actionGui = this.actionController.actionGui;
+    this.gui.actionsGui = this.actionController.actionsGui;
     this.usersController = new OpenM_Book_CommunityUsersController(this.id+'-users',community);
     this.gui.usersGui = this.usersController.usersGui;
     this.usersNotValidController = new OpenM_Book_CommunityUsersNotValidController(this.id+'-users-not-valid',community);
     this.gui.usersNotValidGui = this.usersNotValidController.usersNotValidGui;
     
-    this.community.addUpdateCallBack(function(){
-//Ici probléme, quand il est appeler, on a pas acced au this (et donc à update)        
-        this.update();
-    });
     
     this.display= function(enabled){
         this.gui.display(enabled);
@@ -76,6 +72,10 @@ function OpenM_Book_CommunityPageController(community, divParentId){
         this.actionController.update();
         this.communityChildsController.update();
     }
+    //PRobléme : toujours le mm probléme, quand cette méthode est appelé, il y  aun pb  car le this n'a pas la valeur de l'objet OpenM_Book_CommunityPageController,
+    // donc il n'y a pas de méthode update '
+    
+    //this.community.addUpdateCallBack(OpenM_Book_CommunityPagesControler.communityPage(this.id).update());    
 }
 
 /**
@@ -93,34 +93,85 @@ function OpenM_Book_CommunityTreeController(div_id, community){
     }
 }
 
+
+
 function OpenM_Book_CommunityCommunityChildsController(div_id, community){
     this.div_id = div_id;
     this.community = community;
-    this.childsGui = new OpenM_Book_CommunityChildGui(div_id);
+    this.AllSubCommunitiesControllers = new Array();    
+    
+    this.childsGui = new OpenM_Book_CommunityChildGui(community);    
+    //gen les sub Commu
+    if (community.nbChild != 0){
+        var subCommunityController;
+        for (var i in community.child){
+            subCommunityController = new OpenM_Book_SubCommunityController(community.child[i])
+            this.AllSubCommunitiesControllers[community.child[i].id]= subCommunityController;
+            this.childsGui.AllSubCommunitiesGui.push(subCommunityController.subCommunityGui);
+        }
+    }
+    this.childsGui.html();
     
     
     this.update = function(){
         
     }    
-    
-    //passer coté gui
-    this.display = function(divParentId){
-        var rowSubCommu = "<div id='"+this.zoneSubCommunity+"' class='row-fluid'></div>";
-        $("#"+ divParentId).append(rowSubCommu);
-        var html = this.subCommunity.htmlGenerated;
-        if (html != ''){
-            //on insére le Tree dans la nouvelle row
-            $("#" + this.zoneSubCommunity).append(html);   
-        }else{
-            $("#" + this.zoneSubCommunity).hide();
-        }    
-    }
 }
+
+
+function OpenM_Book_SubCommunityController(community){
+    this.community = community;
+    this.subCommunityGui = new OpenM_Book_SubCommunityGui(community);
+    this.subCommunityGui.html();
+    
+    this.update = function(){
+        
+    }
+    
+    this.click= function(){
+        
+    }    
+}
+
 
 function OpenM_Book_CommunityActionController(div_id, community){
     this.div_id = div_id;
     this.community = community;
-    this.actionGui = new OpenM_Book_CommunityActionsGui(div_id);
+    this.AllButtonsControllers = new Array();
+    
+    this.actionsGui = new OpenM_Book_CommunityActionsGui(community);
+    //on genere les boutons
+    if (this.community.userCanMakeAction()){
+        var allButtonsGui = new Array();
+        //on cherche les actions a générer
+        var buttonControler;
+        //action 1
+        if (this.community.userCanRegister){
+            buttonControler = new OpenM_Book_CommunityButtonController(community, community.id+"-action-1", "S'enregistrer");
+            this.AllButtonsControllers.push(buttonControler);
+            buttonControler.buttonGui.toolTipText = "S&apos;enregistrer dans cette communauté";
+            buttonControler.buttonGui.iconColor = "icon-white";
+            buttonControler.buttonGui.iconStyle = "icon-ok";
+            buttonControler.buttonGui.html();
+            allButtonsGui.push( buttonControler.buttonGui);
+            
+        }
+        //action 2
+        // todo
+        
+        
+        
+        
+        
+        this.actionsGui.AllButtonsGui = allButtonsGui;
+    }
+
+    this.actionsGui.html();
+    
+    
+    
+    
+    
     this.update = function(){
         
     }    
@@ -130,7 +181,7 @@ function OpenM_Book_CommunityActionController(div_id, community){
         var rowAction = "<div id='"+this.zoneAction+"' class='row-fluid'></div>";
         $("#"+ divParentId).append(rowAction);
         if (this.community.userCanMakeAction()){
-            var html = this.actionGui.htmlGenerated;
+            var html = this.actionsGui.htmlGenerated;
             $("#" + this.zoneAction).append(html);
         }else{
             $("#" + this.zoneAction).hide();
@@ -138,6 +189,21 @@ function OpenM_Book_CommunityActionController(div_id, community){
     }
 }
 
+
+function OpenM_Book_CommunityButtonController(community, id, text){
+    this.community = community;
+    this.buttonGui = new OpenM_Book_CommunityButtonGui(id, text);
+    this.buttonGui.html();
+    
+    this.id = id;
+    
+    
+    
+    this.click = function(){
+        
+    }
+    
+}
 
 function OpenM_Book_CommunityUsersController(div_id, community){
     this.div_id = div_id;

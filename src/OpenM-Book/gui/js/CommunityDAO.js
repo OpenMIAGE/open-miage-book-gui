@@ -26,6 +26,7 @@ function OpenM_Book_Community(){
         this.nbChild++;
     } 
         
+    //permet de savoir si il y a des actions a effectuer sur la communauté
     this.userCanMakeAction = function(){
         var retour = false;
         if (this.userCanAddSubCommunity){
@@ -149,7 +150,7 @@ OpenM_Book_CommunityPagesGui.showJSON(data);
         community.id = data.CID;
         community.name = data.CNA;
         community.userCanAddSubCommunity = (data.UCAC == "1")?true:false;
-        community.userCanRegister =  (data.UCR == "1" )?true:false;
+        community.userCanRegister =  (data.UCR == "1" )?true:false; 
         community.userIsBanned = (data.YAB == "1")?true:false;
         if(data.CCP){
             for (var i=0;i<data.CCP.length;i++) {           
@@ -178,7 +179,6 @@ OpenM_Book_CommunityPagesGui.showJSON(data);
        
     },    
     'parseAndLoadAncestors': function(data,community){
-        //TODO
         var ancestors = new Array();
 OpenM_Book_CommunityPagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
@@ -216,6 +216,6 @@ OpenM_Book_CommunityPagesGui.showJSON(data);
                 OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données des ancetres d'une communauté (id: "+community.id+") :(");
             }  
         }
-        return ancestors;
+        return ancestors.reverse();
     }
 }
