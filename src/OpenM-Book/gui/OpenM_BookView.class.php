@@ -5,8 +5,14 @@ if (!Import::php("Smarty"))
 
 Import::php("OpenM-Services.gui.OpenM_ServiceViewSSO");
 Import::php("util.session.OpenM_SessionController");
+Import::php("OpenM-Book.api.OpenM_Book");
+Import::php("OpenM-Book.api.OpenM_Book_User");
+Import::php("OpenM-Book.api.OpenM_Groups");
 
 /**
+ * 
+ * @package OpenM  
+ * @subpackage OpenM\OpenM-Book\gui
  * @license http://www.apache.org/licenses/LICENSE-2.0 Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,17 +41,20 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     
     const MENU_PROFILE= "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
+    const MENU_COMMUNITY = "menu_community";
 
     protected $sso_book;
     protected $bookClient;
+    protected $userClient;
     protected $groupClient;
-
+    
     public function __construct() {
         parent::__construct();
         $p2 = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
         $api_name = $p2->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso_book = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+        $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
         $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Groups");
         $this->setDirs();
     }
@@ -72,12 +81,24 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     }
 
     protected function addLinks() {
-
         $this->smarty->assign("links", array(
             "default" => OpenM_URLViewController::from()->getURL(),
             "root" => OpenM_URLViewController::getRoot(),
             "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
-            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL()
+            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
+            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL()."#/community/",
+        ));
+                
+        OpenM_Log::debug(OpenM_URLViewController::getRoot()."client/?api_gen=", __CLASS__, __METHOD__,__LINE__);
+    }
+    
+    protected function addClientsJS(){
+        $clientRoot = OpenM_URLViewController::getRoot()."client/";
+        $this->smarty->assign("clients_js", array(
+            "OpenM_Book" => $clientRoot."OpenM_Book-min.js",
+            "OpenM_Book_User" => $clientRoot."OpenM_Book_User-min.js",
+            "OpenM_Book_Moderator" => $clientRoot."OpenM_Book_Moderator-min.js",
+            "OpenM_Book_Admin" => $clientRoot."OpenM_Book_Admin-min.js",
         ));
     }
 
@@ -164,4 +185,5 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
 Import::php("OpenM-Book.gui.OpenM_RegistrationView");
 Import::php("OpenM-Book.gui.OpenM_InfoView");
+Import::php("OpenM-Book.gui.OpenM_CommunityView");
 ?>

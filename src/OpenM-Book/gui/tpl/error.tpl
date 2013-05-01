@@ -12,7 +12,7 @@
                     <div class="alert alert-error">
                         <div class="row">
                                 <div class="span2 offset1">
-                                    <img src="{$resources_dir}OpenM-Book/view/img/error_cross.png" title="erreur" ALT="image erreur" align="center"  width="100" >
+                                    <img src="{$resources_dir}OpenM-Book/gui/img/error_cross.png" title="erreur" ALT="image erreur" align="center"  width="100" >
                                 </div>
                                 <div class="span6">
                                    {$error_default_message}
