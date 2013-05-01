@@ -1,4 +1,11 @@
 var OpenM_URLController = {
+    'homeSelector': '/home',
+    'home': function(){
+        return "#"+this.homeSelector;
+    },
+    'clickToHome': function(){
+        return "window.location.href='"+this.home()+"';return false";
+    },
     'communitySelector': '/community/',
     'community': function(community){
         return "#"+this.communitySelector+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
@@ -20,11 +27,23 @@ var OpenM_URLController = {
     'isCommunityHash': function(){
         return (window.location.hash.slice(1, this.communitySelector.length + 1)==this.communitySelector);
     },
-    'user': function(userId){
-        return "#/user/"+userId;
+    'userSelector': '/user/',
+    'user': function(user){
+        return "#"+this.userSelector+"/"+user.id;
     },
     'getUserId': function(){
-        return ;
+        var hash = window.location.hash;
+        if(this.isUserHash()){
+            var user = hash.slice(this.userSelector.length + 1);
+            if(user.indexOf("/")!=-1)
+                return user.slice(0, user.indexOf("/"));
+            else
+                return undefined;
+        }
+        else return undefined;
+    },
+    'isUserHash': function(){
+        return (window.location.hash.slice(1, this.userSelector.length + 1)==this.userSelector);
     },
     'onhashchange': function(){
         this.load(); 

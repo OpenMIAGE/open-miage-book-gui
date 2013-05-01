@@ -15,7 +15,9 @@
             <div id="divParent"></div>
         </div>
 
-        <script src="{$links.js_client}OpenM_Book&min"></script>        
+        {foreach from=$clients_js item=client_js}
+            <script src="{$client_js}"></script>
+        {/foreach}
         {include file='include/ressource_js.tpl'}
 
         <script src="{$resources_dir}OpenM-Book/gui/js/CommonController.js"></script>
