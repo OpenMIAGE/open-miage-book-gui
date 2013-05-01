@@ -32,7 +32,7 @@ function OpenM_Book_CommunityPageController(community){
     this.gui.childs = this.childs.gui;
     this.users = new OpenM_Book_CommunityUsersController(community);
     this.gui.users = this.users.gui;
-  this.actions = new OpenM_Book_CommunityActionController(community);
+  this.actions = new OpenM_Book_CommunityActionsController(community);
   this.gui.actions = this.actions.gui;
     //    this.usersNotValid = new OpenM_Book_CommunityUsersNotValidController(community);
     //    this.gui.usersNotValid = this.usersNotValid.gui;
@@ -143,57 +143,40 @@ function OpenM_Book_CommunityUserController(user){
 //    this.gui = new OpenM_Book_CommunityUserNotValidated();
 //}
 
-function OpenM_Book_CommunityActionController(community){
+function OpenM_Book_CommunityActionsController(community){
     this.community = community;
-    this.AllButtonsControllers = undefined;
-    
-    this.gui = new OpenM_Book_CommunityActionsGui(community);
+    this.register = null;
+    this.gui = new OpenM_Book_CommunityActionsGui(this.community.id);
     
     this.updateActions = function(){
-            //on genere les boutons
-        this.AllButtonsControllers = new Array();
-        this.gui.AllButtonsGui = new Array();
-        
         if (this.community.userCanMakeAction()){
-            //on cherche les actions a générer
-            var buttonControler;
-            //action 1
+            
+            this.buttons = new Array();
+            this.gui.buttons = new Array();
+            
             if (this.community.userCanRegister){
-                buttonControler = new OpenM_Book_CommunityButtonController(community, "S'enregistrer");            
-                buttonControler.gui.toolTipText = "S'enregistrer dans cette communauté";
-                buttonControler.gui.iconColor = "icon-white";
-                buttonControler.gui.iconStyle = "icon-ok";
-                buttonControler.gui.active =this.community.userAlreadyRegistred;
-                
-                this.AllButtonsControllers.push(buttonControler);
-                this.gui.AllButtonsGui.push(buttonControler.gui);
+                this.register = new OpenM_Book_CommunityButtonRegisterController(this.community); 
+                this.buttons.push(this.register);
+                this.gui.buttons.push(this.register.gui);
                 
             }
-            //action 2
-            // todo
+            
             
             
             this.gui.content();
         }   
     }    
-    this.updateActions();
     
-     this.update = function(community){
+    this.updateActions();
+    this.update = function(community){
         OpenM_Book_CommunityPagesController.communityPage(community.id, false).actions.updateActions();
     }
     this.community.addUpdateCallBack(this.update);
 }
-//
-//
-function OpenM_Book_CommunityButtonController(community, text){
+
+function OpenM_Book_CommunityButtonRegisterController(community){
     this.community = community;
-    this.gui = new OpenM_Book_CommunityButtonGui(text);
-    
-    
-    this.gui.click = function(e) {
-        e.preventDefault(); 
-        alert("plop");
-    }
-    
+    this.gui = new OpenM_Book_CommunityButtonRegisterGui(this.community.id);
+    this.gui.active = !this.community.userAlreadyRegistred;
+    this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
 }
-//

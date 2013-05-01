@@ -14,16 +14,8 @@
             <div id="divJSON"></div>
             <div id="divParent"></div>
         </div>
-
-        {foreach from=$clients_js item=client_js}
-            <script src="{$client_js}"></script>
-        {/foreach}
+            
         {include file='include/ressource_js.tpl'}
-
-        <script src="{$resources_dir}OpenM-Book/gui/js/CommonController.js"></script>
-        <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
-        <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGui.js"></script>
-        <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
 
         <script type="text/javascript">            
             {literal}$(function(){

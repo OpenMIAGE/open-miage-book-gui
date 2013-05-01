@@ -113,6 +113,16 @@ function OpenM_Book_Community(){
         });
         return this.usersNotValid;
     }
+    
+    this.registerMe = function(){
+        var community = this;
+        OpenM_Book.registerMeIntoCommunity(this.id, function(data){
+            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+                community.userAlreadyRegistred = true;
+                community.update(community);
+            }
+        })
+    }
 }
 
 function OpenM_Book_CommunityUser (id, name){
@@ -160,7 +170,7 @@ var OpenM_Book_CommunityDAO = {
             community.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
             community.name = data[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
             community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
-            community.userCanRegister =  (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE )?true:true; //todo => change le 2em true a false
+            community.userCanRegister =  (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE )?true:false;
             community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
             community.userAlreadyRegistred = (data[OpenM_Book.RETURN_USER_ALREADY_REGISTERED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
             if(data.CCP){
