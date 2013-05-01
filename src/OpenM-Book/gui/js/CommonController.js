@@ -7,7 +7,18 @@ var OpenM_URLController = {
         return "window.location.href='"+this.community(community)+"';return false";
     },
     'getCommunityId': function(){
-        return ;
+        var hash = window.location.hash;
+        if(this.isCommunityHash()){
+            var community = hash.slice(this.communitySelector.length + 1);
+            if(community.indexOf("/")!=-1)
+                return community.slice(0, community.indexOf("/"));
+            else
+                return undefined;
+        }
+        else return undefined;
+    },
+    'isCommunityHash': function(){
+        return (window.location.hash.slice(1, this.communitySelector.length + 1)==this.communitySelector);
     },
     'user': function(userId){
         return "#/user/"+userId;
@@ -18,15 +29,13 @@ var OpenM_URLController = {
     'onhashchange': function(){
         this.load(); 
     },
+    'reload': function(){
+        this.load();
+    },
     'load': function(){
-        var hash = window.location.hash;
-        if(hash.slice(1, this.communitySelector.length + 1)==this.communitySelector){
-            var community = hash.slice(this.communitySelector.length + 1);
-            if(community.indexOf("/")!=-1)
-                OpenM_Book_CommunityPagesController.communityPage(community.slice(0, community.indexOf("/"))).display()
-            else
-                OpenM_Book_CommunityPagesController.communityPage().display();
-        } 
+        if(this.isCommunityHash())
+            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display()
+        
     },
     'storedHash': window.location.hash
 }

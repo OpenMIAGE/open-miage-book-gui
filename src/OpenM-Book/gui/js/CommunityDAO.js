@@ -189,8 +189,6 @@ var OpenM_Book_CommunityDAO = {
                 OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
             }  
         }
-
-       
     },    
     'parseAndLoadAncestors': function(data,community){
         var ancestors = new Array();
@@ -208,6 +206,7 @@ var OpenM_Book_CommunityDAO = {
                             parentCommunity = new OpenM_Book_Community();
                             parentCommunity.id = Idparent;
                             parentCommunity.name = data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
+                            parentCommunity.ancestorsLoaded = true;
                             this.allCommunities[parentCommunity.id] = parentCommunity;
                         }
                         communityTmp.parent = parentCommunity;

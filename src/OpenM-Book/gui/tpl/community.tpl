@@ -49,12 +49,7 @@
                 OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
                 OpenM_Book_CommunityPagesGui.divParentId = "divParent";
                 OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
-                try{
-                   OpenM_URLController.load();
-                }catch(err){
-                   console.error(err);
-                   OpenM_Book_CommunityPagesGui.showError("erreur inattendue s'est produite, message : " +err);     
-                }                  
+                OpenM_URLController.load();
             });
             {/literal}</script>
     </body>
