@@ -16,14 +16,17 @@ function OpenM_Book_Community(){
     this.ancestors = new Array();
     this.nbAncestor = 0;
     this.ancestorsLoaded = false;
+    this.users = new Array();
+    this.usersNotValid = new Array();
     
     this.loaded = false;
      
     this.addChild = function(community){
-        //TODO => check if community already exist in child
-        
-        this.childs[community.id]= community;
-        this.nbChild++;
+        if(this.childs[community.id]===undefined){
+            this.childs[community.id]= community;
+            community.parent = this;
+            this.nbChild++;
+        }
     } 
         
     //permet de savoir si il y a des actions a effectuer sur la communauté
@@ -61,9 +64,7 @@ function OpenM_Book_Community(){
     //update listener
         
     this.AllCallBack = new Array();
-    this.usersArray = new Array();
     this.AllUsersCallBack = new Array();
-    this.usersNotValidArray = new Array();
     this.AllUsersNotValidCallBack = new Array();
     
     this.addUpdateCallBack = function(c){
@@ -74,7 +75,7 @@ function OpenM_Book_Community(){
         this.AllUsersCallBack.push(c);
     } 
     
-    this.addUpdateUsersCallBack = function(c){
+    this.addUpdateUsersNotValidCallBack = function(c){
         this.AllUsersNotValidCallBack.push(c);
     }    
     
@@ -83,18 +84,25 @@ function OpenM_Book_Community(){
             this.AllCallBack[i](community);            
         }            
     }          
-    this.updateUsers = function(){
-    //lancer tous les callback
+    
+    this.updateUsers = function(community){
+        for(var i in this.AllUsersCallBack){
+            this.AllUsersCallBack[i](community);            
+        }
     }     
     this.updateUsersNotValid = function(){
-    //lancer tous les callback
+        for(var i in this.AllUsersNotValidCallBack){
+            this.AllUsersNotValidCallBack[i](community);            
+        }
     }     
     
-    this.getUsers = function (){       
-        OpenM_Book.getCommunityUsers(communtyId, function(data){
-            
-            this.updateUsers();
-        });     
+    this.getUsers = function (){      
+        var community = this;
+        OpenM_Book.getCommunityUsers(this.id, function(data){
+            OpenM_Book_CommunityDAO.parseUsers(data, community);
+            community.updateUsers(community);
+        });
+        return this.users;
     }
     
     this.getUsersNotValid = function(){       
@@ -102,6 +110,7 @@ function OpenM_Book_Community(){
             
             this.updateUsersNotValid();
         });
+        return this.usersNotValid;
     }
 }
 
@@ -144,25 +153,30 @@ var OpenM_Book_CommunityDAO = {
     'parseAndLoad': function(data, community){
         OpenM_Book_CommunityPagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
-            if (!this.allCommunities[data.CID])
-                this.allCommunities[data.CID] = community;
+            if (!this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]])
+                this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]] = community;
         
-            community.id = data.CID;
-            community.name = data.CNA;
-            community.userCanAddSubCommunity = (data.UCAC == "1")?true:false;
-            community.userCanRegister =  (data.UCR == "1" )?true:false; 
-            community.userIsBanned = (data.YAB == "1")?true:false;
+            community.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
+            community.name = data[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
+            community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
+            community.userCanRegister =  (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE )?true:false; 
+            community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
             if(data.CCP){
                 for (var i=0;i<data.CCP.length;i++) {           
-                    var subCommunity = this.allCommunities[data.CCP[i].id];
+                    var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
                 
                     if (!subCommunity){
                         subCommunity = new OpenM_Book_Community();
-                        subCommunity.id = data.CCP[i].CID;
-                        subCommunity.name = data.CCP[i].CNA;
+                        subCommunity.id = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                         this.allCommunities[subCommunity.id] = subCommunity;
                     }
+                    
+                    subCommunity.name = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
                     subCommunity.parent = community;
+                    if(!community.ancestorsLoaded && community.parent && community.parent.ancestorsLoaded)
+                        community.ancestorsLoaded = true;
+                    if(community.ancestorsLoaded)
+                        subCommunity.ancestorsLoaded = true;
                     community.addChild(subCommunity); 
                 }
             }
@@ -197,8 +211,7 @@ var OpenM_Book_CommunityDAO = {
                             this.allCommunities[parentCommunity.id] = parentCommunity;
                         }
                         communityTmp.parent = parentCommunity;
-                        if(parentCommunity.ancestorsLoaded)
-                            communityTmp.ancestorsLoaded = true;
+                        communityTmp.ancestorsLoaded = true;
                         ancestors.push(parentCommunity);
                         if (data[Idparent]){
                             Idparent = data[Idparent][OpenM_Book.RETURN_COMMUNITY_PARENT_PARAMETER];
@@ -208,9 +221,12 @@ var OpenM_Book_CommunityDAO = {
                             break;
                         }
                     }                   
-                }                             
+                }
             }
             community.ancestorsLoaded = true;
+            for(var k in community.childs){
+                community.childs[k].ancestorsLoaded = true;
+            }
         }else{
             if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
                 OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
@@ -218,6 +234,9 @@ var OpenM_Book_CommunityDAO = {
                 OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données des ancetres d'une communauté (id: "+community.id+") :(");
             }  
         }
-        return ancestors.reverse();
+    },    
+    'parseUsers': function(data, community){
+        OpenM_Book_CommunityPagesGui.showJSON(data);
+        
     }
 }

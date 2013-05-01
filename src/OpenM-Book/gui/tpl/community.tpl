@@ -29,9 +29,8 @@
         <div class="container-fluid container-withmenunavigation">
             {include file='include/alert.tpl'}
 
-
-            <!-- Zone communauté  -->
-            <div id="divParent" class="hero-unit"></div>
+            <div id="divJSON"></div>
+            <div id="divParent"></div>
         </div>
 
 
@@ -39,6 +38,7 @@
         <script src="{$links.js_client}OpenM_Book&min"></script>        
         {include file='include/ressource_js.tpl'}
 
+        <script src="{$resources_dir}OpenM-Book/gui/js/CommonController.js"></script>
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityController.js"></script>
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityGui.js"></script>
         <script src="{$resources_dir}OpenM-Book/gui/js/CommunityDAO.js"></script>
@@ -48,8 +48,9 @@
                 OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
                 OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
                 OpenM_Book_CommunityPagesGui.divParentId = "divParent";
+                OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
                 try{
-                   OpenM_Book_CommunityPagesController.communityPage().display();
+                   OpenM_URLController.load();
                 }catch(err){
                    console.error(err);
                    OpenM_Book_CommunityPagesGui.showError("erreur inattendue s'est produite, message : " +err);     

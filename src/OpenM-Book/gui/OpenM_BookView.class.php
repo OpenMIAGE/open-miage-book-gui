@@ -87,8 +87,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "root" => OpenM_URLViewController::getRoot(),
             "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
             "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
-            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL(),
-            "js_client" =>OpenM_URLViewController::getRoot()."/client/?api_gen="
+            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL()."#/community/",
+            "js_client" =>OpenM_URLViewController::getRoot()."client/?api_gen="
         ));
         
         OpenM_Log::debug(OpenM_URLViewController::getRoot()."client/?api_gen=", __CLASS__, __METHOD__,__LINE__);

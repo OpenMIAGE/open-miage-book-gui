@@ -23,9 +23,6 @@ var OpenM_Book_CommunityPagesController = {
     }        
 }
 
-/**
- * Gére le control de la communauté (en data et en rendu HTML)
- */
 function OpenM_Book_CommunityPageController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityPageGui();
@@ -33,10 +30,10 @@ function OpenM_Book_CommunityPageController(community){
     this.gui.tree = this.tree.gui;
     this.childs = new OpenM_Book_CommunityChildsController(community);
     this.gui.childs = this.childs.gui;
+    this.users = new OpenM_Book_CommunityUsersController(community);
+    this.gui.users = this.users.gui;
     //    this.actions = new OpenM_Book_CommunityActionController(community);
     //    this.gui.actions = this.actions.gui;
-    //    this.users = new OpenM_Book_CommunityUsersController(community);
-    //    this.gui.users = this.users.gui;
     //    this.usersNotValid = new OpenM_Book_CommunityUsersNotValidController(community);
     //    this.gui.usersNotValid = this.usersNotValid.gui;
         
@@ -50,12 +47,12 @@ function OpenM_Book_CommunityTreeController(community){
     this.gui = new OpenM_Book_CommunityTreeGui(community.id);
     this.ancestors = new Array();
     
-    var ancestorsArray = this.community.getAncestors(); 
+    var ancestors = this.community.getAncestors();
     
     var commintyInTree;
-    for (var i in ancestorsArray){
-        commintyInTree = new OpenM_Book_CommunityInTreeController(ancestorsArray[i]);
-        this.ancestors[ancestorsArray[i].id] = commintyInTree;
+    for (var i in ancestors){
+        commintyInTree = new OpenM_Book_CommunityInTreeController(ancestors[i]);
+        this.ancestors[ancestors[i].id] = commintyInTree;
         this.gui.communities.push(commintyInTree.gui);
     }
     
@@ -77,26 +74,6 @@ function OpenM_Book_CommunityInTreeController(community, active){
     this.gui = new OpenM_Book_CommunityInTreeGui(community.id, community.name, this.active);
     if(this.active){
         this.gui.click = OpenM_URLController.clickToCommunity(this.community);
-    }
-}
-
-var OpenM_URLController = {
-    'community': function(community){
-        return "#/community/"+community.id+"-"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
-    },
-    'clickToCommunity': function(community){
-        return "OpenM_Book_CommunityPagesController.communityPage("
-        +community.id+").display();window.location.href='"
-        +this.community(community)+"';return false";
-    },
-    'getCommunityId': function(){
-        return ;
-    },
-    'user': function(userId){
-        return "#/user/"+userId;
-    },
-    'getUserId': function(){
-        return ;
     }
 }
 
@@ -140,6 +117,29 @@ function OpenM_Book_CommunityChildController(community){
     this.gui.click = OpenM_URLController.clickToCommunity(this.community);
 }
 
+function OpenM_Book_CommunityUsersController(community){
+    this.community = community;
+    this.users = new Array();    
+    this.gui = new OpenM_Book_CommunityUsersGui(this.community.id);    
+    var users = this.community.getUsers();
+    var user;
+    for(var i in users){
+        user = new OpenM_Book_CommunityUserController(users[i]);
+        this.ancestors[users[i].id] = user;
+        this.gui.users.push(user.gui);
+    }
+}
+
+function OpenM_Book_CommunityUserController(user){
+    this.user = user;
+    this.gui = new OpenM_Book_CommunityUserGui(this.user.id, this.user.name);
+}
+
+//
+//function OpenM_Book_CommunityUsersNotValidController(community){
+//    this.community = community;
+//    this.gui = new OpenM_Book_CommunityUserNotValidated();
+//}
 
 //function OpenM_Book_CommunityActionController(community){
 //    this.community = community;
@@ -211,13 +211,3 @@ function OpenM_Book_CommunityChildController(community){
 //    
 //}
 //
-//function OpenM_Book_CommunityUsersController(community){
-//    this.community = community;
-//    this.usersGui = new OpenM_Book_CommunityUserGui();
-//    
-//}
-//
-//function OpenM_Book_CommunityUsersNotValidController(community){
-//    this.community = community;
-//    this.usersNotValidGui = new OpenM_Book_CommunityUserNotValidated();
-//}

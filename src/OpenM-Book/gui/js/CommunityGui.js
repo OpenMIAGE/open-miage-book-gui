@@ -3,18 +3,35 @@ var OpenM_Book_CommunityPagesGui = {
     'divParentId': '', 
     'ressource_dir': '',
     'ressource_loader': '',
+    'divJSON': '',
+    'divJSONContent':'',
+    'divJSONInitialized': false,
+    'divJSONcount': 1,
     'showPageLoading': function(){ 
         $("#"+this.div_id).empty().append("<img src='"+ this.ressource_dir + this.ressource_loader +"' >");           
     },
     'showJSON': function(data){
-        if ($("#cadreRetourJSON").size() == 0){
-            var row = '<div id="cadreRetourJSON" class="row-fluid"><div class="span12">Le retour JSON : <br><pre><code id="retourJSON">  </code></pre></div></div>';
-            $("#"+this.div_id).before(row);                        
-        }
-        $("#retourJSON").append(JSON.stringify(data)).append("<br>");                        
+        var div = $("#"+this.divJSON);
+        if (div.size() == 0)
+            return;
+        if(!this.divJSONInitialized){
+            this.divJSONInitialized = true;
+            var div2 = $(document.createElement('div'));
+            div.append(div2);
+            div2.text("Le retour JSON : ");
+            div2.append('<br>');
+            var pre = $(document.createElement('pre'));
+            div.append(pre);
+            this.divJSONContent = $(document.createElement('code'));
+            pre.append(this.divJSONContent);
+        }            
+        
+        this.divJSONContent.append("<span id='"+this.divJSON+"-"+this.divJSONcount+"'>"+this.divJSONcount+" - "+JSON.stringify(data)+"<br></span>");
+        $("#"+this.divJSON+"-"+(this.divJSONcount - 5)).remove();
+        this.divJSONcount++;
     },
     'removeJSON':function(){
-        $("#cadreRetourJSON").remove();
+        $("#"+this.divJSON).remove();
     },
     'showError': function(message){
         $("#div_alert").empty();
@@ -25,7 +42,6 @@ var OpenM_Book_CommunityPagesGui = {
         $(".alert").show("slow");         
     }   
 }
-
 
 function OpenM_Book_CommunityPageGui(){
     this.tree = null;
@@ -54,6 +70,11 @@ function OpenM_Book_CommunityPageGui(){
             cadre.append(childs);
             childs.append(this.childs.content());
             
+            //les users
+            var users = $(document.createElement('div')).addClass("row-fluid");
+            cadre.append(users);
+            childs.append(this.users.content());
+            
             //on active les toolTip
             $("[rel='tooltip']").tooltip();
         }else{
@@ -69,7 +90,7 @@ function OpenM_Book_CommunityTreeGui(communityId){
     
     this.content = function(){
         var div = $(document.createElement('div'));
-        div.addClass("span10 well");
+        div.addClass("span12 well");
         div.append("<span>Navigation</span>");
         var tree = $(document.createElement('ul')).addClass("breadcrumb");
         div.append(tree);
@@ -122,7 +143,7 @@ function OpenM_Book_CommunityChildsGui(communityId){
     this.content = function(){
         this.c.empty();
         if (this.communities.length != 0){
-            this.c.addClass("span10 well");
+            this.c.addClass("span12 well");
             this.c.append("<p>Sous-communautés :</p>");
             var div = $(document.createElement('div')).addClass("row-fluid");
             this.c.append(div);
@@ -155,6 +176,43 @@ function OpenM_Book_CommunityChildGui(communityId, name){
         this.name = name;
         if(this.c != undefined)
             this.c.text(this.name);
+    }
+}
+
+function OpenM_Book_CommunityUsersGui(communityId){ 
+    this.communityId=communityId;
+    this.users = new Array();    
+    this.c = $(document.createElement('div'));
+        
+    this.content = function(){
+        this.c.remove();
+        this.c = $(document.createElement('div'));
+        if (this.users.length != 0){
+            this.c.addClass("span12 well");
+            this.c.append("<p>Users :</p>");
+            var div = $(document.createElement('div')).addClass("row-fluid");
+            this.c.append(div);
+            for (var i in this.users){
+                div.append(this.users[i].content());
+            }
+            return this.c;
+        }else{
+            return this.c;
+        }      
+    }
+}
+
+function OpenM_Book_CommunityUserGui(id, name){
+    this.id = id;
+    this.name = name;
+    
+    this.c = undefined;
+    
+    this.content = function(){
+        this.c = $(document.createElement('div'));
+        this.c.addClass("community span3");
+        this.c.text(this.name);
+        return this.c;
     }
 }
 
@@ -237,9 +295,7 @@ function OpenM_Book_CommunityChildGui(communityId, name){
 //}
 //
 //
-//function OpenM_Book_CommunityUserGui(id){
-//    this.id = id;
-//}
+
 //
 //function OpenM_Book_CommunityUserNotValidated(id){
 //    this.id = id;
