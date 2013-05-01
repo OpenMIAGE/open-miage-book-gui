@@ -22,8 +22,8 @@
     <div class="tabbable tabs-left  ">
         <ul class="nav nav-tabs nav-tabs-menunavigation">
             <li class="cadre-nom">
-                <h3>Nicolas{*$prenom*} </h3>
-                <h3>Rouzeaud{*$nom*}</h3>
+                <h3>{$prenom} </h3>
+                <h3>{$nom}</h3>
             </li>
             <hr>
               <li {if $menu_profile}class="active"{/if}><a href="{$links.profile}">Mon Profil</a></li>
