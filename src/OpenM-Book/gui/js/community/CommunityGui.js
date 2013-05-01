@@ -60,10 +60,10 @@ function OpenM_Book_CommunityPageGui(){
             cadre.append(tree);
             tree.append(this.tree.content());
             
-            //            //Les actions
-            //            var actions = $(document.createElement('div'));
-            //            cadre.append(actions);
-            //            actions.append(this.actions.html()); 
+            //Les actions
+            var actions = $(document.createElement('div')).addClass("row-fluid");
+            cadre.append(actions);
+            actions.append(this.actions.content()); 
             
             //les childs
             var childs = $(document.createElement('div')).addClass("row-fluid");
@@ -216,61 +216,73 @@ function OpenM_Book_CommunityUserGui(id, name){
     }
 }
 
-//function OpenM_Book_CommunityActionsGui(community) {
-//    this.community=community;
-//    this.htmlGenerated = "";
-//    this.cadre_id = this.community.id + "-Action-cadre";
-//    this.container_id = this.community.id + "-Action-Container";
-//    this.AllButtonsGui = new Array();
-//    
-//    
-//    
-//    this.html = function(){
-//        if(!this.community){
-//            throw "there is no community on OpenM_Book_Gui_Action"
-//        }
-//        var html = "";
-//        if ( this.AllButtonsGui.length != 0){
-//            html = "<div class='span10 well'><p>Les actions possible :</p><div id='"+this.container_id+"' class='row-fluid'>";
-//            for (var i in this.AllButtonsGui){
-//                html += "<div class='span2'>" + this.AllButtonsGui[i].htmlGenerated + "</div>";
-//            }
-//            html += "</div></div>";
-//        }
-//            
-//         
-//        /*var html = "<div class='span10 well'><p>Action Possible :</p><div id='action_container' class='row-fluid'>";
-//        var texte = "";
-//        var texteToolTip = "";
-//        if (this.community.usrCanAddSubCommu){
-//            texte = "Ajouter une sous communauté";
-//            texteToolTip = "Ajouter une sous communauté à "+this.community.name;
-//            html += "<div class='span2'><a href='#' class='btn btn-inverse' rel='tooltip' data-placement='top' data-toggle='tooltip' data-original-title='"+texteToolTip+"'><i class='icon-white icon-plus'></i>&nbsp;"+texte+"</a></div>";    
-//        }
-//        if (this.community.usrCanRegisterInto){
-//            texte = "S'enregistrer";
-//            texteToolTip = "S&apos;enregistrer dans cette communauté";
-//            html += "<div class='span2'><a href='#' class='btn btn-inverse' rel='tooltip' data-placement='top' data-toggle='tooltip' data-original-title='"+texteToolTip+"'><i class='icon-white icon-ok'></i>&nbsp;"+texte+"</a></div>";          
-//        }
-//          
-//        html += "</div></div>";*/
-//        this.htmlGenerated = html;
-//        return html;
-//    }
-//    
-//}
+function OpenM_Book_CommunityActionsGui(community) {
+    this.community=community;
+    
+    this.c =undefined;
+    this.AllButtonsGui = new Array();
+    
+    
+    this.content = function(){
+            if (!this.c)
+                this.c= $(document.createElement('div'));            
+             if ( this.AllButtonsGui.length != 0){
+                 this.c.addClass("span10 well");
+                 var p = $(document.createElement('p'));
+                 p.text("Les actions possible :");
+                 this.c.append(p);
+                 var div = $(document.createElement('div')); 
+                 div.addClass("row-fluid");
+                 this.c.append(div);
+                 var divButton;
+                 for (var i in this.AllButtonsGui){
+                     divButton = $(document.createElement('div')); 
+                     divButton.addClass("span2");
+                     divButton.append(this.AllButtonsGui[i].content());  
+                     div.append(divButton);
+                 }
+             }
+             return this.c;
+    }
+}
 //
-//function OpenM_Book_CommunityButtonGui(id, text){
-//    this.id = id;
-//    this.text = text;
-//    this.toolTipText = '';
-//    
-//    this.style = 'btn-inverse';
-//    this.tooltipPlacement = 'top';
-//    this.iconColor = '';
-//    this.iconStyle = '';
-//    
-//    
+function OpenM_Book_CommunityButtonGui(text){
+    this.text = text;
+    this.toolTipText = '';
+    this.style = 'btn-inverse';
+    this.tooltipPlacement = 'top';
+    this.iconColor = '';
+    this.iconStyle = '';
+    this.active = true;
+    
+    this.click = '';
+    
+    this.a = $(document.createElement('a'));
+    
+    this.content = function(){
+        this.a = $(document.createElement('a'));
+        this.a.addClass("btn "+this.style);
+        if (this.toolTipText){
+            this.a.attr("rel","tooltip");
+            this.a.attr("data-placement",this.tooltipPlacement);
+            this.a.attr("data-toggle","tooltip");
+            this.a.attr("data-original-title",this.toolTipText);           
+        }
+        if (this.iconStyle){
+            var icon = $(document.createElement("i"));
+            icon.addClass(this.iconColor + " " + this.iconStyle);
+            this.a.append(icon);            
+        }
+        if (this.active){
+            this.a.click(this.click);
+        }else{
+            this.a.addClass("disabled");
+        }        
+        
+        this.a.text(this.text);
+        return this.a;
+    }
+    
 //    this.htmlGenerated = '';
 //        
 //    this.html = function() {
@@ -287,12 +299,12 @@ function OpenM_Book_CommunityUserGui(id, name){
 //        return html;
 //    }
 //    
-///*this.attachToolTip = function(){
-//        //attache la toolTip
-//        
-//    }*/
-//   
-//}
+/*this.attachToolTip = function(){
+        //attache la toolTip
+        
+    }*/
+   
+}
 //
 //
 
