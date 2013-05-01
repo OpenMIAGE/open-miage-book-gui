@@ -75,8 +75,6 @@ function OpenM_Book_CommunityPageGui(){
             cadre.append(users);
             childs.append(this.users.content());
             
-            //on active les toolTip
-            $("[rel='tooltip']").tooltip();
         }else{
             //on chache
             $("#"+this.divParentId).empty();
@@ -273,6 +271,47 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId){
         }
         if (this.active){
             this.a.attr("onclick","$(this).addClass('disabled');"+this.click);
+            this.a.tooltip();
+        }else{
+            this.a.addClass("disabled");
+        }        
+        
+        this.a.text(this.text);
+        return this.a;
+    }   
+}
+
+function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
+    this.communityId = communityId;
+    this.communityName = communityName;
+    this.text = "Ajouter";
+    this.toolTipText = this.text+" une cous communauté à '"+this.communityName+"'";
+    this.style = 'btn-inverse';
+    this.tooltipPlacement = "top";
+    this.iconColor = "icon-white";
+    this.iconStyle = "icon-ok";
+    this.active = true;
+    
+    this.click = '';
+    
+    this.a = $(document.createElement('a'));
+    
+    this.content = function(){
+        this.a.remove();
+        this.a = $(document.createElement('a')).addClass("btn "+this.style);        
+        if (this.toolTipText){
+            this.a.attr("rel","tooltip");
+            this.a.attr("data-placement",this.tooltipPlacement);
+            this.a.attr("data-toggle","tooltip");
+            this.a.attr("data-original-title",this.toolTipText);           
+        }
+        if (this.iconStyle){
+            var icon = $(document.createElement("i"));
+            icon.addClass(this.iconColor + " " + this.iconStyle);
+            this.a.append(icon);            
+        }
+        if (this.active){
+            this.a.attr("onclick",this.click);
             this.a.tooltip();
         }else{
             this.a.addClass("disabled");
