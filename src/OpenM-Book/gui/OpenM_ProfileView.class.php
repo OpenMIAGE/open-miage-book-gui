@@ -3,6 +3,9 @@
 Import::php("OpenM-Book.gui.OpenM_BookView");
 
 /**
+ * 
+ * @package OpenM  
+ * @subpackage OpenM\OpenM-Book\gui
  * @license http://www.apache.org/licenses/LICENSE-2.0 Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,14 +30,14 @@ class OpenM_ProfileView extends OpenM_BookView {
     }
 
     public function view() {
-         $this->smarty->assign(self::MENU_PROFILE,TRUE);
-        $this->initPage();
+         $this->initPage();
         
         
         
         $me = OpenM_SessionController::get(self::MY_DATA);
-        $this->smarty->assign("nom",$me->get("ULN"));
-        $this->smarty->assign("prenom",$me->get("UFN"));
+        $this->smarty->assign(self::MENU_PROFILE,TRUE);
+        $this->smarty->assign("nom",$me->get(OpenM_Book_User::RETURN_USER_LAST_NAME_PARAMETER));
+        $this->smarty->assign("prenom",$me->get(OpenM_Book_User::RETURN_USER_FIRST_NAME_PARAMETER));
         
         
         $this->showAlert();
