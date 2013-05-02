@@ -147,6 +147,9 @@ function OpenM_Book_CommunityActionsController(community){
     this.community = community;
     this.register = null;
     this.add = null;
+    this.rename = null;
+    this.deleteBt = null;
+    
     this.gui = new OpenM_Book_CommunityActionsGui(this.community.id);
     
     this.updateActions = function(){
@@ -164,6 +167,15 @@ function OpenM_Book_CommunityActionsController(community){
                 this.add = new OpenM_Book_CommunityButtonAddCommunityController(this.community); 
                 this.gui.buttons.push(this.add.gui);
             }
+            
+            
+            // if (this.community.userIsAdministrator){
+                 this.rename = new OpenM_Book_CommunityButtonRenameController(this.community);
+                 this.gui.buttons.push(this.rename.gui);
+                 this.deleteBt = new OpenM_Book_CommunityButtonDeleteController(this.community);
+                 this.gui.buttons.push(this.deleteBt.gui);
+            // }
+            
             
             this.gui.content();
         }   
@@ -187,5 +199,30 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonAddCommunityGui(this.community.id, this.community.name);
     this.gui.active = this.community.userCanAddSubCommunity;
+    this.popoverControler = new OpenM_Book_CommunityPopOverAddCommunityController(this.community);
+    this.gui.popover = this.popoverControler.gui;
+    
+    
     //this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
+}
+
+
+function OpenM_Book_CommunityButtonRenameController(community){
+    this.community = community;
+    this.gui = new OpenM_Book_CommunityRenameGui(this.community.id, this.community.name);
+    
+}
+
+function OpenM_Book_CommunityButtonDeleteController(community){
+    this.community = community;
+    this.gui = new OpenM_Book_CommunityDeleteGui(this.community.id, this.community.name);
+      
+}
+
+
+//a continuer ...
+function OpenM_Book_CommunityPopOverAddCommunityController(community){
+    this.community = community;
+    this.gui = new OpenM_Book_CommunityPopOverAddCommunityGui();
+ 
 }

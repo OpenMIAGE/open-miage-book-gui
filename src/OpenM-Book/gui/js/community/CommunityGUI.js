@@ -257,40 +257,43 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId){
     
     this.content = function(){
         this.a.remove();
-        this.a = $(document.createElement('a')).addClass("btn "+this.style);        
-        if (this.toolTipText){
-            this.a.attr("rel","tooltip");
-            this.a.attr("data-placement",this.tooltipPlacement);
-            this.a.attr("data-toggle","tooltip");
-            this.a.attr("data-original-title",this.toolTipText);           
-        }
-        if (this.iconStyle){
-            var icon = $(document.createElement("i"));
-            icon.addClass(this.iconColor + " " + this.iconStyle);
-            this.a.append(icon);            
-        }
+        this.a = $(document.createElement('a')).addClass("btn "+this.style);
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon); 
+
         if (this.active){
             this.a.attr("onclick","$(this).addClass('disabled');"+this.click);
-            this.a.tooltip();
+            this.toolTipText = "S'enregistrer dans cette communauté";
         }else{
             this.a.addClass("disabled");
+            this.toolTipText = "Vous étes déja enregistrer";
         }        
-        
+        this.a.attr("rel","tooltip");
+        this.a.attr("data-placement",this.tooltipPlacement);
+        this.a.attr("data-toggle","tooltip");
+        this.a.attr("data-original-title",this.toolTipText); 
+        this.a.tooltip();
         this.a.text(this.text);
         return this.a;
     }   
 }
 
+
+
 function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     this.communityId = communityId;
     this.communityName = communityName;
     this.text = "Ajouter";
-    this.toolTipText = this.text+" une cous communauté à '"+this.communityName+"'";
+    this.toolTipText = this.text+" une sous communauté à '"+this.communityName+"'";
     this.style = 'btn-inverse';
     this.tooltipPlacement = "top";
     this.iconColor = "icon-white";
     this.iconStyle = "icon-ok";
     this.active = true;
+    
+    this.popover = '';
+    
     
     this.click = '';
     
@@ -298,26 +301,120 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     
     this.content = function(){
         this.a.remove();
-        this.a = $(document.createElement('a')).addClass("btn "+this.style);        
-        if (this.toolTipText){
-            this.a.attr("rel","tooltip");
-            this.a.attr("data-placement",this.tooltipPlacement);
-            this.a.attr("data-toggle","tooltip");
-            this.a.attr("data-original-title",this.toolTipText);           
-        }
-        if (this.iconStyle){
-            var icon = $(document.createElement("i"));
-            icon.addClass(this.iconColor + " " + this.iconStyle);
-            this.a.append(icon);            
-        }
-        if (this.active){
-            this.a.attr("onclick",this.click);
-            this.a.tooltip();
-        }else{
-            this.a.addClass("disabled");
-        }        
+        this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon);  
         
+        //if (this.active){                        
+            //this.a.click(this.click);
+            var option = {title: 'Nouvelle sous communauté',
+                          html: true,        
+                          placement: 'bottom',
+                          content: this.popover.content().context};
+            this.a.popover(option);
+            this.toolTipText = this.text+" une sous communauté à '"+this.communityName+"'";
+        //}else{
+        //  this.a.addClass("disabled");  
+        //  this.toolTipText = "Impossible d'ajouter un sous-communauté ici";
+        //}
+        this.a.attr("rel","tooltip");
+        this.a.attr("data-placement",this.tooltipPlacement);
+        this.a.attr("data-toggle","tooltip");
+        this.a.attr("data-original-title",this.toolTipText); 
+        
+        this.a.tooltip();      
         this.a.text(this.text);
         return this.a;
     }   
 }
+
+function OpenM_Book_CommunityRenameGui(){
+    this.a = $(document.createElement("a"));
+    this.text = "Renommer";
+    this.toolTipText = this.text+" la communauté";
+    this.style = 'btn-warning';
+    this.tooltipPlacement = "top";
+    this.iconColor = "icon-white";
+    this.iconStyle = "icon-refresh";
+    
+    this.click = '';
+    
+    this.content = function(){
+        this.a.remove();
+        this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon);  
+        this.a.attr("rel","tooltip");
+        this.a.attr("data-placement",this.tooltipPlacement);
+        this.a.attr("data-toggle","tooltip");
+        this.a.attr("data-original-title",this.toolTipText);  
+        this.a.tooltip();
+        this.a.text(this.text);
+        return this.a;        
+    }
+}
+
+
+
+function OpenM_Book_CommunityDeleteGui(){
+    this.a = $(document.createElement("a"));
+    this.text = "Supprimer";
+    this.toolTipText = this.text+" la communauté (définitivement)";
+    this.style = 'btn-danger';
+    this.tooltipPlacement = "top";
+    this.iconColor = "icon-white";
+    this.iconStyle = "icon-trash";
+    
+    this.click = '';
+    
+    this.content = function(){
+        this.a.remove();
+        this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor).addClass(this.iconStyle);
+        this.a.append(icon);  
+        this.a.attr("rel","tooltip").attr("data-placement",this.tooltipPlacement).attr("data-toggle","tooltip").attr("data-original-title",this.toolTipText);  
+        this.a.tooltip();
+        this.a.text(this.text);
+        return this.a;        
+    }
+}//<a href="#" class="btn btn-danger"><i class="icon-white icon-trash"></i> Supprimer</a>
+
+
+//A continuer
+function OpenM_Book_CommunityPopOverAddCommunityGui(){
+    this.input = $(document.createElement("input"));
+    this.popover = $(document.createElement("div"));
+    this.a = $(document.createElement("a"));
+    
+    this.content = function(){
+        //création du popover
+            this.input.remove();
+            this.input = $(document.createElement("input"));
+            this.input.attr("id","inputNameCommunity").attr("type","text").attr("placeholder","Nom ?");
+            this.input.addClass("input-large");
+            
+            this.popover.remove();
+            this.popover = $(document.createElement("div"));
+            this.popover.addClass("control-group");
+            var label = $(document.createElement("label"));
+            label.addClass("control-label").attr("for","inputNameCommunity").text("Nom");
+            this.popover.append(label);
+            var subdiv = $(document.createElement("div")).addClass("controls");
+            subdiv.append(this.input);
+            this.popover.append(subdiv);
+            this.a.remove();
+            this.a = $(document.createElement("a"));
+            this.a.addClass("btn").addClass("btn-primary").addClass("btn-small");
+            var i = $(document.createElement("i"));
+            i.addClass("icon-white").addClass("icon-ok-circle");                       
+            this.a.append(i);
+            this.a.append(" Enregistrer"); 
+            this.popover.append(this.a);                      
+            
+            return this.popover;
+    }  
+}
+
