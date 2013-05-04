@@ -153,7 +153,7 @@ function OpenM_Book_CommunityActionsController(community){
     this.gui = new OpenM_Book_CommunityActionsGui(this.community.id);
     
     this.updateActions = function(){
-        if (this.community.userCanMakeAction()){
+        //if (this.community.userCanMakeAction()){
             
             this.buttons = new Array();
             this.gui.buttons = new Array();
@@ -169,16 +169,22 @@ function OpenM_Book_CommunityActionsController(community){
             }
             
             
-            // if (this.community.userIsAdministrator){
+            //si on est moderateur OU admin
+             if (this.community.userIsModerator || OpenM_Book_Users.me[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER]){
+                 
                  this.rename = new OpenM_Book_CommunityButtonRenameController(this.community);
-                 this.gui.buttons.push(this.rename.gui);
-                 this.deleteBt = new OpenM_Book_CommunityButtonDeleteController(this.community);
-                 this.gui.buttons.push(this.deleteBt.gui);
-            // }
+                 this.gui.buttons.push(this.rename.gui);                 
+                 
+                 if (!this.community.cantBeRemoved){
+                     this.deleteBt = new OpenM_Book_CommunityButtonDeleteController(this.community);
+                     this.gui.buttons.push(this.deleteBt.gui);                     
+                 }
+                 
+             }
             
             
             this.gui.content();
-        }   
+        //}   
     }    
     
     this.updateActions();
@@ -209,13 +215,13 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
 
 function OpenM_Book_CommunityButtonRenameController(community){
     this.community = community;
-    this.gui = new OpenM_Book_CommunityRenameGui(this.community.id, this.community.name);
+    this.gui = new OpenM_Book_CommunityButtonRenameGui(this.community.id, this.community.name);
     
 }
 
 function OpenM_Book_CommunityButtonDeleteController(community){
     this.community = community;
-    this.gui = new OpenM_Book_CommunityDeleteGui(this.community.id, this.community.name);
+    this.gui = new OpenM_Book_CommunityButtonDeleteGui(this.community.id, this.community.name);
       
 }
 

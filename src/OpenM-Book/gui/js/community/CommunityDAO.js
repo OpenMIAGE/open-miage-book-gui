@@ -12,7 +12,9 @@ function OpenM_Book_Community(){
     this.userCanRegister = false;
     this.userIsBanned = false;
     this.userAlreadyRegistred = false;
-    this.userIsAdministrator = false;
+    this.userIsModerator = false;
+    this.forbidenToAddSubCommunity = false;
+    this.cantBeRemoved = true;
     this.parent = undefined;
     this.ancestors = new Array();
     this.nbAncestor = 0;
@@ -36,7 +38,7 @@ function OpenM_Book_Community(){
         if (this.userCanAddSubCommunity)
             retour = true        
         if (this.userCanRegister)
-            retour = true        
+            retour = true         
         return retour;   
     }
     
@@ -170,11 +172,12 @@ var OpenM_Book_CommunityDAO = {
             community.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
             community.name = data[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
             community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
+            community.forbidenToAddSubCommunity = (data[OpenM_Book.RETURN_FORBIDDEN_TO_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE )?true:false;
             community.userCanRegister =  (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE )?true:false;
             community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
             community.userAlreadyRegistred = (data[OpenM_Book.RETURN_USER_ALREADY_REGISTERED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
-            //this.userIsAdministrator
-            
+            community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
+            community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
             
             if(data.CCP){
                 for (var i=0;i<data.CCP.length;i++) {           

@@ -231,10 +231,11 @@ function OpenM_Book_CommunityActionsGui(communityId) {
             this.c.append(div);
             var divButton;
             for (var i in this.buttons){
-                divButton = $(document.createElement('div')); 
-                divButton.addClass("span2");
-                divButton.append(this.buttons[i].content());  
-                div.append(divButton);
+               // divButton = $(document.createElement('div')); 
+               // divButton.addClass("span1");
+               // divButton.append(this.buttons[i].content());  
+               // div.append(divButton);
+               div.append(this.buttons[i].content());
             }
         }
         return this.c;
@@ -258,6 +259,7 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId){
     this.content = function(){
         this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style);
+        this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
         icon.addClass(this.iconColor + " " + this.iconStyle);
         this.a.append(icon); 
@@ -302,6 +304,7 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     this.content = function(){
         this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
         icon.addClass(this.iconColor + " " + this.iconStyle);
         this.a.append(icon);  
@@ -329,7 +332,7 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     }   
 }
 
-function OpenM_Book_CommunityRenameGui(){
+function OpenM_Book_CommunityButtonRenameGui(){
     this.a = $(document.createElement("a"));
     this.text = "Renommer";
     this.toolTipText = this.text+" la communauté";
@@ -343,6 +346,7 @@ function OpenM_Book_CommunityRenameGui(){
     this.content = function(){
         this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
         icon.addClass(this.iconColor + " " + this.iconStyle);
         this.a.append(icon);  
@@ -358,7 +362,7 @@ function OpenM_Book_CommunityRenameGui(){
 
 
 
-function OpenM_Book_CommunityDeleteGui(){
+function OpenM_Book_CommunityButtonDeleteGui(){
     this.a = $(document.createElement("a"));
     this.text = "Supprimer";
     this.toolTipText = this.text+" la communauté (définitivement)";
@@ -372,6 +376,7 @@ function OpenM_Book_CommunityDeleteGui(){
     this.content = function(){
         this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style); 
+        this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
         icon.addClass(this.iconColor).addClass(this.iconStyle);
         this.a.append(icon);  
@@ -380,8 +385,7 @@ function OpenM_Book_CommunityDeleteGui(){
         this.a.text(this.text);
         return this.a;        
     }
-}//<a href="#" class="btn btn-danger"><i class="icon-white icon-trash"></i> Supprimer</a>
-
+}
 
 //A continuer
 function OpenM_Book_CommunityPopOverAddCommunityGui(){

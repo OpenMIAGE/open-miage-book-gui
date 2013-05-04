@@ -26,3 +26,7 @@
     background-image: linear-gradient(center bottom, #dacdb1 11%, #f0e8d8 56%);
    */    
 }
+.btn-space{
+    margin-right: 10px;
+    margin-bottom: 5px;
+}

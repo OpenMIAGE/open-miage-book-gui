@@ -54,7 +54,8 @@ var OpenM_URLController = {
     'load': function(){
         if(this.isCommunityHash())
             OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display()
-        
+        else
+            OpenM_Book_CommunityPagesController.communityPage().display();
     },
     'storedHash': window.location.hash
 }
