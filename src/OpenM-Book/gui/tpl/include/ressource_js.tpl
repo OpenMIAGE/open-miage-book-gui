@@ -8,3 +8,4 @@
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGUI.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/user/UserDAO.js"></script>
