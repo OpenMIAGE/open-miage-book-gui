@@ -6,9 +6,9 @@ var OpenM_URLController = {
     'clickToHome': function(){
         return "window.location.href='"+this.home()+"';return false";
     },
-    'communitySelector': '/community/',
+    'communitySelector': '/community',
     'community': function(community){
-        return "#"+this.communitySelector+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        return "#"+this.communitySelector+"/"+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
     },
     'clickToCommunity': function(community){
         return "window.location.href='"+this.community(community)+"';return false";
@@ -16,7 +16,7 @@ var OpenM_URLController = {
     'getCommunityId': function(){
         var hash = window.location.hash;
         if(this.isCommunityHash()){
-            var community = hash.slice(this.communitySelector.length + 1);
+            var community = hash.slice(this.communitySelector.length + 2);
             if(community.indexOf("/")!=-1)
                 return community.slice(0, community.indexOf("/"));
             else
@@ -27,7 +27,7 @@ var OpenM_URLController = {
     'isCommunityHash': function(){
         return (window.location.hash.slice(1, this.communitySelector.length + 1)==this.communitySelector);
     },
-    'userSelector': '/user/',
+    'userSelector': '/user',
     'user': function(user){
         return "#"+this.userSelector+"/"+user.id;
     },
@@ -53,8 +53,7 @@ var OpenM_URLController = {
     },
     'load': function(){
         if(this.isCommunityHash())
-            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display()
-        
+            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display();            
     },
     'storedHash': window.location.hash
 }
