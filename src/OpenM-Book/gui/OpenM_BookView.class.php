@@ -31,15 +31,13 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     const ALERT = "alert";
     const MY_DATA = "me";
-    
     const ALERT_TYPE = "alert_type";
     const ALERT_TYPE_DISPLAY_INFO = "alert-info";
     const ALERT_TYPE_DISPLAY_ERROR = "alert-error";
     const ALERT_TYPE_DISPLAY_DEFAULT = ""; //vide d'origine
     const ALERT_TYPE_DISPLAY_SUCCES = "alert-success";
     const ALERT_TITLE = "alert_title";
-    
-    const MENU_PROFILE= "menu_profile";
+    const MENU_PROFILE = "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
     const MENU_COMMUNITY = "menu_community";
 
@@ -47,7 +45,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected $bookClient;
     protected $userClient;
     protected $groupClient;
-    
+
     public function __construct() {
         parent::__construct();
         $p2 = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
@@ -86,18 +84,13 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "root" => OpenM_URLViewController::getRoot(),
             "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
             "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
-            "community" => OpenM_URLViewController::getRoot()."#/community",
+            "community" => OpenM_URLViewController::getRoot() . "#/community",
         ));
     }
-    
-    protected function addClientsJS(){
-        $clientRoot = OpenM_URLViewController::getRoot()."client/";
-        $this->smarty->assign("clients_js", array(
-            "OpenM_Book" => $clientRoot."OpenM_Book-min.js",
-            "OpenM_Book_User" => $clientRoot."OpenM_Book_User-min.js",
-            "OpenM_Book_Moderator" => $clientRoot."OpenM_Book_Moderator-min.js",
-            "OpenM_Book_Admin" => $clientRoot."OpenM_Book_Admin-min.js",
-        ));
+
+    protected function addClientsJS() {
+        $clientRoot = OpenM_URLViewController::getRoot() . "client/";
+        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin-min.js");
     }
 
     protected function addNavBarItems() {
@@ -172,7 +165,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         }
     }
 
-    protected function setAlert($message, $titre=null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
+    protected function setAlert($message, $titre = null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
         OpenM_SessionController::set(self::ALERT, $message);
         if ($titre)
             OpenM_SessionController::set(self::ALERT_TITLE, $titre);

@@ -151,7 +151,7 @@ var OpenM_Book_CommunityDAO = {
         return community.users;
     },
     'getUsersNotValid': function(community, synchro){       
-         if(synchro===undefined || synchro==true){
+        if(synchro===undefined || synchro==true){
             var c = community;
             OpenM_Book.getCommunityNotValidUsers(c.id, function(data){
                 OpenM_Book_CommunityDAO.parseUsersNotValid(data, c);
@@ -159,6 +159,25 @@ var OpenM_Book_CommunityDAO = {
             });
         }
         return community.usersNotValid;
+    },
+    
+    'addCommunity': function(name, communityId){
+        var community = this.allCommunities[communityId];
+        var n = name;
+        if(community){
+            OpenM_Book.addCommunity(name, communityId, function(data){
+                if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+                    var c = new OpenM_Book_CommunityExchangeObject();
+                    c.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
+                    c.parent = community;
+                    c.name = n;
+                    c.ancestorsLoaded = community.ancestorsLoaded;
+                    OpenM_Book_CommunityDAO.allCommunities[c.id] = c;
+                    community.addChild(c);
+                    community.update(community);
+                }                
+            });
+        }
     },
     'parseAndLoad': function(data, community){
         OpenM_Book_CommunityPagesGui.showJSON(data);

@@ -11,7 +11,8 @@ $sso = $ssoManager->get("OpenM_Book", false);
 if (!$sso->isConnected()) {
     die(OpenM_MapConvertor::arrayToJSON(array(
                 OpenM_Service::RETURN_ERROR_PARAMETER => "",
-                OpenM_Service::RETURN_ERROR_MESSAGE_PARAMETER => "Not Connected"
+                OpenM_Service::RETURN_ERROR_MESSAGE_PARAMETER => "Not Connected",
+                OpenM_Service::RETURN_ERROR_CODE_PARAMETER => OpenM_SSO::RETURN_ERROR_CODE_NOT_CONNECTED_VALUE
             )));
 }
 
