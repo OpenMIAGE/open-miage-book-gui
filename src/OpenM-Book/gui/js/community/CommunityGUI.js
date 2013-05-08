@@ -324,6 +324,7 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId){
 function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     this.communityId = communityId;
     this.communityName = communityName;
+    this.id = 'OpenM_Book_CommunityButtonAddCommunityGui-'+this.communityId;
     this.text = "Ajouter";
     this.toolTipText = this.text+" une sous communauté à '"+this.communityName+"'";
     this.style = 'btn-inverse';
@@ -332,19 +333,18 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
     this.iconStyle = "icon-ok";
     
     this.popover = '';
-    this.click = '';
     
     this.a = $(document.createElement('a'));
     
     this.content = function(){
         this.a.remove();
-        this.a = $(document.createElement('a')).attr("id","OpenM_Book_CommunityButtonAddCommunityGui").addClass("btn "+this.style); 
+        this.a = $(document.createElement('a')).attr("id",this.id).addClass("btn "+this.style); 
         this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
         icon.addClass(this.iconColor + " " + this.iconStyle);
         this.a.append(icon);
         
-       
+        this.popover.parentId = this.id;
         var option = {
             title: 'Nouvelle sous communauté',
             html: true, 
@@ -358,26 +358,35 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName){
         this.a.attr("data-placement",this.tooltipPlacement);
         this.a.attr("data-toggle","tooltip");
         this.a.attr("data-original-title",this.toolTipText); 
-        this.a.attr("onclick","$('#OpenM_Book_CommunityPopOverAddCommunityGui_"+this.communityId+"').focus()");        
+        //this.a.attr("onclick","$('#OpenM_Book_CommunityPopOverNameGui_"+this.communityId+"').focus()");        
+        var gui = this;
+        this.a.click(function(){
+            gui.popover.input.focus();           
+            gui.popover.popover.on("submit",gui.popover.submit);
+        });
         this.a.tooltip();      
         this.a.text(this.text);
         return this.a;
     }   
 }
 
-function OpenM_Book_CommunityButtonRenameGui(){
+function OpenM_Book_CommunityButtonRenameGui(communityId){
+    this.communityId = communityId;
+    this.id = "OpenM_Book_CommunityButtonRenameGui-" + this.communityId;
+    
+    
     this.a = $(document.createElement("a"));
     this.text = "Renommer";
     this.toolTipText = this.text+" la communauté";
     this.style = 'btn-warning';
     this.tooltipPlacement = "top";
     this.iconColor = "icon-white";
-    this.iconStyle = "icon-refresh";
+    this.iconStyle = "icon-refresh";    
     
-    this.click = '';
+    this.popover = '';
     
     this.content = function(){
-        this.a.remove();
+        /*this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style); 
         this.a.addClass("btn-space");
         var icon = $(document.createElement("i"));
@@ -389,7 +398,37 @@ function OpenM_Book_CommunityButtonRenameGui(){
         this.a.attr("data-original-title",this.toolTipText);  
         this.a.tooltip();
         this.a.text(this.text);
-        return this.a;        
+        return this.a; */   
+        this.a.remove();
+        this.a = $(document.createElement('a')).attr("id",this.id).addClass("btn "+this.style).addClass("btn-space"); 
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon);
+        this.a.attr("rel","tooltip");
+        this.a.attr("data-placement",this.tooltipPlacement);
+        this.a.attr("data-toggle","tooltip");
+        this.a.attr("data-original-title",this.toolTipText);
+        this.a.tooltip(); 
+        
+        
+        this.popover.parentId = this.id;
+        var option = {
+            title: 'Renommer la communauté',
+            html: true, 
+            placement: 'bottom',
+            content: this.popover.content().context
+        };
+        this.a.popover(option); 
+           //this.a.attr("onclick","$('#OpenM_Book_CommunityPopOverNameGui_"+this.communityId+"').focus()");     
+        var gui = this;
+        this.a.click(function(){
+            gui.popover.input.focus();
+            
+            gui.popover.popover.on("submit",gui.popover.submit);
+        });
+             
+        this.a.text(this.text);
+        return this.a;
     }
 }
 
@@ -419,33 +458,39 @@ function OpenM_Book_CommunityButtonDeleteGui(){
 }
 
 //A continuer
-function OpenM_Book_CommunityPopOverAddCommunityGui(communityId){
+function OpenM_Book_CommunityPopOverNameGui(communityId){
     this.communityId = communityId;
-    this.input = $(document.createElement("input"));
-    this.popover = $(document.createElement("div"));
-    this.a = $(document.createElement("a"));
     
+   // this.inputId = 'OpenM_Book_CommunityPopOverNameGui'
+    this.input = $(document.createElement("input"));
+    this.popover = $(document.createElement("form"));
+    this.a = $(document.createElement("a"));
+    this.parentId = '';
     this.submit = '';
+    this.text = 'Nom';
     
     this.content = function(){
         //création du popover
         this.input.remove();
-        this.input = $(document.createElement("input")).attr("id","OpenM_Book_CommunityPopOverAddCommunityGui_"+this.communityId);
-        this.input.attr("type","text").attr("placeholder","Nom ?");
+        this.input = $(document.createElement("input"));
+        this.input.attr("type","text").attr("placeholder",this.text);
         this.input.addClass("input-large");
             
         this.popover.remove();
-        this.popover = $(document.createElement("div"));
+        this.popover = $(document.createElement("form"));
+        
+        
         this.popover.addClass("control-group");
         var label = $(document.createElement("label"));
-        label.addClass("control-label").attr("for","inputNameCommunity").text("Nom");
+        label.addClass("control-label").attr("for","inputNameCommunity").text(this.text);
         this.popover.append(label);
         var subdiv = $(document.createElement("div")).addClass("controls");
         subdiv.append(this.input);
         this.popover.append(subdiv);
         this.a.remove();
-        this.a = $(document.createElement("a"));
+        this.a = $(document.createElement("button"));
         this.a.addClass("btn").addClass("btn-primary").addClass("btn-small");
+        this.a.attr('type','submit');
         var i = $(document.createElement("i"));
         i.addClass("icon-white").addClass("icon-ok-circle");                       
         this.a.append(i);
@@ -458,8 +503,8 @@ function OpenM_Book_CommunityPopOverAddCommunityGui(communityId){
         this.popover.append(this.a);
         this.popover.append("&nbsp;");
         this.popover.append(cancel);
-        cancel.attr('onclick',"$('#OpenM_Book_CommunityButtonAddCommunityGui').popover('hide')");
-        this.a.attr("onclick",this.submit);
+        cancel.attr('onclick',"$('#"+this.parentId+"').popover('hide')");
+        
         return this.popover;
     }  
 

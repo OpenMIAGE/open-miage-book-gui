@@ -39,7 +39,7 @@ class OpenM_InfoView extends OpenM_BookView {
             //connecté => affichage du profil (ça peux changer)
             OpenM_Log::debug("User cconnected, redirect to Profil", __CLASS__, __METHOD__, __LINE__);
              $profil_view = new OpenM_ProfileView();
-              $profil_view->_default();  
+             $profil_view->_default();  
         }           
     }
 

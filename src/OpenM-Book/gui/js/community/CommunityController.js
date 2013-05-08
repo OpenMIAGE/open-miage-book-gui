@@ -249,28 +249,55 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonAddCommunityGui(this.community.id, this.community.name);
     this.gui.active = this.community.userCanAddSubCommunity;
-    this.popover = new OpenM_Book_CommunityPopOverAddCommunityController(this.community);
+    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community);
     this.gui.popover = this.popover.gui;
+    
+    var controler = this;
+    this.popover.gui.submit = function(e){
+        var name = controler.popover.gui.getName();
+        if (name){
+            //alert(controler.community.id);
+            OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);       
+        }else
+            alert("Il manque le nom de la communauté");
+        e.preventDefault();
+    }
     
     
 //this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
 }
 
 
+function OpenM_Book_CommunityPopOverNameController(community){
+    this.community = community;
+    this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id);
+
+}
+
 function OpenM_Book_CommunityButtonRenameController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonRenameGui(this.community.id, this.community.name);
+    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community);
+    this.popover.gui.text = 'Nouveau nom';
+    this.gui.popover = this.popover.gui;
+    
+    //le click
+    var controler = this;
+    this.popover.gui.submit = function(e){        
+        var name = controler.popover.gui.getName();
+        if (name){
+            alert('en attante de la méthode DAO');
+            //OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);       
+        }else
+            alert("Il manque le nouveau nom de la communauté");
+        e.preventDefault();
+    }
     
 }
 
 function OpenM_Book_CommunityButtonDeleteController(community){
     this.community = community;
-    this.gui = new OpenM_Book_CommunityButtonDeleteGui(this.community.id, this.community.name);
-      
-}
-
-function OpenM_Book_CommunityPopOverAddCommunityController(community){
-    this.community = community;
-    this.gui = new OpenM_Book_CommunityPopOverAddCommunityGui(this.community.id);
-    this.gui.submit = "OpenM_Book_CommunityDAO.addCommunity(OpenM_Book_CommunityPagesController.communityPage("+this.community.id+", false).actions.add.popover.gui.getName(), "+this.community.id+");return false;";
+    this.gui = new OpenM_Book_CommunityButtonDeleteGui(this.community.id, this.community.name); 
+    
+    
 }

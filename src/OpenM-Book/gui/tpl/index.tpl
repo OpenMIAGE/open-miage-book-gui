@@ -1,14 +1,17 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Open-MIAGE</title>
+        <title>OpenM-Book</title>
         {include file='include/head.tpl'}
     </head>
     <body>
         {include file='include/navBar.tpl'}
+        {include file='include/menu.tpl'}
+       
         <div class="container">
             <div class="row">
-                {if $connect === TRUE}
+               test
+                <!-- {if $connect === TRUE}
                     <div class="span6 offset2">
                         <label class="lead">Inscription sur Open-MIAGE</label>
                         <a href="{$links.registration}" class="btn btn-success btn-large"><i class="icon-white icon-plus-sign"></i> Inscription </a>
@@ -21,6 +24,7 @@
                             <a href="{$login_url}" class="btn btn-success btn-large"><i class="icon-white icon-user"></i> Login</a>
                         </div>
                     {/if}
+                        -->
                 </div>
             </div>
         </div>

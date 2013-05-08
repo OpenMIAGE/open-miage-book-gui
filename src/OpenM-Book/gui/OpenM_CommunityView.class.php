@@ -19,13 +19,14 @@ class OpenM_CommunityView extends OpenM_BookView {
         $this->smarty->assign(self::MENU_COMMUNITY, TRUE);
         $this->initPage();
 
-    
-        
+        //$me = $this->userClient->getUserProperties();   
+        //OpenM_SessionController::set(self::MY_DATA, $me);
         
         $me = OpenM_SessionController::get(self::MY_DATA);
         $this->smarty->assign("nom", $me->get("ULN"));
         $this->smarty->assign("prenom", $me->get("UFN"));                
         $this->smarty->assign("isAdmin", $me->get("UIA"));
+        
         
         
         
