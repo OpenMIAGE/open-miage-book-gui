@@ -249,8 +249,8 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonAddCommunityGui(this.community.id, this.community.name);
     this.gui.active = this.community.userCanAddSubCommunity;
-    this.popoverControler = new OpenM_Book_CommunityPopOverAddCommunityController(this.community);
-    this.gui.popover = this.popoverControler.gui;
+    this.popover = new OpenM_Book_CommunityPopOverAddCommunityController(this.community);
+    this.gui.popover = this.popover.gui;
     
     
 //this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
@@ -269,10 +269,8 @@ function OpenM_Book_CommunityButtonDeleteController(community){
       
 }
 
-
-//a continuer ...
 function OpenM_Book_CommunityPopOverAddCommunityController(community){
     this.community = community;
-    this.gui = new OpenM_Book_CommunityPopOverAddCommunityGui();
- 
+    this.gui = new OpenM_Book_CommunityPopOverAddCommunityGui(this.community.id);
+    this.gui.submit = "OpenM_Book_CommunityDAO.addCommunity(OpenM_Book_CommunityPagesController.communityPage("+this.community.id+", false).actions.add.popover.gui.getName(), "+this.community.id+");return false;";
 }

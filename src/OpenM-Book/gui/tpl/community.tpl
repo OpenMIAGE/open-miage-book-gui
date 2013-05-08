@@ -11,8 +11,8 @@
 
         <div class="container-fluid container-withmenunavigation">
             {include file='include/alert.tpl'}
-            <div id="divJSON"></div>
             <div id="divParent"></div>
+            <div id="divJSON"></div>
         </div>
 
         {include file='include/ressource_js.tpl'}
