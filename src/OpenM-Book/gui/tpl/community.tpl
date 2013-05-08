@@ -28,6 +28,7 @@
                 OpenM_Book_Users.me = JSON.parse('{/literal}{$UserJSON}{literal}');    
                 OpenM_Book_Users.me[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER]  =  (OpenM_Book_Users.me[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE)?true:false;
                 
+                
                 OpenM_URLController.load();
             });
             {/literal}</script>
