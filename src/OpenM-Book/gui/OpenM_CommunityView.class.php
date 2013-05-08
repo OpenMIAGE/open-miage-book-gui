@@ -25,8 +25,7 @@ class OpenM_CommunityView extends OpenM_BookView {
         $me = OpenM_SessionController::get(self::MY_DATA);
         $this->smarty->assign("nom", $me->get("ULN"));
         $this->smarty->assign("prenom", $me->get("UFN"));                
-        
-        $this->smarty->assign("UserJSON", OpenM_MapConvertor::mapToJSON($me));
+        $this->smarty->assign("isAdmin", $me->get("UIA"));
         
         
         

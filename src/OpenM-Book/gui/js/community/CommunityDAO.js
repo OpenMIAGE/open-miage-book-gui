@@ -1,7 +1,7 @@
 /**
  * La classe Community, gere data de la commu
  */
-function OpenM_Book_Community(){
+function OpenM_Book_CommunityExchangeObject(){
     
     this.id = ''; 
     this.name = '';
@@ -93,28 +93,11 @@ function OpenM_Book_Community(){
             this.AllUsersCallBack[i](community);            
         }
     }     
-    this.updateUsersNotValid = function(){
+    this.updateUsersNotValid = function(community){
         for(var i in this.AllUsersNotValidCallBack){
             this.AllUsersNotValidCallBack[i](community);            
         }
     }     
-    
-    this.getUsers = function (){      
-        var community = this;
-        OpenM_Book.getCommunityUsers(this.id, function(data){
-            OpenM_Book_CommunityDAO.parseUsers(data, community);
-            community.updateUsers(community);
-        });
-        return this.users;
-    }
-    
-    this.getUsersNotValid = function(){       
-        OpenM_Book.getCommunityNotValidUsers(this.id, function(data){
-            
-            this.updateUsersNotValid();
-        });
-        return this.usersNotValid;
-    }
     
     this.registerMe = function(){
         var community = this;
@@ -127,19 +110,13 @@ function OpenM_Book_Community(){
     }
 }
 
-function OpenM_Book_CommunityUser (id, name){
-    this.id = id;
-    this.name = name;
-}
-
-//Tab qui gére tt les instances de Community
 var OpenM_Book_CommunityDAO = {
     'allCommunities': new Array(),
     'get': function(communityId, synchro){
         var community;
         community = this.allCommunities[communityId];  
         if(!community)
-            community = new OpenM_Book_Community();            
+            community = new OpenM_Book_CommunityExchangeObject();            
         
         if (communityId)
             community.id = communityId;
@@ -163,6 +140,26 @@ var OpenM_Book_CommunityDAO = {
         else
             return this.parseAndLoadAncestors(OpenM_Book.getCommunityAncestors(community.id), community);   
     },
+    'getUsers': function (community, synchro){
+        if(synchro===undefined || synchro==true){
+            var c = community;
+            OpenM_Book.getCommunityUsers(c.id, function(data){
+                OpenM_Book_CommunityDAO.parseUsers(data, c);
+                c.updateUsers(c);
+            });
+        }
+        return community.users;
+    },
+    'getUsersNotValid': function(community, synchro){       
+         if(synchro===undefined || synchro==true){
+            var c = community;
+            OpenM_Book.getCommunityNotValidUsers(c.id, function(data){
+                OpenM_Book_CommunityDAO.parseUsersNotValid(data, c);
+                c.updateUsersNotValid(c);
+            });
+        }
+        return community.usersNotValid;
+    },
     'parseAndLoad': function(data, community){
         OpenM_Book_CommunityPagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
@@ -184,7 +181,7 @@ var OpenM_Book_CommunityDAO = {
                     var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
                 
                     if (!subCommunity){
-                        subCommunity = new OpenM_Book_Community();
+                        subCommunity = new OpenM_Book_CommunityExchangeObject();
                         subCommunity.id = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                         this.allCommunities[subCommunity.id] = subCommunity;
                     }
@@ -221,7 +218,7 @@ var OpenM_Book_CommunityDAO = {
                     if (i != OpenM_Book.RETURN_STATUS_PARAMETER){
                         var parentCommunity = this.allCommunities[Idparent];
                         if (!parentCommunity){
-                            parentCommunity = new OpenM_Book_Community();
+                            parentCommunity = new OpenM_Book_CommunityExchangeObject();
                             parentCommunity.id = Idparent;
                             parentCommunity.name = data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
                             parentCommunity.ancestorsLoaded = true;
@@ -254,6 +251,56 @@ var OpenM_Book_CommunityDAO = {
     },    
     'parseUsers': function(data, community){
         OpenM_Book_CommunityPagesGui.showJSON(data);
-        
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+            var user;
+            var users = new Array();
+            var i;
+            var u;
+            for(i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]){
+                u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
+                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false);
+                user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
+                users[user.id] = user;
+                user.validIn[community.id] = community;
+            }
+            for(i in community.users){
+                u = community.users[i];
+                if(users[u.id]===undefined)
+                    community.users[i] = undefined;
+            }
+            for(i in users){
+                u = users[i];
+                if(community.users[u.id]===undefined)
+                    community.users[u.id] = u;
+            }
+            community.updateUsers(community);
+        }
+    },
+    'parseUsersNotValid': function(data, community){
+        OpenM_Book_CommunityPagesGui.showJSON(data);
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+            var user;
+            var users = new Array();
+            var i;
+            var u;
+            for(i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]){
+                u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
+                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false);
+                user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
+                users[user.id] = user;
+                user.notValidIn[community.id] = community;
+            }
+            for(i in community.usersNotValid){
+                u = community.usersNotValid[i];
+                if(users[u.id]===undefined)
+                    community.usersNotValid[i] = undefined;
+            }
+            for(i in users){
+                u = users[i];
+                if(community.usersNotValid[u.id]===undefined)
+                    community.usersNotValid[u.id] = u;
+            }
+            community.updateUsersNotValid(community);
+        }
     }
 }
