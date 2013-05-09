@@ -65,16 +65,15 @@ function OpenM_Book_CommunityPageGui(){
         if(enabled===true || enabled === undefined){
             var cadre = $("#"+OpenM_Book_CommunityPagesGui.divParentId);
             cadre.empty();
-            
-            //Les actions
-            var actions = $(document.createElement('div')).addClass("row-fluid");
-            cadre.append(actions);
-            actions.append(this.actions.content()); 
-            
+
             //le tree
             var tree = $(document.createElement('div')).addClass("row-fluid");
             cadre.append(tree);
             tree.append(this.tree.content());
+            //Les actions
+            var actions = $(document.createElement('div')).addClass("row-fluid");
+            cadre.append(actions);
+            actions.append(this.actions.content()); 
             
             //les childs
             var childs = $(document.createElement('div')).addClass("row-fluid");
@@ -238,7 +237,8 @@ function OpenM_Book_CommunityUsersNotValidGui(communityId){
         this.c.empty();
         if (this.users.length != 0){
             this.c.addClass("span12 well");
-            this.c.append("<p>Users Not Valid :</p>");
+            this.c.append("<p>Users Non Validé :</p>");
+            this.c.append("<p>Les utilisateurs présents ici, ne sont pas valider. Ceca signifie qu'ils postulent pour entrer dans la communauté. C'est a vous de valider leur adhésion. Plusieurs validation d'utilisateur sont requises pour etre accépter </p>");
             var div = $(document.createElement('div')).addClass("row-fluid");
             this.c.append(div);
             for (var i in this.users){
@@ -254,6 +254,7 @@ function OpenM_Book_CommunityUsersNotValidGui(communityId){
 function OpenM_Book_CommunityUserNotValidGui(id, name){
     this.id = id;
     this.name = name;
+    this.buttonValidate = '';
     this.c = $(document.createElement('div'));
     
     this.content = function(){
@@ -261,9 +262,37 @@ function OpenM_Book_CommunityUserNotValidGui(id, name){
         this.c = $(document.createElement('div'));
         this.c.addClass("community span3");
         this.c.text(this.name);
+        this.c.append("<br>");
+        this.c.append(this.buttonValidate.content());
         return this.c;
     }
 }
+
+function OpenM_Book_ButtonValidateUserGui(){
+    this.text = "Valider";
+    this.style = 'btn-inverse';
+    this.iconColor = "icon-white";
+    this.iconStyle = "icon-ok-circle";
+    this.a = $(document.createElement('a'));
+    
+    this.click = '';
+    
+    this.content = function(){
+        this.a.remove();
+        this.a = $(document.createElement('a')).addClass("btn "+this.style);
+        this.a.addClass("btn-space");
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon); 
+        this.a.append(this.text);
+        
+        return this.a;
+    }
+    
+}
+
+
+
 
 function OpenM_Book_CommunityActionsGui(communityId) {
     this.communityId = communityId;    

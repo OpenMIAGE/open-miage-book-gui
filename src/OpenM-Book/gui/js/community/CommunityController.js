@@ -199,6 +199,18 @@ function OpenM_Book_CommunityUsersNotValidController(community){
 function OpenM_Book_CommunityUserNotValidController(user){
     this.user = user;
     this.gui = new OpenM_Book_CommunityUserNotValidGui(this.user.id, this.user.name);
+    
+    this.buttonValidate = new  OpenM_Book_ButtonValidateUserController(this.user);
+    this.gui.buttonValidate = this.buttonValidate.gui;
+    
+}
+
+
+function OpenM_Book_ButtonValidateUserController(user){
+    this.user = user;
+    this.gui = new OpenM_Book_ButtonValidateUserGui();
+    
+    
 }
 
 function OpenM_Book_CommunityActionsController(community){
@@ -266,17 +278,12 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
     this.popover.gui.submit = function(e){
         var name = controler.popover.gui.getName();
         if (name){
-            //alert(controler.community.id);
-            
             OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);
             controler.gui.a.popover('hide');
         }else
             alert("Il manque le nom de la communauté");
         e.preventDefault();
     }
-    
-    
-//this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
 }
 
 
@@ -285,7 +292,6 @@ function OpenM_Book_CommunityPopOverNameController(community){
     this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id);
 
 }
-
 function OpenM_Book_CommunityButtonRenameController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonRenameGui(this.community.id, this.community.name);
@@ -299,12 +305,12 @@ function OpenM_Book_CommunityButtonRenameController(community){
         var name = controler.popover.gui.getName();
         if (name){
             alert('en attante de la méthode DAO');
-            //OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);       
+            //OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);
+            controler.gui.a.popover('hide');
         }else
             alert("Il manque le nouveau nom de la communauté");
         e.preventDefault();
-    }
-    
+    }    
 }
 
 function OpenM_Book_CommunityButtonDeleteController(community){
