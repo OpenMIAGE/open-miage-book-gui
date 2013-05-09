@@ -203,6 +203,13 @@ function OpenM_Book_CommunityUserNotValidController(user){
     this.buttonValidate = new  OpenM_Book_ButtonValidateUserController(this.user);
     this.gui.buttonValidate = this.buttonValidate.gui;
     
+    var controler = this;
+    this.buttonValidate.gui.click = function(e){
+        alert(controler.user.name);
+        
+        e.preventDefault();
+    }
+    
 }
 
 

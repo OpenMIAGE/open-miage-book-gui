@@ -285,6 +285,7 @@ function OpenM_Book_ButtonValidateUserGui(){
         icon.addClass(this.iconColor + " " + this.iconStyle);
         this.a.append(icon); 
         this.a.append(this.text);
+        this.a.click(this.click);
         
         return this.a;
     }
