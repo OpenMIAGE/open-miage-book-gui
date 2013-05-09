@@ -8,7 +8,11 @@ var OpenM_URLController = {
     },
     'communitySelector': '/community',
     'community': function(community){
-        return "#"+this.communitySelector+"/"+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        var url = "#"+this.communitySelector;
+        if(community)
+            return url+"/"+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        else
+            return url;
     },
     'clickToCommunity': function(community){
         return "window.location.href='"+this.community(community)+"';return false";
@@ -29,7 +33,11 @@ var OpenM_URLController = {
     },
     'userSelector': '/user',
     'user': function(user){
-        return "#"+this.userSelector+"/"+user.id;
+        var url = "#"+this.userSelector;
+        if(user)
+            return url+"/"+user.id+"/"+user.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        else
+            return url;
     },
     'getUserId': function(){
         var hash = window.location.hash;
@@ -46,16 +54,38 @@ var OpenM_URLController = {
         return (window.location.hash.slice(1, this.userSelector.length + 1)==this.userSelector);
     },
     'onhashchange': function(){
-        this.load(); 
+        this.load();
     },
     'reload': function(){
         this.load();
     },
     'load': function(){
-        if(this.isCommunityHash())
-            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display();            
+        if(this.isCommunityHash()){
+            OpenM_MenuGUI.selectCommunity();
+            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display();
+        }
+        else{
+            OpenM_MenuGUI.selectCommunity();
+            OpenM_Book_CommunityPagesController.communityPage().display();
+        }            
+        if(this.loader!='')
+            $("#"+this.loader).remove();
     },
-    'storedHash': window.location.hash
+    'storedHash': window.location.hash,
+    'loader' : '',
+    'jsLoadedNumber': 0,
+    'jsLoadedTarget': 0,
+    'jsLoad': function (jsPath){
+        this.jsLoadedTarget++;
+        $.post(jsPath, function(){
+            OpenM_URLController.jsLoadedNumber++;
+            if(OpenM_URLController.jsLoadedTarget==OpenM_URLController.jsLoadedNumber)
+                OpenM_URLController.jsLoadFinished();
+        }, 'script');
+    },
+    'jsLoadFinished': function (){
+        this.load();
+    }
 }
 
 if ("onhashchange" in window) {

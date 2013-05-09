@@ -37,25 +37,6 @@ body {
     
 }
 
-/*
-[class*="span"]{
-    border: black solid 1px;
-    background-color: lightgreen;
-    margin-bottom: 10px;
-    border-radius: 5px 5px 5px 5px;
-    line-height: 80px;
-    text-align: center;
-}
-
-[class*="row"]{
-    border: #3333ff solid 1px;
-}
-*/
-
-
-
-
-
 /**
 * css pour affichage mobile
 */
@@ -119,6 +100,3 @@ Pour affichage grand écrant
 
 
 }
-
-
-

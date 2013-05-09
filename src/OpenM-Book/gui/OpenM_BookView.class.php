@@ -34,7 +34,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const ALERT_TYPE = "alert_type";
     const ALERT_TYPE_DISPLAY_INFO = "alert-info";
     const ALERT_TYPE_DISPLAY_ERROR = "alert-error";
-    const ALERT_TYPE_DISPLAY_DEFAULT = ""; //vide d'origine
+    const ALERT_TYPE_DISPLAY_DEFAULT = "";
     const ALERT_TYPE_DISPLAY_SUCCES = "alert-success";
     const ALERT_TITLE = "alert_title";
     const MENU_PROFILE = "menu_profile";
@@ -45,6 +45,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected $bookClient;
     protected $userClient;
     protected $groupClient;
+    protected $moderatorClient;
+    protected $adminClient;
 
     public function __construct() {
         parent::__construct();
@@ -54,6 +56,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
         $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
         $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Groups");
+        $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Moderator");
+        $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Admin");
         $this->setDirs();
     }
 
@@ -80,11 +84,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addLinks() {
         $this->smarty->assign("links", array(
-            "default" => OpenM_URLViewController::from()->getURL(),
-            "root" => OpenM_URLViewController::getRoot(),
-            "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
-            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
-            "community" => OpenM_URLViewController::getRoot() . "#/community",
+            "root" => OpenM_URLViewController::getRoot()
         ));
     }
 
@@ -95,10 +95,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addNavBarItems() {
         $this->smarty->assign("nav_bar", array(
-            array(
-                "label" => "home",
-                "link" => OpenM_URLViewController::from()->getURL()
-            ),
             array(
                 "label" => "account",
                 "items" => array(
@@ -120,7 +116,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     ),
                     array(
                         "label" => "Team Open-MIAGE",
-                        "link" => "http://www.open-miage.org/la-team-open-miage.html"
+                        "link" => "http://www.open-miage.org/team.html"
                     )
             ))
         ));
@@ -176,5 +172,5 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
 Import::php("OpenM-Book.gui.OpenM_RegistrationView");
 Import::php("OpenM-Book.gui.OpenM_InfoView");
-Import::php("OpenM-Book.gui.OpenM_CommunityView");
+Import::php("OpenM-Book.gui.OpenM_CoreView");
 ?>
