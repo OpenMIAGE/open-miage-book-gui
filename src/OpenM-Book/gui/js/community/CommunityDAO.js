@@ -31,6 +31,13 @@ function OpenM_Book_CommunityExchangeObject(){
             this.nbChild++;
         }
     } 
+    
+    this.removeChild = function(community){
+        if(this.childs[community.id]){
+            delete this.childs[community.id];
+            this.nbChild--;
+        }        
+    }
         
     //permet de savoir si il y a des actions a effectuer sur la communauté
     this.userCanMakeAction = function(){
@@ -167,6 +174,7 @@ var OpenM_Book_CommunityDAO = {
         if(community){
             OpenM_Book.addCommunity(name, communityId, function(data){
                 if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+                    OpenM_Book_CommunityPagesGui.showSucces("Sous communauté ajouté");
                     var c = new OpenM_Book_CommunityExchangeObject();
                     c.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                     c.parent = community;
@@ -179,6 +187,31 @@ var OpenM_Book_CommunityDAO = {
             });
         }
     },
+    'removeCommunity': function(communityId){
+        var community = this.allCommunities[communityId];
+        if(community){
+            OpenM_Book_Moderator.removeCommunity(community.id,function(data){
+               if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
+                  var parent = community.parent;
+                  parent.removeChild(community);                  
+                  delete OpenM_Book_CommunityDAO.allCommunities[community.id];
+                 // parent.update(parent);
+                  OpenM_Book_CommunityPagesGui.showSucces("Communauté supprimée");
+                  eval(OpenM_URLController.clickToCommunity(parent).split(";")[0]);                 
+               }else{
+                   if (data[OpenM_Book_Moderator.RETURN_ERROR_PARAMETER]){                     
+                      OpenM_Book_CommunityPagesGui.showError("Une erreur c'est produites lors de la suppression de la communauté : "+ data[OpenM_Book_Moderator.RETURN_ERROR_MESSAGE_PARAMETER]); 
+                   }
+                   else{
+                       OpenM_Book_CommunityPagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
+                   }
+               }               
+            });
+        }
+        
+        
+    },
+    
     'parseAndLoad': function(data, community){
         OpenM_Book_CommunityPagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
