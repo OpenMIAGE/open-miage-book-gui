@@ -26,8 +26,8 @@
                     OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
                     OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
                     OpenM_Book_CommunityPagesGui.divParentId = "divParent";
-                    OpenM_Book_CommunityPagesGui.divJSON = "divJSON";                   
-                    OpenM_Book_UserDAO.me.isAdmin = {/literal}{if $isAdmin}{literal}true{/literal}{else}{literal}false{/literal}{/if}{literal};
+                    OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
+                    OpenM_Book_UserDAO.me.isAdmin = true;
                     OpenM_Book_UserDAO.me.firstName = "djo";
                     OpenM_Book_UserDAO.me.lastName = "black";
                     OpenM_MenuGUI.menuId = "menuDesktop";
