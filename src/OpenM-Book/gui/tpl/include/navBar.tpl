@@ -1,14 +1,14 @@
-<div class="navbar navbar-inverse">
+<div id="nabBar" class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target="#subMenuNavBar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
             <a class="brand" href="{$links.root}">Open-MIAGE</a>
 
-            <div class="nav-collapse collapse"> 
+            <div id="subMenuNavBar" class="nav-collapse collapse"> 
                 <ul class="nav">
                     <li class="divider-vertical"></li>
                     {foreach from=$nav_bar item=menu}

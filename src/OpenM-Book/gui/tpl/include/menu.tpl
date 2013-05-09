@@ -1,13 +1,13 @@
 {*Bare navigation mobile*}
-<nav class="navbar navbar menunavigation-phone hidden-desktop">
+<nav id="menuMobile" class="navbar navbar menunavigation-phone hidden-desktop">
     <div class="navbar-inner">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target="#subMenuMenuMobile">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
         <a class="brand" href="#">{$prenom} <br>{$nom}</a>
-        <div class="nav-collapse collapse">
+        <div id="subMenuMenuMobile" class="nav-collapse collapse">
             <ul class="nav">
                 <li class="divider-vertical"></li>
                 <li {if $menu_profile}class="active"{/if}><a href="{$links.profile}">Mon Profil</a></li>
