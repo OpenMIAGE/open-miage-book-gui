@@ -42,7 +42,7 @@ class OpenM_ErrorView extends OpenM_BookView {
          $this->smarty->assign(self::ERROR_LINKS, array(
             array(
                 "label" => "Profile : ",
-                "link" => "http://".$_SERVER['HTTP_HOST'].OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL())
+                "link" => "http://".$_SERVER['HTTP_HOST'].OpenM_URLViewController::getRoot())
         ));
 
         if ($titre)

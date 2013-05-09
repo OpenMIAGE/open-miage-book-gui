@@ -56,6 +56,6 @@
                 </div>
             </div>
         </div>
-        {include file='include/ressource_js.tpl'}
+        {include file='include/commonJS.tpl'}
     </body>
 </html>
