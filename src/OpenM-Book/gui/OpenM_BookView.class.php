@@ -112,11 +112,13 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                 "items" => array(
                     array(
                         "label" => "Open-MIAGE",
-                        "link" => "http://www.open-miage.org"
+                        "link" => "http://www.open-miage.org",
+                        "blank" => true
                     ),
                     array(
                         "label" => "Team Open-MIAGE",
-                        "link" => "http://www.open-miage.org/team.html"
+                        "link" => "http://www.open-miage.org/team.html",
+                        "blank" => true
                     )
             ))
         ));
