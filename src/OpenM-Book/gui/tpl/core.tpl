@@ -24,7 +24,7 @@
                 var ressource_js = "{/literal}{$resources_dir}{literal}";
                 OpenM_URLController.jsLoadFinished = function(){
                     OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
-                    OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
+                    OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
                     OpenM_Book_CommunityPagesGui.divParentId = "divParent";
                     OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
                     OpenM_Book_UserDAO.me.isAdmin = true;

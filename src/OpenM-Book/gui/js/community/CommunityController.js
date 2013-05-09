@@ -80,8 +80,9 @@ function OpenM_Book_CommunityInTreeController(community, active){
         this.active = false;
     this.community = community;
     
-    this.update = function(community){
-        OpenM_Book_CommunityPagesController.communityPage(community.id, false).tree.ancestors[community.id].gui.updateName(community.name);
+    var controller = this;
+    this.update = function(){
+        controller.gui.updateName(community.name);
     }
     this.community.addUpdateCallBack(this.update);
     
@@ -105,9 +106,7 @@ function OpenM_Book_CommunityChildsController(community){
             if(this.communities[this.community.childs[i].id]===undefined){
                 commintyChild = new OpenM_Book_CommunityChildController(child);
                 communityChildControllers[this.community.childs[i].id]= commintyChild;
-                //this.communities[this.community.childs[i].id] = commintyChild;
                 communityChildGuis.push(commintyChild.gui);
-                //this.gui.communities.push(commintyChild.gui);
             }else{
                 communityChildControllers[this.community.childs[i].id] = this.communities[this.community.childs[i].id]
                 communityChildGuis.push(this.communities[this.community.childs[i].id].gui);
@@ -117,24 +116,22 @@ function OpenM_Book_CommunityChildsController(community){
         this.gui.communities = communityChildGuis;
         
         this.gui.content();
-    }
-    
+    }    
     this.updateChilds();
     
-    this.update = function(community){
-        OpenM_Book_CommunityPagesController.communityPage(community.id, false).childs.updateChilds();
+    var controller = this;
+    this.update = function(){
+        controller.updateChilds();
     }
     this.community.addUpdateCallBack(this.update);
 }
 
-
 function OpenM_Book_CommunityChildController(community){
     this.community = community;
     
-    this.update = function(community){
-        var child = OpenM_Book_CommunityPagesController.communityPage(community.id, false).childs.communities[community.id];
-        if(child !== undefined)
-            child.gui.updateName(community.name);
+    var controller = this;
+    this.update = function(){
+        controller.gui.updateName(controller.community.name);
     }
     this.community.addUpdateCallBack(this.update);
     this.gui = new OpenM_Book_CommunityChildGui(this.community.id, this.community.name);
@@ -158,8 +155,9 @@ function OpenM_Book_CommunityUsersController(community){
         this.gui.content();
     }
     
-    this.update = function(community){
-        OpenM_Book_CommunityPagesController.communityPage(community.id, false).users.updateUsers();
+    var controller = this;
+    this.update = function(){
+        controller.updateUsers();
     }
     
     this.community.addUpdateUsersCallBack(this.update);    
@@ -188,8 +186,9 @@ function OpenM_Book_CommunityUsersNotValidController(community){
         this.gui.content();
     }
     
-    this.update = function(community){
-        OpenM_Book_CommunityPagesController.communityPage(community.id, false).usersNotValid.updateUsers();
+    var controller = this;
+    this.update = function(){
+        controller.updateUsers();
     }
     
     this.community.addUpdateUsersNotValidCallBack(this.update);    
@@ -199,18 +198,13 @@ function OpenM_Book_CommunityUsersNotValidController(community){
 function OpenM_Book_CommunityUserNotValidController(user){
     this.user = user;
     this.gui = new OpenM_Book_CommunityUserNotValidGui(this.user.id, this.user.name);
-    
     this.buttonValidate = new  OpenM_Book_ButtonValidateUserController(this.user);
     this.gui.buttonValidate = this.buttonValidate.gui;
-    
 }
-
 
 function OpenM_Book_ButtonValidateUserController(user){
     this.user = user;
-    this.gui = new OpenM_Book_ButtonValidateUserGui();
-    
-    
+    this.gui = new OpenM_Book_ButtonValidateUserGui();    
 }
 
 function OpenM_Book_CommunityActionsController(community){
@@ -218,44 +212,40 @@ function OpenM_Book_CommunityActionsController(community){
     this.register = null;
     this.add = null;
     this.rename = null;
-    this.deleteBt = null;
-    
+    this.deleteBt = null;    
     this.gui = new OpenM_Book_CommunityActionsGui(this.community.id);
     
     this.updateActions = function(){
-        if (this.community.userCanMakeAction()){
+        this.buttons = new Array();
+        this.gui.buttons = new Array();
             
-            this.buttons = new Array();
-            this.gui.buttons = new Array();
-            
-            if (this.community.userCanRegister){
-                this.register = new OpenM_Book_CommunityButtonRegisterController(this.community); 
-                this.gui.buttons.push(this.register.gui);
-            }
-            
-            if (this.community.userCanAddSubCommunity){
-                this.add = new OpenM_Book_CommunityButtonAddCommunityController(this.community); 
-                this.gui.buttons.push(this.add.gui);
-            }
-        
-            //si on est moderateur OU admin
-            if (this.community.userIsModerator || OpenM_Book_UserDAO.me.isAdmin){                 
-                this.rename = new OpenM_Book_CommunityButtonRenameController(this.community);
-                this.gui.buttons.push(this.rename.gui);                 
-                 
-                if (!this.community.cantBeRemoved){
-                    this.deleteBt = new OpenM_Book_CommunityButtonDeleteController(this.community);
-                    this.gui.buttons.push(this.deleteBt.gui);                     
-                }
-            }
-        
-            this.gui.content();
+        if (this.community.userCanRegister){
+            this.register = new OpenM_Book_CommunityButtonRegisterController(this.community); 
+            this.gui.buttons.push(this.register.gui);
         }
+            
+        if (this.community.userCanAddSubCommunity){
+            this.add = new OpenM_Book_CommunityButtonAddCommunityController(this.community); 
+            this.gui.buttons.push(this.add.gui);
+        }
+        
+        if (this.community.userIsModerator || OpenM_Book_UserDAO.me.isAdmin){                 
+            this.rename = new OpenM_Book_CommunityButtonRenameController(this.community);
+            this.gui.buttons.push(this.rename.gui);                 
+                 
+            if (!this.community.cantBeRemoved){
+                this.deleteBt = new OpenM_Book_CommunityButtonDeleteController(this.community);
+                this.gui.buttons.push(this.deleteBt.gui);                     
+            }
+        }
+        
+        this.gui.content();
     }    
     
     this.updateActions();
-    this.update = function(community){
-        OpenM_Book_CommunityPagesController.communityPage(community.id, false).actions.updateActions();
+    var controller = this;
+    this.update = function(){
+        controller.updateActions();
     }
     this.community.addUpdateCallBack(this.update);
 }
@@ -285,7 +275,6 @@ function OpenM_Book_CommunityButtonAddCommunityController(community){
         e.preventDefault();
     }
 }
-
 
 function OpenM_Book_CommunityPopOverNameController(community){
     this.community = community;

@@ -16,7 +16,8 @@ var OpenM_Book_UserDAO = {
         var user;
         user = this.allUsers[userId];  
         if(!user){
-            user = new OpenM_Book_UserExchangeObject();            
+            user = new OpenM_Book_UserExchangeObject();
+            this.allUsers[userId] = user;
         }
         
         if (userId)
