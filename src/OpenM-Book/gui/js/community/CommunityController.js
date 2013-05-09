@@ -202,21 +202,31 @@ function OpenM_Book_CommunityUserNotValidController(user){
     
     this.buttonValidate = new  OpenM_Book_ButtonValidateUserController(this.user);
     this.gui.buttonValidate = this.buttonValidate.gui;
-    
+    this.buttonDisplayProfil = new OpenM_Book_ButtonDisplayProfilController(this.user);
+    this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
+
+
     var controler = this;
     this.buttonValidate.gui.click = function(e){
         alert(controler.user.name);
         
         e.preventDefault();
     }
-    
+    this.buttonDisplayProfil.gui.click = function(e){
+        alert('On visite le profil de : '+controler.user.name);
+        e.preventDefault();
+    }    
 }
 
 
 function OpenM_Book_ButtonValidateUserController(user){
     this.user = user;
-    this.gui = new OpenM_Book_ButtonValidateUserGui();
-    
+    this.gui = new OpenM_Book_ButtonValidateUserGui();  
+}
+
+function OpenM_Book_ButtonDisplayProfilController(user){
+    this.user = user;
+    this.gui = new OpenM_Book_ButtonDisplayProfilGui(this.user.name);
     
 }
 

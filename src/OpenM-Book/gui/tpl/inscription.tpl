@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Inscription</title>
-        {include file='include/head.tpl'}
+        <title>OpenM-Book</title>
+{include file='include/head.tpl'}
+{include file='include/coreCSS.tpl'}
+    </head>
     </head>
     <body>
-        {include file='include/navBar.tpl'}
+{include file='include/navBar.tpl'}
         <div class="container-fluid">
             {include file='include/alert.tpl'}
 
@@ -84,7 +86,7 @@
                 </div>
             </div>
         </div>                                         
-        {include file='include/ressource_js.tpl'}
+        {include file='include/commonJS.tpl'}
         {literal}
             <script>
                 function majMonthName($month,$num){

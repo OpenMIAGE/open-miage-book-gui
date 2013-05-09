@@ -53,16 +53,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
     public function login() {
         $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
-        try {
-            $me = $this->userClient->getUserProperties();
-            //todo saved in session $me and redirect
-            OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
-
-            OpenM_SessionController::set(self::MY_DATA, $me);
-            OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
-        } catch (Exception $e) {
-            OpenM_Header::redirect(OpenM_URLViewController::from(self::getClass(), self::REGISTER_FORM)->getURL());
-        }
+        if ($this->isRegistred(FALSE)){
+            
+            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_CoreView::getClass())->getURL());;            
+        }else{
+            $this->register();
+        }            
     }
 
     public function register() {
@@ -114,7 +110,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
             }
 
             if (!$error) {
-                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
                 try {
                     $clientBook->registerMe($param->get(self::FIRST_NAME), $param->get(self::LAST_NAME), $time);
                     /**

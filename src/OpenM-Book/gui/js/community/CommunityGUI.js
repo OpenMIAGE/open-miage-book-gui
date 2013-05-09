@@ -3,6 +3,7 @@ var OpenM_Book_CommunityPagesGui = {
     'divParentId': '', 
     'ressource_dir': '',
     'ressource_loader': '',
+    'userPhotoDefault':'',
     'divJSON': '',
     'divJSONContent':'',
     'divJSONInitialized': false,
@@ -238,7 +239,7 @@ function OpenM_Book_CommunityUsersNotValidGui(communityId){
         if (this.users.length != 0){
             this.c.addClass("span12 well");
             this.c.append("<p>Users Non Validé :</p>");
-            this.c.append("<p>Les utilisateurs présents ici, ne sont pas valider. Ceca signifie qu'ils postulent pour entrer dans la communauté. C'est a vous de valider leur adhésion. Plusieurs validation d'utilisateur sont requises pour etre accépter </p>");
+            this.c.append("<p>Les utilisateurs présents ici, ne sont pas valider. Cela signifie qu'ils postulent pour entrer dans la communauté. C'est a vous de valider leur adhésion. Plusieurs validation d'utilisateur sont requises pour etre accépter </p>");
             var div = $(document.createElement('div')).addClass("row-fluid");
             this.c.append(div);
             for (var i in this.users){
@@ -255,15 +256,25 @@ function OpenM_Book_CommunityUserNotValidGui(id, name){
     this.id = id;
     this.name = name;
     this.buttonValidate = '';
+    this.buttonDisplayProfil = '';
     this.c = $(document.createElement('div'));
-    
+
     this.content = function(){
         this.c.remove();
         this.c = $(document.createElement('div'));
-        this.c.addClass("community span3");
-        this.c.text(this.name);
+        this.c.addClass("user-little span3");
+        
+        var img = $(document.createElement("img")).addClass("user-little-img");
+        img.attr("src",OpenM_Book_CommunityPagesGui.ressource_dir+OpenM_Book_CommunityPagesGui.userPhotoDefault);  
+        this.c.append(img);
+        var a = $(document.createElement("a"));
+       // a.attr("href","#");
+        a.text(this.name);
+        this.c.append(a);
         this.c.append("<br>");
         this.c.append(this.buttonValidate.content());
+        this.c.append("&nbsp;&nbsp;")
+        this.c.append(this.buttonDisplayProfil.content());
         return this.c;
     }
 }
@@ -276,7 +287,7 @@ function OpenM_Book_ButtonValidateUserGui(){
     this.a = $(document.createElement('a'));
     
     this.click = '';
-    
+
     this.content = function(){
         this.a.remove();
         this.a = $(document.createElement('a')).addClass("btn "+this.style);
@@ -288,10 +299,29 @@ function OpenM_Book_ButtonValidateUserGui(){
         this.a.click(this.click);
         
         return this.a;
-    }
-    
+    }    
 }
+function OpenM_Book_ButtonDisplayProfilGui(){
+    this.text = "Voir";
+    this.style = 'btn-inverse';
+    this.iconColor = "icon-white";
+    this.iconStyle = "icon-zoom-in";
+    this.a = $(document.createElement('a'));
+    
+    this.click = '';
 
+    this.content = function(){
+        this.a.remove();
+        this.a = $(document.createElement('a')).addClass("btn "+this.style);
+        this.a.addClass("btn-space");
+        var icon = $(document.createElement("i"));
+        icon.addClass(this.iconColor + " " + this.iconStyle);
+        this.a.append(icon); 
+        this.a.append(this.text);
+        this.a.click(this.click);        
+        return this.a;
+    }    
+}
 
 
 

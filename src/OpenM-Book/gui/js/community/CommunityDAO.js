@@ -173,6 +173,7 @@ var OpenM_Book_CommunityDAO = {
         var n = name;
         if(community){
             OpenM_Book.addCommunity(name, communityId, function(data){
+                OpenM_Book_CommunityPagesGui.showJSON(data);
                 if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
                     OpenM_Book_CommunityPagesGui.showSucces("Sous communauté ajouté");
                     var c = new OpenM_Book_CommunityExchangeObject();
@@ -183,7 +184,15 @@ var OpenM_Book_CommunityDAO = {
                     OpenM_Book_CommunityDAO.allCommunities[c.id] = c;
                     community.addChild(c);
                     community.update(community);
-                }                
+                }else{
+                    if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){                     
+                      OpenM_Book_CommunityPagesGui.showError("Ajout de la sous communauté impossible : "+ data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]); 
+                   }
+                   else{
+                       OpenM_Book_CommunityPagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
+                   }
+                }
+                
             });
         }
     },
@@ -191,6 +200,7 @@ var OpenM_Book_CommunityDAO = {
         var community = this.allCommunities[communityId];
         if(community){
             OpenM_Book_Moderator.removeCommunity(community.id,function(data){
+                OpenM_Book_CommunityPagesGui.showJSON(data);
                if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
                   var parent = community.parent;
                   parent.removeChild(community);                  

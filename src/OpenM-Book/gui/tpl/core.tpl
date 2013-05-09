@@ -18,18 +18,29 @@
             <div id="divJSON"></div>
         </div>
 {include file='include/coreJS.tpl'}
-        <script type="text/javascript">           
+
+/*
+<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>*/
+
+        <script type="text/javascript">            
             {literal}$(function(){
                 OpenM_URLController.loader = "loader";
                 var ressource_js = "{/literal}{$resources_dir}{literal}";
                 OpenM_URLController.jsLoadFinished = function(){
                     OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
                     OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
+                    OpenM_Book_CommunityPagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
                     OpenM_Book_CommunityPagesGui.divParentId = "divParent";
                     OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
+                        
+                        var me = JSON.parse('{/literal}{$me}{literal}');
+                        
+                        
                     OpenM_Book_UserDAO.me.isAdmin = true;
-                    OpenM_Book_UserDAO.me.firstName = "djo";
-                    OpenM_Book_UserDAO.me.lastName = "black";
+                    OpenM_Book_UserDAO.me.firstName = me.UFN;
+                    OpenM_Book_UserDAO.me.lastName = me.ULN;
+                    OpenM_Book_UserDAO.me.id= me.UID;
                     OpenM_MenuGUI.menuId = "menuDesktop";
                     OpenM_MenuGUI.menuMobileId = "menuMobile";
                     OpenM_MenuGUI.init();

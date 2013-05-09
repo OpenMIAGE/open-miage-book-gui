@@ -75,6 +75,46 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             return $isConnected;
     }
 
+    /**
+     * Verrifi si on est Enregistrer, si oui savegarde les données user
+     * @param type $retirectToRegistre
+     */
+    protected function isRegistred($retirectToRegistre = TRUE) {        
+        $me=null;
+        try {
+            $me = $this->userClient->getUserProperties(null);
+            
+            if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
+                if ($retirectToRegistre === TRUE)
+                    OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
+                else
+                    return false;
+            }
+            OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
+            
+            OpenM_SessionController::set(self::MY_DATA, $me);
+            return true;
+        } catch (Exception $e) {           
+            echo "<pre>";
+            var_dump($e->getMessage());
+            echo "</pre>";
+            
+            if ($me!==null){
+                if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
+                    if ($retirectToRegistre === TRUE)
+                        OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
+                    else
+                        return false;                    
+                }    
+            }
+            $message = "Une errueur interne viens d'etre déclanché.<br> Message : ".$e->getMessage();
+            OpenM_Log::debug($message, __CLASS__, __METHOD__,__LINE__);
+            $errorView = new OpenM_ErrorView();           
+            $errorView->error($message);                                       
+        }                
+    }
+    
+    
     protected function setDirs() {
         $this->smarty->setTemplateDir(dirname(__FILE__) . '/tpl/');
         $this->smarty->setConfigDir(dirname(__FILE__) . '/config/');
@@ -173,6 +213,5 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 }
 
 Import::php("OpenM-Book.gui.OpenM_RegistrationView");
-Import::php("OpenM-Book.gui.OpenM_InfoView");
 Import::php("OpenM-Book.gui.OpenM_CoreView");
 ?>

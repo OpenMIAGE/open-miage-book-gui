@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Open-MIAGE</title>
-        {include file='include/head.tpl'}
+        <title>OpenM-Book</title>
+{include file='include/head.tpl'}
+{include file='include/coreCSS.tpl'}
     </head>
     <body>
-        {include file='include/navBar.tpl'}
+{include file='include/navBar.tpl'}
         <div class="container">
             <div class="row">
                 <div class="span11 offset1">
