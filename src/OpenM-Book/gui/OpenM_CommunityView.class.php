@@ -27,10 +27,6 @@ class OpenM_CommunityView extends OpenM_BookView {
         $this->smarty->assign("prenom", $me->get("UFN"));                
         $this->smarty->assign("isAdmin", $me->get("UIA"));
         
-        
-        
-        
-
         OpenM_Log::debug("Community View Open", __CLASS__, __METHOD__, __LINE__);
         $this->showAlert();
         $this->smarty->display('community.tpl');

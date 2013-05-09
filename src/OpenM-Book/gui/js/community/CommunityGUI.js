@@ -40,7 +40,18 @@ var OpenM_Book_CommunityPagesGui = {
             $('.alert').hide('slow');     
         });
         $(".alert").show("slow");         
-    }   
+    },
+    'showSucces': function(message){        
+        var divAlert = $(document.createElement("div")).addClass("alert alert-success alert-block span4 offset4").css('display','none');
+        var button = $(document.createElement("button")).attr("type","button").addClass("close").text("x");
+        var h4 = $(document.createElement("h4")).text("Opération réussi");        
+        divAlert.append(button).append(h4).append(message);
+        $("#div_alert").empty().append(divAlert);        
+        $(".close").on("click", function(event){  
+            $('.alert').hide('slow');     
+        });
+         $(".alert").show("slow"); 
+    }
 }
 
 function OpenM_Book_CommunityPageGui(){
@@ -453,6 +464,7 @@ function OpenM_Book_CommunityButtonDeleteGui(){
         this.a.attr("rel","tooltip").attr("data-placement",this.tooltipPlacement).attr("data-toggle","tooltip").attr("data-original-title",this.toolTipText);  
         this.a.tooltip();
         this.a.text(this.text);
+        this.a.on('click',this.click);
         return this.a;        
     }
 }
