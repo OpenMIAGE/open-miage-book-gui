@@ -45,7 +45,7 @@ var OpenM_URLController = {
     'getUserId': function(){
         var hash = window.location.hash;
         if(this.isUserHash()){
-            var user = hash.slice(this.userSelector.length + 1);
+            var user = hash.slice(this.userSelector.length + 2);
             if(user.indexOf("/")!=-1)
                 return user.slice(0, user.indexOf("/"));
             else
@@ -67,7 +67,12 @@ var OpenM_URLController = {
             OpenM_MenuGUI.selectCommunity();
             OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display();
         }
-        else{
+        else if(this.isUserHash()){
+            OpenM_MenuGUI.selectUser();
+            OpenM_Book_UsersPagesController.userPage(this.getUserId()).display();
+            
+        }else        
+        {
             OpenM_MenuGUI.selectCommunity();
             OpenM_Book_CommunityPagesController.communityPage().display();
         }            

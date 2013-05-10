@@ -173,9 +173,9 @@ var OpenM_Book_CommunityDAO = {
         var n = name;
         if(community){
             OpenM_Book.addCommunity(name, communityId, function(data){
-                OpenM_Book_CommunityPagesGui.showJSON(data);
+                OpenM_Book_PagesGui.showJSON(data);
                 if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
-                    OpenM_Book_CommunityPagesGui.showSucces("Sous communauté ajouté");
+                    OpenM_Book_PagesGui.showSucces("Sous communauté ajouté");
                     var c = new OpenM_Book_CommunityExchangeObject();
                     c.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                     c.parent = community;
@@ -186,10 +186,10 @@ var OpenM_Book_CommunityDAO = {
                     community.update();
                 }else{
                     if (data.hasOwnProperty(OpenM_Book.RETURN_ERROR_PARAMETER)){                     
-                      OpenM_Book_CommunityPagesGui.showError("Ajout de la sous communauté impossible : "+ data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]); 
+                      OpenM_Book_PagesGui.showError("Ajout de la sous communauté impossible : "+ data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]); 
                    }
                    else{
-                       OpenM_Book_CommunityPagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
+                       OpenM_Book_PagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
                    }
                 }
                 
@@ -200,19 +200,19 @@ var OpenM_Book_CommunityDAO = {
         var community = this.allCommunities[communityId];
         if(community){
             OpenM_Book_Moderator.removeCommunity(community.id,function(data){
-                OpenM_Book_CommunityPagesGui.showJSON(data);
+                OpenM_Book_PagesGui.showJSON(data);
                if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
                   var parent = community.parent;
                   parent.removeChild(community);                  
                   delete OpenM_Book_CommunityDAO.allCommunities[community.id];
-                  OpenM_Book_CommunityPagesGui.showSucces("Communauté supprimée");
+                  OpenM_Book_PagesGui.showSucces("Communauté supprimée");
                   eval(OpenM_URLController.clickToCommunity(parent).split(";")[0]);                 
                }else{
                    if (data.hasOwnProperty(OpenM_Book_Moderator.RETURN_ERROR_PARAMETER)){                     
-                      OpenM_Book_CommunityPagesGui.showError("Une erreur c'est produites lors de la suppression de la communauté : "+ data[OpenM_Book_Moderator.RETURN_ERROR_MESSAGE_PARAMETER]); 
+                      OpenM_Book_PagesGui.showError("Une erreur c'est produites lors de la suppression de la communauté : "+ data[OpenM_Book_Moderator.RETURN_ERROR_MESSAGE_PARAMETER]); 
                    }
                    else{
-                       OpenM_Book_CommunityPagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
+                       OpenM_Book_PagesGui.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
                    }
                }               
             });
@@ -222,7 +222,7 @@ var OpenM_Book_CommunityDAO = {
     },
     
     'parseAndLoad': function(data, community){
-        OpenM_Book_CommunityPagesGui.showJSON(data);
+        OpenM_Book_PagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
             if (!this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]])
                 this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]] = community;
@@ -260,15 +260,15 @@ var OpenM_Book_CommunityDAO = {
             community.update();
         }else{
             if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
-                OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
+                OpenM_Book_PagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
             }else{
-                OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
+                OpenM_Book_PagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
             }  
         }
     },    
     'parseAndLoadAncestors': function(data,community){
         var ancestors = new Array();
-        OpenM_Book_CommunityPagesGui.showJSON(data);
+        OpenM_Book_PagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
            
             if (data[community.id]){
@@ -304,14 +304,14 @@ var OpenM_Book_CommunityDAO = {
             }
         }else{
             if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
-                OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
+                OpenM_Book_PagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
             }else{
-                OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données des ancetres d'une communauté (id: "+community.id+") :(");
+                OpenM_Book_PagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données des ancetres d'une communauté (id: "+community.id+") :(");
             }  
         }
     },    
     'parseUsers': function(data, community){
-        OpenM_Book_CommunityPagesGui.showJSON(data);
+        OpenM_Book_PagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
             var user;
             var users = new Array();
@@ -338,7 +338,7 @@ var OpenM_Book_CommunityDAO = {
         }
     },
     'parseUsersNotValid': function(data, community){
-        OpenM_Book_CommunityPagesGui.showJSON(data);
+        OpenM_Book_PagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
             var user;
             var users = new Array();

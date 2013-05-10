@@ -82,8 +82,9 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected function isRegistred($retirectToRegistre = TRUE) {        
         $me=null;
         try {
-            $me = $this->userClient->getUserProperties(null);
-            
+            OpenM_Log::debug("try to getUser Properties", __CLASS__, __METHOD__, __LINE__);
+            $me = $this->userClient->getUserProperties();
+            OpenM_Log::debug("user Properties found !", __CLASS__, __METHOD__, __LINE__);
             if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
                 if ($retirectToRegistre === TRUE)
                     OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
@@ -94,10 +95,11 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             
             OpenM_SessionController::set(self::MY_DATA, $me);
             return true;
-        } catch (Exception $e) {           
-            echo "<pre>";
+        } catch (Exception $e) { 
+            
+           /* echo "<pre>";
             var_dump($e->getMessage());
-            echo "</pre>";
+            echo "</pre>";*/
             
             if ($me!==null){
                 if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){

@@ -28,8 +28,7 @@ var OpenM_Book_CommunityPagesController = {
             communityControler = new OpenM_Book_CommunityPageController(community);
             this.AllCommunitiesPagesControlers[community.id] = communityControler;
         }
-        else
-            communityControler = this.AllCommunitiesPagesControlers[community.id];
+
 
         return communityControler;
     }        
@@ -87,9 +86,9 @@ function OpenM_Book_CommunityInTreeController(community, active){
     this.community.addUpdateCallBack(this.update);
     
     this.gui = new OpenM_Book_CommunityInTreeGui(community.id, community.name, this.active);
-    if(this.active){
-        this.gui.click = function(){
-            OpenM_URLController.clickToCommunity(this.community);
+    if(this.active){        
+        this.gui.click = function(){       
+            OpenM_URLController.clickToCommunity(controller.community)
         }
     }
 }
@@ -217,8 +216,13 @@ function OpenM_Book_CommunityUserNotValidController(user, community){
     this.buttonDisplayProfil = new OpenM_Book_ButtonDisplayProfilController(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
 
-
     var controler = this;
+
+    this.gui.click = function(){
+        alert('click to user ! ');
+        OpenM_URLController.clickToUser(controler.user);
+    }
+   
     this.buttonValidate.gui.click = function(e){
         alert(controler.user.name);
         

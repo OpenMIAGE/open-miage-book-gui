@@ -23,8 +23,10 @@
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGUI.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/user/UserDAO.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/menuGUI.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/user/UserController.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/user/UserDAO.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/user/UserGUI.js"></script>
 <script src="{$clients_js}"></script>
 
 
@@ -33,21 +35,19 @@
                 OpenM_URLController.loader = "loader";
                 var ressource_js = "{/literal}{$resources_dir}{literal}";
                 OpenM_URLController.jsLoadFinished = function(){
-                    OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
-                    OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
-                    OpenM_Book_CommunityPagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
-                    OpenM_Book_CommunityPagesGui.divParentId = "divParent";
-                    OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
-                        
-                        var me = JSON.parse('{/literal}{$me}{literal}');
-                        
-                        
-                    OpenM_Book_UserDAO.me.isAdmin = true;
-                    OpenM_Book_UserDAO.me.firstName = me.UFN;
-                    OpenM_Book_UserDAO.me.lastName = me.ULN;
-                    OpenM_Book_UserDAO.me.id= me.UID;
+                    OpenM_Book_PagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
+                    OpenM_Book_PagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
+                    OpenM_Book_PagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
+                    OpenM_Book_PagesGui.divParentId = "divParent";
+                    OpenM_Book_PagesGui.divJSON = "divJSON";
+                      
+                    var me = new OpenM_Book_UserExchangeObject();
+                    var data   = JSON.parse('{/literal}{$me}{literal}');
+                    OpenM_Book_UserDAO.parseAndLoad(data, me);
+                    OpenM_Book_UserDAO.me = me; 
+    
                     OpenM_MenuGUI.menuId = "menuDesktop";
-                    OpenM_MenuGUI.menuMobileId = "menuMobile";
+                    OpenM_MenuGUI.menuMobileId = "menuMobile";                        
                     OpenM_MenuGUI.init();
                     OpenM_URLController.load();
                 }

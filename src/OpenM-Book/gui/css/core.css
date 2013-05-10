@@ -31,7 +31,19 @@
    border: #222222 solid 1px; 
 }
 
+.user-little-img,a:hover{
+    cursor:pointer
+}
+
 .btn-space{
     margin-right: 10px;
     margin-bottom: 5px;
 }
+
+.user-field {
+   border: 1px solid #d9d6d9;
+   -webkit-border-radius: 30px;
+   -moz-border-radius: 30px;
+   border-radius: 30px;
+   padding:20px;
+ }
