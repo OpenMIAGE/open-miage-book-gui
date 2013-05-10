@@ -229,7 +229,9 @@ function OpenM_Book_CommunityUserGui(id, name){
         this.c.append(img);
         var a = $(document.createElement("a"));
         a.text(this.name);
-        this.c.append(a); 
+        this.c.append(a);
+        a.click(this.click);
+        img.click(this.click);
         return this.c;
     }
 }
