@@ -88,7 +88,9 @@ function OpenM_Book_CommunityInTreeController(community, active){
     
     this.gui = new OpenM_Book_CommunityInTreeGui(community.id, community.name, this.active);
     if(this.active){
-        this.gui.click = OpenM_URLController.clickToCommunity(this.community);
+        this.gui.click = function(){
+            OpenM_URLController.clickToCommunity(this.community);
+        }
     }
 }
 
@@ -135,7 +137,9 @@ function OpenM_Book_CommunityChildController(community){
     }
     this.community.addUpdateCallBack(this.update);
     this.gui = new OpenM_Book_CommunityChildGui(this.community.id, this.community.name);
-    this.gui.click = OpenM_URLController.clickToCommunity(this.community);
+    this.gui.click = function(){
+        OpenM_URLController.clickToCommunity(controller.community)
+    };
 }
 
 function OpenM_Book_CommunityUsersController(community){
@@ -167,6 +171,10 @@ function OpenM_Book_CommunityUsersController(community){
 function OpenM_Book_CommunityUserController(user){
     this.user = user;
     this.gui = new OpenM_Book_CommunityUserGui(this.user.id, this.user.name);
+    var controller = this;
+    this.gui.click = function(){
+        OpenM_URLController.clickToUser(controller.user);
+    }
 }
 
 function OpenM_Book_CommunityUsersNotValidController(community){
@@ -178,10 +186,14 @@ function OpenM_Book_CommunityUsersNotValidController(community){
         var user;
         this.users = new Array();
         this.gui.users = new Array();
-        for(var i in this.community.usersNotValid){
-            user = new OpenM_Book_CommunityUserNotValidController(this.community.usersNotValid[i]);
-            this.users[this.community.usersNotValid[i].id] = user;
-            this.gui.users.push(user.gui);
+        var userController;
+        for(var i in this.community.usersNotValidTree){
+            user = OpenM_Book_UserDAO.get(i, false, false);
+            for(var j in this.community.usersNotValidTree[i]){
+                userController = new OpenM_Book_CommunityUserNotValidController(user, this.community.usersNotValidTree[i][j]);
+                this.users.push(userController);
+                this.gui.users.push(userController.gui);
+            }
         }
         this.gui.content();
     }
@@ -195,9 +207,10 @@ function OpenM_Book_CommunityUsersNotValidController(community){
     this.updateUsers();
 }
 
-function OpenM_Book_CommunityUserNotValidController(user){
+function OpenM_Book_CommunityUserNotValidController(user, community){
     this.user = user;
-    this.gui = new OpenM_Book_CommunityUserNotValidGui(this.user.id, this.user.name);
+    this.community = community;
+    this.gui = new OpenM_Book_CommunityUserNotValidGui(this.user.id, this.user.name, this.community.name);
     this.buttonValidate = new  OpenM_Book_ButtonValidateUserController(this.user);
     this.gui.buttonValidate = this.buttonValidate.gui;
     this.buttonDisplayProfil = new OpenM_Book_ButtonDisplayProfilController(this.user);
@@ -274,7 +287,10 @@ function OpenM_Book_CommunityButtonRegisterController(community){
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonRegisterGui(this.community.id);
     this.gui.active = !this.community.userAlreadyRegistred;
-    this.gui.click = "OpenM_Book_CommunityDAO.allCommunities["+this.community.id+"].registerMe();return false;";
+    var controller = this;
+    this.gui.click = function(){
+        OpenM_Book_CommunityDAO.allCommunities[controller.community.id].registerMe();
+    }
 }
 
 function OpenM_Book_CommunityButtonAddCommunityController(community){
@@ -328,7 +344,7 @@ function OpenM_Book_CommunityButtonDeleteController(community){
     var controler = this;
     this.gui.click = function(e){                
         e.preventDefault();
-        if (confirm('Voulez vous vraiment supprimer la communauté : '+controler.community.name)){
+        if (confirm('Voulez-vous vraiment supprimer la communauté : '+controler.community.name)){
             OpenM_Book_CommunityDAO.removeCommunity(controler.community.id);
         }
     } 
