@@ -19,9 +19,14 @@
         </div>
 {include file='include/coreJS.tpl'}
 
-/*
+
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>*/
+<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGUI.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/user/UserDAO.js"></script>
+<script src="{$resources_dir}OpenM-Book/gui/js/menuGUI.js"></script>
+<script src="{$clients_js}"></script>
+
 
         <script type="text/javascript">            
             {literal}$(function(){
@@ -29,7 +34,7 @@
                 var ressource_js = "{/literal}{$resources_dir}{literal}";
                 OpenM_URLController.jsLoadFinished = function(){
                     OpenM_Book_CommunityPagesGui.ressource_dir = "{/literal}{$resources_dir}{literal}";
-                    OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/ajax-loader.gif';
+                    OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
                     OpenM_Book_CommunityPagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
                     OpenM_Book_CommunityPagesGui.divParentId = "divParent";
                     OpenM_Book_CommunityPagesGui.divJSON = "divJSON";
@@ -46,12 +51,13 @@
                     OpenM_MenuGUI.init();
                     OpenM_URLController.load();
                 }
+                    
                 OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityController.js");
+               /* OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityController.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityDAO.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityGUI.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserDAO.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/menuGUI.js");
+                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/menuGUI.js");*/
             });
             {/literal}</script>
     </body>
