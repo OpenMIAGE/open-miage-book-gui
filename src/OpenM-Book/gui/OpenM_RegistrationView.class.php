@@ -45,17 +45,11 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function _default() {
         $this->login();
     }
-
-    /*
-     * Méthode permetant d'envoyer l'utilisateur vers la page d'authetification (OpenM_ID) 
-     * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
-     */
-
+    
     public function login() {
         $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
         if ($this->isRegistred(FALSE)){
-            
-            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_CoreView::getClass())->getURL());;            
+            OpenM_Header::redirect(OpenM_URLViewController::getRoot());         
         }else{
             $this->register();
         }            
@@ -65,11 +59,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
         $this->isConnected();
 
-        /**      if (OpenM_SessionController::contains(self::MY_DATA)) {
-          OpenM_Log::debug("Useralready registred, redirect to Profile", __CLASS__, __METHOD__, __LINE__);
-          $this->setAlert( "Vous êtes déjà enregistrer.");
-          OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
-          } */
         $error = FALSE;
         $param = HashtableString::from($_POST);
         if ($param->containsKey("submit")) {

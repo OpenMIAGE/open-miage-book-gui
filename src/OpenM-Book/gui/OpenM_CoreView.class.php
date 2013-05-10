@@ -28,15 +28,6 @@ class OpenM_CoreView extends OpenM_BookView {
     }
 
     public function view() {
-        $this->isConnected();        
-        $this->isRegistred();
-        
-        
-        $me = OpenM_SessionController::get(self::MY_DATA);
-        $this->smarty->assign(self::MY_DATA, OpenM_MapConvertor::mapToJSON($me));
-        
-        
-        $this->smarty->assign(self::MENU_COMMUNITY, TRUE);
         $this->initPage();        
         $this->showAlert();
         $this->smarty->display('core.tpl');

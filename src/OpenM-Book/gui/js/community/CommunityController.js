@@ -89,7 +89,7 @@ function OpenM_Book_CommunityInTreeController(community, active){
     this.gui = new OpenM_Book_CommunityInTreeGui(community.id, community.name, this.active);
     if(this.active){
         this.gui.click = function(){
-            OpenM_URLController.clickToCommunity(this.community);
+            OpenM_URLController.clickToCommunity(controller.community);
         }
     }
 }
@@ -173,7 +173,6 @@ function OpenM_Book_CommunityUserController(user){
     this.gui = new OpenM_Book_CommunityUserGui(this.user.id, this.user.name);
     var controller = this;
     this.gui.click = function(){
-        alert('click to user ! ');
         OpenM_URLController.clickToUser(controller.user);
     }
 }
@@ -290,7 +289,7 @@ function OpenM_Book_CommunityButtonRegisterController(community){
     this.gui.active = !this.community.userAlreadyRegistred;
     var controller = this;
     this.gui.click = function(){
-        OpenM_Book_CommunityDAO.allCommunities[controller.community.id].registerMe();
+        controller.community.registerMe();
     }
 }
 

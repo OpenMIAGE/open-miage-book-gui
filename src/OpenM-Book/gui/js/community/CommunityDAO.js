@@ -111,7 +111,7 @@ function OpenM_Book_CommunityExchangeObject(){
         OpenM_Book.registerMeIntoCommunity(this.id, function(data){
             if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE){
                 community.userAlreadyRegistred = true;
-                community.update();
+                community.updateUsersNotValid();
             }
         })
     }

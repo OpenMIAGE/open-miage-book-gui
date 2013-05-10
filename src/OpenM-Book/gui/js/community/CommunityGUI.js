@@ -383,7 +383,11 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId){
 
         if (this.active){
             var gui = this;
-            this.a.click(function(){$(gui).addClass('disabled');this.click()});
+            this.a.click(function(){
+                gui.click();
+                alert("do");
+                $(gui.a).addClass('disabled');
+            });
             this.toolTipText = "S'enregistrer dans cette communauté";
         }else{
             this.a.addClass("disabled");
