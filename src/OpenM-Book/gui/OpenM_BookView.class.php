@@ -77,36 +77,16 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     /**
      * Verrifi si on est Enregistrer, si oui savegarde les données user
-     * @param type $retirectToRegistre
+     * @param type $retirectToRegistered
      */
-    protected function isRegistred($retirectToRegistre = TRUE) {
-        $me = null;
+    protected function isRegistered($retirectToRegistered = true) {
         try {
             $me = $this->userClient->getUserProperties();
-
-            OpenM_Log::debug("user Properties found !", __CLASS__, __METHOD__, __LINE__);
-            if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
-                if ($retirectToRegistre === TRUE)
-                    OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
-                else
-                    return false;
-            }
             OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
-
-            OpenM_SessionController::set(self::MY_DATA, $me);
-            return true;
-        } catch (Exception $e) { 
-            
-           
-
-            if ($me !== null) {
-                if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)) {
-                    if ($retirectToRegistre === TRUE)
-                        OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
-                    else
-                        return false;
-                }
-            }
+            return $me;
+        } catch (Exception $e) {
+            if ($retirectToRegistered === true)
+                OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());            
             $message = "Une errueur interne viens d'etre déclanché.<br> Message : " . $e->getMessage();
             OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
             $errorView = new OpenM_ErrorView();
@@ -127,7 +107,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addLinks() {
         $this->smarty->assign("links", array(
-            "root" => OpenM_URLViewController::getRoot()
+            "root" => OpenM_URLViewController::getRoot(),
+            "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
         ));
     }
 
@@ -141,10 +122,10 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             array(
                 "label" => "account",
                 "items" => array(
-                    array(
-                        "label" => "login",
-                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
-                    ),
+//                    array(
+//                        "label" => "login",
+//                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
+//                    ),
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()

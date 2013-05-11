@@ -218,18 +218,14 @@ function OpenM_Book_CommunityUserNotValidController(user, community){
     var controler = this;
 
     this.gui.click = function(){
-        alert('click to user ! ');
         OpenM_URLController.clickToUser(controler.user);
-    }
-   
+    }   
     this.buttonValidate.gui.click = function(e){
         alert(controler.user.name);
-        
         e.preventDefault();
     }
     this.buttonDisplayProfil.gui.click = function(e){
-        alert('On visite le profil de : '+controler.user.name);
-        e.preventDefault();
+        OpenM_URLController.clickToUser(controler.user);
     }    
 }
 

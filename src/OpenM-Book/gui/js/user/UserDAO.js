@@ -12,10 +12,26 @@ function OpenM_Book_UserExchangeObject (){
 }
 
 var OpenM_Book_UserDAO = {
-    'initMe': function(){
+    'initMe': function(callBack){
         var user = new OpenM_Book_UserExchangeObject();
-        this.parseAndLoad(OpenM_Book_User.getUserProperties(), user);
-        this.me = user;
+        var callBackFunction = callBack;
+        if(callBack==undefined){
+            this.parseAndLoad(OpenM_Book_User.getUserProperties(), user);
+            if(user.loaded){
+                this.me = user;
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            OpenM_Book_User.getUserProperties(function(data){
+                OpenM_Book_UserDAO.parseAndLoad(data, user);
+                OpenM_Book_UserDAO.me = user;
+                callBackFunction();
+            });
+        }        
     },
     'me': undefined,
     'allUsers': new Array(),
@@ -42,9 +58,9 @@ var OpenM_Book_UserDAO = {
     },
     'parseAndLoad': function(data, user){        
         OpenM_Book_PagesGui.showJSON(data);
-         if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] == OpenM_Book_User.RETURN_STATUS_OK_VALUE){
-             if (! this.allUsers[data[OpenM_Book_User.RETURN_USER_ID_PARAMETER]])
-                 this.allUsers[data[OpenM_Book_User.RETURN_USER_ID_PARAMETER]] = user;
+        if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] == OpenM_Book_User.RETURN_STATUS_OK_VALUE){
+            if (! this.allUsers[data[OpenM_Book_User.RETURN_USER_ID_PARAMETER]])
+                this.allUsers[data[OpenM_Book_User.RETURN_USER_ID_PARAMETER]] = user;
             
             user.id = data[OpenM_Book_User.RETURN_USER_ID_PARAMETER];           
             user.firstName = data[OpenM_Book_User.RETURN_USER_FIRST_NAME_PARAMETER];
@@ -52,14 +68,14 @@ var OpenM_Book_UserDAO = {
             user.name = this.firstName + " " + user.lastName;
             user.isAdmin = (data[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER]==OpenM_Book_User.TRUE_PARAMETER_VALUE)?true:false;
             user.loaded = true;
-         }else{
-if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
+        }else{
+            if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
                 OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
             }else{
                 OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
             }  
              
-         } 
+        } 
     },
     'fieldsNames': function(){
         var array = new Array();
