@@ -19,24 +19,8 @@
         </div>
         {include file='include/coreJS.tpl'}
 
-        <script type="text/javascript">{literal}        
-            $(function(){
-                OpenM_URLController.loader = "loader";
-                var ressource_js = "{/literal}{$resources_dir}{literal}";
-                OpenM_URLController.jsLoadFinished = function(){
-            {/literal}{include file='include/coreJS-initializing.tpl'}{literal}
-                }                
-                OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityController.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityDAO.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityGUI.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserDAO.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserController.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserGUI.js");    
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/menuGUI.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-SSO/gui/js/OpenM_SSOClientConnectionManager.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/CommonGUI.js");
-            });{/literal}
+        <script type="text/javascript">
+            {include file='include/coreJS-initializing.tpl'}
         </script>
     </body>
 </html>
