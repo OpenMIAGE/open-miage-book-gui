@@ -40,6 +40,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const MENU_PROFILE = "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
     const MENU_COMMUNITY = "menu_community";
+    const SMARTY_OPENM_ID_PROXY_PATH = "OpenM_ID_proxy";
+    const OPENM_ID_PROXY_PATH = "OpenM_ID.proxy.path";
 
     protected $sso_book;
     protected $bookClient;
@@ -68,22 +70,19 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      */
     protected function isConnected($redirectToLogin = true) {
         $isConnected = $this->sso_book->isConnected();
-
         if (!$isConnected && $redirectToLogin)
-            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, OpenM_RegistrationView::LOGIN_FORM)->getURL());
-        else
-            return $isConnected;
+            $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), true);
     }
 
     /**
      * Verrifi si on est Enregistrer, si oui savegarde les données user
      * @param type $retirectToRegistre
      */
-    protected function isRegistred($retirectToRegistre = TRUE) {        
-        $me=null;
+    protected function isRegistred($retirectToRegistre = TRUE) {
+        $me = null;
         try {
-            OpenM_Log::debug("try to getUser Properties", __CLASS__, __METHOD__, __LINE__);
             $me = $this->userClient->getUserProperties();
+
             OpenM_Log::debug("user Properties found !", __CLASS__, __METHOD__, __LINE__);
             if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
                 if ($retirectToRegistre === TRUE)
@@ -92,36 +91,34 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     return false;
             }
             OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
-            
+
             OpenM_SessionController::set(self::MY_DATA, $me);
             return true;
         } catch (Exception $e) { 
             
-           /* echo "<pre>";
-            var_dump($e->getMessage());
-            echo "</pre>";*/
-            
-            if ($me!==null){
-                if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)){
+           
+
+            if ($me !== null) {
+                if ($me->containsKey(OpenM_Book_Const::RETURN_ERROR_PARAMETER)) {
                     if ($retirectToRegistre === TRUE)
                         OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
                     else
-                        return false;                    
-                }    
+                        return false;
+                }
             }
-            $message = "Une errueur interne viens d'etre déclanché.<br> Message : ".$e->getMessage();
-            OpenM_Log::debug($message, __CLASS__, __METHOD__,__LINE__);
-            $errorView = new OpenM_ErrorView();           
-            $errorView->error($message);                                       
-        }                
+            $message = "Une errueur interne viens d'etre déclanché.<br> Message : " . $e->getMessage();
+            OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
+            $errorView = new OpenM_ErrorView();
+            $errorView->error($message);
+        }
     }
-    
-    
+
     protected function setDirs() {
         $this->smarty->setTemplateDir(dirname(__FILE__) . '/tpl/');
         $this->smarty->setConfigDir(dirname(__FILE__) . '/config/');
         $this->smarty->setCompileDir($this->template_c);
         $this->smarty->assign(self::SMARTY_RESOURCES_DIR_VAR_NAME, $this->ressources_dir);
+        $this->smarty->assign(self::SMARTY_OPENM_ID_PROXY_PATH, $this->properties->get(self::OPENM_ID_PROXY_PATH));
     }
 
     protected function addLinks() {
