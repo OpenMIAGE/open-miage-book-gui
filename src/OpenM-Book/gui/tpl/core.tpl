@@ -28,11 +28,7 @@
                     OpenM_Book_CommunityPagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
                     OpenM_Book_CommunityPagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
                     OpenM_Book_CommunityPagesGui.divParentId = "divParent";
-                    OpenM_Book_CommunityPagesGui.divJSON = "divJSON";                       
-                    OpenM_Book_UserDAO.me.isAdmin = true;
-                    OpenM_Book_UserDAO.me.firstName = "djo";
-                    OpenM_Book_UserDAO.me.lastName = "black";
-                    OpenM_Book_UserDAO.me.id= 64;
+                    OpenM_Book_CommunityPagesGui.divJSON = "divJSON"; 
                     OpenM_MenuGUI.menuId = "menuDesktop";
                     OpenM_MenuGUI.menuMobileId = "menuMobile";
                     OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";    
@@ -40,8 +36,9 @@
                     OpenM_IDLoginClient.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
                     var isConnected = OpenM_IDLoginClient.isConnected(true);
                     if(isConnected){
-                        OpenM_URLController.load();
+                        OpenM_Book_UserDAO.initMe();
                         OpenM_MenuGUI.init();
+                        OpenM_URLController.load();
                     }
                     else{
                         location.reload();
