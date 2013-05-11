@@ -198,11 +198,10 @@ function OpenM_Book_CommunityUsersNotValidController(community){
     }
     
     var controller = this;
-    this.update = function(){
-        controller.updateUsers();
-    }
     
-    this.community.addUpdateUsersNotValidCallBack(this.update);    
+    this.community.addUpdateUsersNotValidCallBack(function(){
+        controller.updateUsers();
+    });
     this.updateUsers();
 }
 
@@ -224,9 +223,9 @@ function OpenM_Book_CommunityUserNotValidController(user, community){
         alert(controler.user.name);
         e.preventDefault();
     }
-    this.buttonDisplayProfil.gui.click = function(e){
+    this.buttonDisplayProfil.gui.click = function(){
         OpenM_URLController.clickToUser(controler.user);
-    }    
+    }
 }
 
 function OpenM_Book_ButtonValidateUserController(user){
