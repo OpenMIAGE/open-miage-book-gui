@@ -11,9 +11,13 @@ function OpenM_Book_UserExchangeObject (){
     
 }
 
-var OpenM_Book_UserDAO = {     
-    'AllUsers':new Array(),
-    'me':'',
+var OpenM_Book_UserDAO = {
+    'initMe': function(){
+        var user = new OpenM_Book_UserExchangeObject();
+        this.parseAndLoad(OpenM_Book_User.getUserProperties(), user);
+        this.me = user;
+    },
+    'me': undefined,
     'allUsers': new Array(),
     'get': function(userId, synchro, reload){
         var user;
@@ -46,10 +50,14 @@ var OpenM_Book_UserDAO = {
             user.firstName = data[OpenM_Book_User.RETURN_USER_FIRST_NAME_PARAMETER];
             user.lastName = data[OpenM_Book_User.RETURN_USER_LAST_NAME_PARAMETER];
             user.name = this.firstName + " " + user.lastName;
-              
+            user.isAdmin = (data[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER]==OpenM_Book_User.TRUE_PARAMETER_VALUE)?true:false;
             user.loaded = true;
          }else{
-             //ERROR
+if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
+                OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
+            }else{
+                OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
+            }  
              
          } 
     },

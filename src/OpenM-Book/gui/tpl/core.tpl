@@ -19,7 +19,7 @@
         </div>
         {include file='include/coreJS.tpl'}
 
- 
+ <!-- For DEV -->
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
 <script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGUI.js"></script>
@@ -49,11 +49,20 @@
     
                     OpenM_MenuGUI.menuId = "menuDesktop";
                     OpenM_MenuGUI.menuMobileId = "menuMobile";                        
-                    OpenM_MenuGUI.init();
-                    OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy}{literal}";
-                    OpenM_URLController.load();
+                    OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";    
+                    OpenM_IDLoginClient.session_mode = OpenM_IDLoginClient.MODE_API_SELECTION;
+                    OpenM_IDLoginClient.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
+                    var isConnected = OpenM_IDLoginClient.isConnected(true);
+                    if(isConnected){
+                        //OpenM_Book_UserDAO.initMe();
+                        OpenM_MenuGUI.init();
+                        OpenM_URLController.load();
+                    }
+                    else{
+                        location.reload();
+                    }
                 }
-                  OpenM_URLController.jsLoadFinished();  
+                  OpenM_URLController.jsLoadFinished(); //for dev 
                 /*OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityController.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityDAO.js");

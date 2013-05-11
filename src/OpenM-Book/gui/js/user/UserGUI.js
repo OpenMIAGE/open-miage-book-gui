@@ -50,7 +50,7 @@ function OpenM_Book_UserButtonModificationGui(inModification){
      
      this.content = function(){
          this.a.empty()
-               .addClass("btn "+this.style);//.unbind('click');                              
+               .addClass("btn "+this.style);                              
          var icon = $(document.createElement("i"))
                     .addClass(this.iconColor + " " + this.iconStyle);
          this.a.append(icon)

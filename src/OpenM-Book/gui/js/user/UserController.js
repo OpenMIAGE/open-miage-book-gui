@@ -67,10 +67,10 @@ function OpenM_Book_UserButtonModificationController(user,pageControler, inModif
     var controller = this;
     this.gui.click = function(e){
         //alert('TODO : tous les champs en modification')
-        controller.inModification = (!controller.inModification);
+      /*  controller.inModification = (!controller.inModification);
         controller.page.fields.updateInModification(controller.inModification);
         controller.gui.inModification = controller.inModification;
-        controller.gui.content();
+        controller.gui.content();*/
         e.preventDefault();
     }    
 }
