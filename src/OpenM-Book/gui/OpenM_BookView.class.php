@@ -49,11 +49,12 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected $groupClient;
     protected $moderatorClient;
     protected $adminClient;
+    protected $ssoProperties;
 
     public function __construct() {
         parent::__construct();
-        $p2 = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
-        $api_name = $p2->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
+        $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
+        $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso_book = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
         $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
@@ -118,7 +119,10 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->smarty->setConfigDir(dirname(__FILE__) . '/config/');
         $this->smarty->setCompileDir($this->template_c);
         $this->smarty->assign(self::SMARTY_RESOURCES_DIR_VAR_NAME, $this->ressources_dir);
-        $this->smarty->assign(self::SMARTY_OPENM_ID_PROXY_PATH, $this->properties->get(self::OPENM_ID_PROXY_PATH));
+        $this->smarty->assign(self::SMARTY_OPENM_ID_PROXY_PATH, array(
+            "url" => $this->properties->get(self::OPENM_ID_PROXY_PATH),
+            "api_selected" => $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX)
+        ));
     }
 
     protected function addLinks() {

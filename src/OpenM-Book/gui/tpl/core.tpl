@@ -35,9 +35,17 @@
                     OpenM_Book_UserDAO.me.id= 64;
                     OpenM_MenuGUI.menuId = "menuDesktop";
                     OpenM_MenuGUI.menuMobileId = "menuMobile";
-                    OpenM_MenuGUI.init();
-                    OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy}{literal}";
-                    OpenM_URLController.load();
+                    OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";    
+                    OpenM_IDLoginClient.session_mode = OpenM_IDLoginClient.MODE_API_SELECTION;
+                    OpenM_IDLoginClient.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
+                    var isConnected = OpenM_IDLoginClient.isConnected(true);
+                    if(isConnected){
+                        OpenM_URLController.load();
+                        OpenM_MenuGUI.init();
+                    }
+                    else{
+                        location.reload();
+                    }
                 }
                     
                 OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
