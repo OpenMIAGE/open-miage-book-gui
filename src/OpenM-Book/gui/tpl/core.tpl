@@ -19,18 +19,6 @@
         </div>
         {include file='include/coreJS.tpl'}
 
- <!-- For DEV -->
-<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityController.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityDAO.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/community/CommunityGUI.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/menuGUI.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/user/UserController.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/user/UserDAO.js"></script>
-<script src="{$resources_dir}OpenM-Book/gui/js/user/UserGUI.js"></script>
-<script src="{$resources_dir}OpenM-ID/gui/js/OpenM_IDLoginClient.js"></script>
-<script src="{$clients_js}"></script>
-
-
         <script type="text/javascript">            
             {literal}$(function(){
                 OpenM_URLController.loader = "loader";
@@ -41,20 +29,18 @@
                     OpenM_Book_PagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';    
                     OpenM_Book_PagesGui.divParentId = "divParent";
                     OpenM_Book_PagesGui.divJSON = "divJSON";
-                      
                     var me = new OpenM_Book_UserExchangeObject();
                     var data   = JSON.parse('{/literal}{$me}{literal}');
                     OpenM_Book_UserDAO.parseAndLoad(data, me);
-                    OpenM_Book_UserDAO.me = me; 
+                    OpenM_Book_UserDAO.me = me;
     
                     OpenM_MenuGUI.menuId = "menuDesktop";
                     OpenM_MenuGUI.menuMobileId = "menuMobile";                        
-                    OpenM_IDLoginClient.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";    
-                    OpenM_IDLoginClient.session_mode = OpenM_IDLoginClient.MODE_API_SELECTION;
-                    OpenM_IDLoginClient.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
-                    var isConnected = OpenM_IDLoginClient.isConnected(true);
+                    OpenM_SSOClientConnectionManager.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";    
+                    OpenM_SSOClientConnectionManager.session_mode = OpenM_SSOClientConnectionManager.MODE_API_SELECTION;
+                    OpenM_SSOClientConnectionManager.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
+                    var isConnected = OpenM_SSOClientConnectionManager.isConnected(undefined, true);
                     if(isConnected){
-                        //OpenM_Book_UserDAO.initMe();
                         OpenM_MenuGUI.init();
                         OpenM_URLController.load();
                     }
@@ -62,8 +48,8 @@
                         location.reload();
                     }
                 }
-                  OpenM_URLController.jsLoadFinished(); //for dev 
-                /*OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
+                
+                OpenM_URLController.jsLoad("{/literal}{$clients_js}{literal}");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityController.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityDAO.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/community/CommunityGUI.js");
@@ -71,7 +57,8 @@
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserController.js");
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/user/UserGUI.js");    
                 OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/menuGUI.js");
-                OpenM_URLController.jsLoad(ressource_js+"OpenM-ID/gui/js/OpenM_IDLoginClient.js");*/
+                OpenM_URLController.jsLoad(ressource_js+"OpenM-SSO/gui/js/OpenM_SSOClientConnectionManager.js");
+                OpenM_URLController.jsLoad(ressource_js+"OpenM-Book/gui/js/CommonGUI.js");
             });
             {/literal}</script>
     </body>
