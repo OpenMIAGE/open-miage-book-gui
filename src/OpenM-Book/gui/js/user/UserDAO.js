@@ -70,9 +70,9 @@ var OpenM_Book_UserDAO = {
             user.loaded = true;
         }else{
             if (data[OpenM_Book.RETURN_ERROR_PARAMETER]){
-                OpenM_Book_CommunityPagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
+                OpenM_Book_PagesGui.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
             }else{
-                OpenM_Book_CommunityPagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
+                OpenM_Book_PagesGui.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: "+community.id+") :(");
             }  
              
         } 
