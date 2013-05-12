@@ -28,7 +28,7 @@ class OpenM_CoreView extends OpenM_BookView {
     }
 
     public function view() {
-        $this->isConnected();
+        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER));
         $me = $this->isRegistered();
         $this->smarty->assign("me", OpenM_MapConvertor::mapToJSON($me));
         $this->addLinks();

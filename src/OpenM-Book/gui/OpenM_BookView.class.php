@@ -69,10 +69,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      * @param Boolean $redirectToLogin si TRUE redirige vers la page de login
      * @return Boolean
      */
-    protected function isConnected($redirectToLogin = true) {
-        $isConnected = $this->sso_book->isConnected();
-        if (!$isConnected && $redirectToLogin)
-            $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), true);
+    protected function isConnected() {
+        return $this->sso_book->isConnected();
     }
 
     /**
