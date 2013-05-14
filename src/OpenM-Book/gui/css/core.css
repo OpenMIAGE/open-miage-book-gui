@@ -1,0 +1,49 @@
+.user-little{
+    border-radius: 8px 8px 8px 8px;
+    background-color: #e0e0e0;
+    border: #000 solid 1px;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.10, #dacdb1), color-stop(0.56, #f0e8d8));  
+    background-image: -webkit-linear-gradient(center bottom, #dacdb1 11%, #f0e8d8 56%);  
+    background-image: -moz-linear-gradient(center bottom, #dacdb1 11%, #f0e8d8 56%);  
+    background-image: linear-gradient(center bottom, #dacdb1 11%, #f0e8d8 56%);
+    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    word-break: break-all;
+    text-align: center;
+    
+    min-height: 75px;
+}
+.user-little:after{
+    margin-left: 0px;
+}
+
+.user-little:hover{
+    box-shadow: 5px 5px 5px #888;
+    box-shadow: #005580 5px ;
+}
+
+.user-little-img{
+   float:left;
+   border: #222222 solid 1px; 
+}
+
+.user-little-img,a:hover{
+    cursor:pointer
+}
+
+.btn-space{
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.user-field {
+   border: 1px solid #d9d6d9;
+   -webkit-border-radius: 30px;
+   -moz-border-radius: 30px;
+   border-radius: 30px;
+   padding:20px;
+ }

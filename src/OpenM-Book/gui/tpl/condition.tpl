@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Condition d'utilisation</title>
-        {include file='include/head.tpl'}
+        <title>OpenM-Book</title>
+{include file='include/head.tpl'}
+{include file='include/coreCSS.tpl'}
+    </head>
     </head>
     <body>
-    {include file='include/navBar.tpl'}
+{include file='include/navBar.tpl'}
     
 <div class="container-fluid">
     <div class="row-fluid">
@@ -20,6 +22,6 @@
         </div>
     </div>
 </div>
-{include file='include/ressource_js.tpl'}
+ {include file='include/commonJS.tpl'}
     </body>
 </html>

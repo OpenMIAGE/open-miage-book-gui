@@ -31,31 +31,36 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     const ALERT = "alert";
     const MY_DATA = "me";
-    
     const ALERT_TYPE = "alert_type";
     const ALERT_TYPE_DISPLAY_INFO = "alert-info";
     const ALERT_TYPE_DISPLAY_ERROR = "alert-error";
-    const ALERT_TYPE_DISPLAY_DEFAULT = ""; //vide d'origine
+    const ALERT_TYPE_DISPLAY_DEFAULT = "";
     const ALERT_TYPE_DISPLAY_SUCCES = "alert-success";
     const ALERT_TITLE = "alert_title";
-    
-    const MENU_PROFILE= "menu_profile";
+    const MENU_PROFILE = "menu_profile";
     const MENU_PROFILE_EDIT = "menu_profile_edit";
     const MENU_COMMUNITY = "menu_community";
+    const SMARTY_OPENM_ID_PROXY_PATH = "OpenM_ID_proxy";
+    const OPENM_ID_PROXY_PATH = "OpenM_ID.proxy.path";
 
     protected $sso_book;
     protected $bookClient;
     protected $userClient;
     protected $groupClient;
-    
+    protected $moderatorClient;
+    protected $adminClient;
+    protected $ssoProperties;
+
     public function __construct() {
         parent::__construct();
-        $p2 = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
-        $api_name = $p2->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
+        $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
+        $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso_book = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
         $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
         $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Groups");
+        $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Moderator");
+        $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Admin");
         $this->setDirs();
     }
 
@@ -64,13 +69,27 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      * @param Boolean $redirectToLogin si TRUE redirige vers la page de login
      * @return Boolean
      */
-    protected function isConnected($redirectToLogin = true) {
-        $isConnected = $this->sso_book->isConnected();
+    protected function isConnected() {
+        return $this->sso_book->isConnected();
+    }
 
-        if (!$isConnected && $redirectToLogin)
-            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView, OpenM_RegistrationView::LOGIN_FORM)->getURL());
-        else
-            return $isConnected;
+    /**
+     * Verrifi si on est Enregistrer, si oui savegarde les données user
+     * @param type $retirectToRegistered
+     */
+    protected function isRegistered($retirectToRegistered = true) {
+        try {
+            $me = $this->userClient->getUserProperties();
+            OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
+            return $me;
+        } catch (Exception $e) {
+            if ($retirectToRegistered === true)
+                OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());            
+            $message = "Une errueur interne viens d'etre déclanché.<br> Message : " . $e->getMessage();
+            OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
+            $errorView = new OpenM_ErrorView();
+            $errorView->error($message);
+        }
     }
 
     protected function setDirs() {
@@ -78,43 +97,33 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->smarty->setConfigDir(dirname(__FILE__) . '/config/');
         $this->smarty->setCompileDir($this->template_c);
         $this->smarty->assign(self::SMARTY_RESOURCES_DIR_VAR_NAME, $this->ressources_dir);
+        $this->smarty->assign(self::SMARTY_OPENM_ID_PROXY_PATH, array(
+            "url" => $this->properties->get(self::OPENM_ID_PROXY_PATH),
+            "api_selected" => $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX)
+        ));
     }
 
     protected function addLinks() {
         $this->smarty->assign("links", array(
-            "default" => OpenM_URLViewController::from()->getURL(),
             "root" => OpenM_URLViewController::getRoot(),
-            "profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL(),
-            "edit_profile" => OpenM_URLViewController::from(OpenM_ProfileView::getClass(), OpenM_ProfileView::EDIT_FROM)->getURL(),
-            "community" => OpenM_URLViewController::from(OpenM_CommunityView::getClass())->getURL()."#/community/",
+            "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
         ));
-                
-        OpenM_Log::debug(OpenM_URLViewController::getRoot()."client/?api_gen=", __CLASS__, __METHOD__,__LINE__);
     }
-    
-    protected function addClientsJS(){
-        $clientRoot = OpenM_URLViewController::getRoot()."client/";
-        $this->smarty->assign("clients_js", array(
-            "OpenM_Book" => $clientRoot."OpenM_Book-min.js",
-            "OpenM_Book_User" => $clientRoot."OpenM_Book_User-min.js",
-            "OpenM_Book_Moderator" => $clientRoot."OpenM_Book_Moderator-min.js",
-            "OpenM_Book_Admin" => $clientRoot."OpenM_Book_Admin-min.js",
-        ));
+
+    protected function addClientsJS() {
+        $clientRoot = OpenM_URLViewController::getRoot() . "client/";
+        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin-min.js");
     }
 
     protected function addNavBarItems() {
         $this->smarty->assign("nav_bar", array(
             array(
-                "label" => "home",
-                "link" => OpenM_URLViewController::from()->getURL()
-            ),
-            array(
                 "label" => "account",
                 "items" => array(
-                    array(
-                        "label" => "login",
-                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
-                    ),
+//                    array(
+//                        "label" => "login",
+//                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
+//                    ),
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
@@ -125,11 +134,13 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                 "items" => array(
                     array(
                         "label" => "Open-MIAGE",
-                        "link" => "http://www.open-miage.org"
+                        "link" => "http://www.open-miage.org",
+                        "blank" => true
                     ),
                     array(
                         "label" => "Team Open-MIAGE",
-                        "link" => "http://www.open-miage.org/la-team-open-miage.html"
+                        "link" => "http://www.open-miage.org/team.html",
+                        "blank" => true
                     )
             ))
         ));
@@ -174,7 +185,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         }
     }
 
-    protected function setAlert($message, $titre=null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
+    protected function setAlert($message, $titre = null, $type = self::ALERT_TYPE_DISPLAY_DEFAULT) {
         OpenM_SessionController::set(self::ALERT, $message);
         if ($titre)
             OpenM_SessionController::set(self::ALERT_TITLE, $titre);
@@ -184,6 +195,5 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 }
 
 Import::php("OpenM-Book.gui.OpenM_RegistrationView");
-Import::php("OpenM-Book.gui.OpenM_InfoView");
-Import::php("OpenM-Book.gui.OpenM_CommunityView");
+Import::php("OpenM-Book.gui.OpenM_CoreView");
 ?>

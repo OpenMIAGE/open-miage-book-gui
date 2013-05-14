@@ -35,14 +35,14 @@ class OpenM_ErrorView extends OpenM_BookView {
         $this->smarty->assign(self::ERROR_DEFAULT_MESSAGE, self::DEFAULT_MESSAGE);
         $this->smarty->assign(self::ERROR_MESSAGE, $message);
         //on rajoute les lien de proposition
-       
+        OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
         /**
          * @todo faire la detection si on est en http ou https
          */
          $this->smarty->assign(self::ERROR_LINKS, array(
             array(
                 "label" => "Profile : ",
-                "link" => "http://".$_SERVER['HTTP_HOST'].OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL())
+                "link" => "http://".$_SERVER['HTTP_HOST'].OpenM_URLViewController::getRoot())
         ));
 
         if ($titre)
@@ -51,6 +51,7 @@ class OpenM_ErrorView extends OpenM_BookView {
             $this->smarty->assign(self::ERROR_CODE, $code);
 
         $this->smarty->display("error.tpl");
+        exit();
     }
 
     public function _default() {

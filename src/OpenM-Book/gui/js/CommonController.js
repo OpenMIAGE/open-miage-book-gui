@@ -4,19 +4,23 @@ var OpenM_URLController = {
         return "#"+this.homeSelector;
     },
     'clickToHome': function(){
-        return "window.location.href='"+this.home()+"';return false";
+       window.location.href=this.home();
     },
-    'communitySelector': '/community/',
+    'communitySelector': '/community',
     'community': function(community){
-        return "#"+this.communitySelector+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        var url = "#"+this.communitySelector;
+        if(community)
+            return url+"/"+community.id+"/"+community.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        else
+            return url;
     },
     'clickToCommunity': function(community){
-        return "window.location.href='"+this.community(community)+"';return false";
+        window.location.href=this.community(community);
     },
     'getCommunityId': function(){
         var hash = window.location.hash;
         if(this.isCommunityHash()){
-            var community = hash.slice(this.communitySelector.length + 1);
+            var community = hash.slice(this.communitySelector.length + 2);
             if(community.indexOf("/")!=-1)
                 return community.slice(0, community.indexOf("/"));
             else
@@ -27,14 +31,21 @@ var OpenM_URLController = {
     'isCommunityHash': function(){
         return (window.location.hash.slice(1, this.communitySelector.length + 1)==this.communitySelector);
     },
-    'userSelector': '/user/',
+    'clickToUser': function(user){
+        window.location.href=this.user(user);
+    },
+    'userSelector': '/user',
     'user': function(user){
-        return "#"+this.userSelector+"/"+user.id;
+        var url = "#"+this.userSelector;
+        if(user)
+            return url+"/"+user.id+"/"+user.name.replace(/^\s+/g,'').replace(/\s+$/g,'').replace(/ /g,"-");
+        else
+            return url;
     },
     'getUserId': function(){
         var hash = window.location.hash;
         if(this.isUserHash()){
-            var user = hash.slice(this.userSelector.length + 1);
+            var user = hash.slice(this.userSelector.length + 2);
             if(user.indexOf("/")!=-1)
                 return user.slice(0, user.indexOf("/"));
             else
@@ -46,17 +57,43 @@ var OpenM_URLController = {
         return (window.location.hash.slice(1, this.userSelector.length + 1)==this.userSelector);
     },
     'onhashchange': function(){
-        this.load(); 
+        this.load();
     },
     'reload': function(){
         this.load();
     },
     'load': function(){
-        if(this.isCommunityHash())
-            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display()
-        
+        if(this.isCommunityHash()){
+            OpenM_MenuGUI.selectCommunity();
+            OpenM_Book_CommunityPagesController.communityPage(this.getCommunityId()).display();
+        }
+        else if(this.isUserHash()){
+            OpenM_MenuGUI.selectUser();
+            OpenM_Book_UsersPagesController.userPage(this.getUserId()).display();
+            
+        }else        
+        {
+            OpenM_MenuGUI.selectCommunity();
+            OpenM_Book_CommunityPagesController.communityPage().display();
+        }            
+        if(this.loader!='')
+            $("#"+this.loader).remove();
     },
-    'storedHash': window.location.hash
+    'storedHash': window.location.hash,
+    'loader' : '',
+    'jsLoadedNumber': 0,
+    'jsLoadedTarget': 0,
+    'jsLoad': function (jsPath){
+        this.jsLoadedTarget++;
+        $.post(jsPath, function(){
+            OpenM_URLController.jsLoadedNumber++;
+            if(OpenM_URLController.jsLoadedTarget==OpenM_URLController.jsLoadedNumber)
+                OpenM_URLController.jsLoadFinished();
+        }, 'script');
+    },
+    'jsLoadFinished': function (){
+        this.load();
+    }
 }
 
 if ("onhashchange" in window) {
