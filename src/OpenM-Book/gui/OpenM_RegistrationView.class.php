@@ -45,35 +45,20 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function _default() {
         $this->login();
     }
-
-    /*
-     * Méthode permetant d'envoyer l'utilisateur vers la page d'authetification (OpenM_ID) 
-     * puis de rediriger vers l'index ou la méthode register si l'utilisateur n'existe pas dans OpenM_Book
-     */
-
-    public function login() {
-        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
-        try {
-            $me = $this->userClient->getUserProperties();
-            //todo saved in session $me and redirect
-            OpenM_Log::debug("User conected, and registred", __CLASS__, __METHOD__, __LINE__);
-
-            OpenM_SessionController::set(self::MY_DATA, $me);
-            OpenM_Header::redirect(OpenM_URLViewController::from()->getURL());
-        } catch (Exception $e) {
-            OpenM_Header::redirect(OpenM_URLViewController::from(self::getClass(), self::REGISTER_FORM)->getURL());
-        }
-    }
+//    
+//    public function login() {
+//        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
+//        if ($this->isRegistred(FALSE)){
+//            OpenM_Header::redirect(OpenM_URLViewController::getRoot());         
+//        }else{
+//            $this->register();
+//        }            
+//    }
 
     public function register() {
 
         $this->isConnected();
 
-        /**      if (OpenM_SessionController::contains(self::MY_DATA)) {
-          OpenM_Log::debug("Useralready registred, redirect to Profile", __CLASS__, __METHOD__, __LINE__);
-          $this->setAlert( "Vous êtes déjà enregistrer.");
-          OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_ProfileView::getClass())->getURL());
-          } */
         $error = FALSE;
         $param = HashtableString::from($_POST);
         if ($param->containsKey("submit")) {
@@ -114,7 +99,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
             }
 
             if (!$error) {
-                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
+                $clientBook = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
                 try {
                     $clientBook->registerMe($param->get(self::FIRST_NAME), $param->get(self::LAST_NAME), $time);
                     /**
