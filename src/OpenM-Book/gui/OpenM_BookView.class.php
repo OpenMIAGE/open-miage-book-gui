@@ -112,7 +112,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addClientsJS() {
         $clientRoot = OpenM_URLViewController::getRoot() . "client/";
-        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin-min.js");
+        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin;OpenM_Groups-min.js");
     }
 
     protected function addNavBarItems() {
