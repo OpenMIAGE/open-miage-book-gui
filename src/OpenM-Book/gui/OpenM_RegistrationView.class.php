@@ -45,15 +45,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function _default() {
         $this->login();
     }
-//    
-//    public function login() {
-//        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), TRUE);
-//        if ($this->isRegistred(FALSE)){
-//            OpenM_Header::redirect(OpenM_URLViewController::getRoot());         
-//        }else{
-//            $this->register();
-//        }            
-//    }
 
     public function register() {
 
