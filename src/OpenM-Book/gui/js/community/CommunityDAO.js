@@ -235,17 +235,22 @@ var OpenM_Book_CommunityDAO = {
             community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
 
-            if (data.CCP) {
-                for (var i = 0; i < data.CCP.length; i++) {
+            if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] != 'undefined') {
+                for (var i = 0; i < data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER].length; i++) {
                     var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
-
+                    var subCommunityJSON = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i];
+                    
                     if (!subCommunity) {
                         subCommunity = new OpenM_Book_CommunityExchangeObject();
-                        subCommunity.id = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
+                        subCommunity.id = subCommunityJSON[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                         this.allCommunities[subCommunity.id] = subCommunity;
                     }
 
-                    subCommunity.name = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
+                    var name = subCommunityJSON[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER]
+                    if (subCommunity.name != name) {
+                        subCommunity.name = name;
+                        subCommunity.update();
+                    }
                     subCommunity.parent = community;
                     if (!community.ancestorsLoaded && community.parent && community.parent.ancestorsLoaded)
                         community.ancestorsLoaded = true;
