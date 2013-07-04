@@ -72,6 +72,35 @@ function OpenM_Book_CommunityExchangeObject() {
         return ancestorsArray;
     }
 
+    this.rename = function(newName) {
+        var community = this;
+        OpenM_Book_Moderator.renameCommunity(this.id, newName, function(data) {
+            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+                community.name = newName;
+                community.update();
+            }
+        });
+    }
+
+    this.registerMe = function() {
+        var community = this;
+        OpenM_Book.registerMeIntoCommunity(this.id, function(data) {
+            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+                community.userAlreadyRegistred = true;
+                if (community.validationRequired) {
+                    if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] == 'undefined')
+                        community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
+                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
+                    community.updateUsersNotValid();
+                }
+                else {
+                    community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
+                    community.updateUsers();
+                }
+            }
+        });
+    }
+
     //update listener
 
     this.AllCallBack = new Array();
@@ -102,30 +131,14 @@ function OpenM_Book_CommunityExchangeObject() {
             this.AllUsersCallBack[i](community);
         }
     }
+
     this.updateUsersNotValid = function() {
         for (var i in this.AllUsersNotValidCallBack) {
             this.AllUsersNotValidCallBack[i](community);
         }
     }
-    this.registerMe = function() {
-        var community = this;
-        OpenM_Book.registerMeIntoCommunity(this.id, function(data) {
-            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
-                community.userAlreadyRegistred = true;
-                if (community.validationRequired) {
-                    if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] == 'undefined')
-                        community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
-                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
-                    community.updateUsersNotValid();
-                }
-                else {
-                    community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
-                    community.updateUsers();
-                }
-            }
-        })
-    }
 }
+
 
 var OpenM_Book_CommunityDAO = {
     'allCommunities': new Array(),
