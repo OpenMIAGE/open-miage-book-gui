@@ -90,9 +90,9 @@ function OpenM_Book_CommunityExchangeObject() {
         this.AllUsersNotValidCallBack.push(c);
     }
 
-    this.update = function(community) {
+    this.update = function() {
         for (var i in this.AllCallBack) {
-            this.AllCallBack[i](community);
+            this.AllCallBack[i]();
         }
     }
 
@@ -284,7 +284,6 @@ var OpenM_Book_CommunityDAO = {
         var ancestors = new Array();
         OpenM_Book_PagesGui.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
-
             if (data[community.id]) {
                 var Idparent = data[community.id][OpenM_Book.RETURN_COMMUNITY_PARENT_PARAMETER];
                 var communityTmp = community;
@@ -298,6 +297,13 @@ var OpenM_Book_CommunityDAO = {
                             parentCommunity.name = data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
                             parentCommunity.ancestorsLoaded = true;
                             this.allCommunities[parentCommunity.id] = parentCommunity;
+                        }
+                        else {
+                            if (data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER] != parentCommunity.name) {
+                                parentCommunity.name = data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
+                                parentCommunity.update();
+                            }
+
                         }
                         communityTmp.parent = parentCommunity;
                         communityTmp.ancestorsLoaded = true;
