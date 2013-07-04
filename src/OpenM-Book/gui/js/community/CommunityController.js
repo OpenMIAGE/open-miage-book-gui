@@ -310,15 +310,16 @@ function OpenM_Book_CommunityButtonAddCommunityController(community) {
     }
 }
 
-function OpenM_Book_CommunityPopOverNameController(community) {
+function OpenM_Book_CommunityPopOverNameController(community, value) {
     this.community = community;
-    this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id);
+    this.value = value;
+    this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id, value);
 
 }
 function OpenM_Book_CommunityButtonRenameController(community) {
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonRenameGui(this.community.id, this.community.name);
-    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community);
+    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community, this.community.name);
     this.popover.gui.text = 'Nouveau nom';
     this.gui.popover = this.popover.gui;
 
