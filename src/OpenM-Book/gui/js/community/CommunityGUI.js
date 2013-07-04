@@ -293,12 +293,7 @@ function OpenM_Book_CommunityActionsGui(communityId) {
             var div = $(document.createElement('div'));
             div.addClass("row-fluid");
             this.c.append(div);
-            var divButton;
             for (var i in this.buttons) {
-                // divButton = $(document.createElement('div')); 
-                // divButton.addClass("span1");
-                // divButton.append(this.buttons[i].content());  
-                // div.append(divButton);
                 div.append(this.buttons[i].content());
             }
         }
@@ -332,7 +327,6 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId) {
             var gui = this;
             this.a.click(function() {
                 gui.click();
-                alert("do");
                 $(gui.a).addClass('disabled');
             });
             this.toolTipText = "S'enregistrer dans cette communauté";

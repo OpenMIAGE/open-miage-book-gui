@@ -15,6 +15,7 @@ function OpenM_Book_CommunityExchangeObject() {
     this.userIsModerator = false;
     this.forbidenToAddSubCommunity = false;
     this.cantBeRemoved = true;
+    this.validationRequired = true;
     this.parent = undefined;
     this.ancestors = new Array();
     this.nbAncestor = 0;
@@ -111,7 +112,16 @@ function OpenM_Book_CommunityExchangeObject() {
         OpenM_Book.registerMeIntoCommunity(this.id, function(data) {
             if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
                 community.userAlreadyRegistred = true;
-                community.updateUsersNotValid();
+                if (community.validationRequired) {
+                    if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] == 'undefined')
+                        community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
+                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
+                    community.updateUsersNotValid();
+                }
+                else {
+                    community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
+                    community.updateUsers();
+                }
             }
         })
     }
@@ -234,12 +244,13 @@ var OpenM_Book_CommunityDAO = {
             community.userAlreadyRegistred = (data[OpenM_Book.RETURN_USER_ALREADY_REGISTERED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
 
             if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] != 'undefined') {
                 for (var i = 0; i < data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER].length; i++) {
                     var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
                     var subCommunityJSON = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i];
-                    
+
                     if (!subCommunity) {
                         subCommunity = new OpenM_Book_CommunityExchangeObject();
                         subCommunity.id = subCommunityJSON[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
