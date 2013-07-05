@@ -42,6 +42,9 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const MENU_COMMUNITY = "menu_community";
     const SMARTY_OPENM_ID_PROXY_PATH = "OpenM_ID_proxy";
     const OPENM_ID_PROXY_PATH = "OpenM_ID.proxy.path";
+    const BOOK_CONFIG_FILE = "OpenM_Book.hmi.config.path";
+    const BOOK_HMI_DEBUG_MODE_ON_VALUE = "ON";
+    const BOOK_HMI_DEBUG_MODE = "OpenM_Book.debug.mode";
 
     protected $sso_book;
     protected $bookClient;
@@ -50,10 +53,12 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected $moderatorClient;
     protected $adminClient;
     protected $ssoProperties;
+    protected $bookProperties;
 
     public function __construct() {
         parent::__construct();
         $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
+        $this->bookProperties = Properties::fromFile($this->properties->get(self::BOOK_CONFIG_FILE));
         $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso_book = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
@@ -84,12 +89,17 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             return $me;
         } catch (Exception $e) {
             if ($retirectToRegistered === true)
-                OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());            
+                OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
             $message = "Une errueur interne viens d'etre déclanché.<br> Message : " . $e->getMessage();
             OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
             $errorView = new OpenM_ErrorView();
             $errorView->error($message);
         }
+    }
+
+    protected function setDebugMode() {
+        if ($this->bookProperties->get(self::BOOK_HMI_DEBUG_MODE) == self::BOOK_HMI_DEBUG_MODE_ON_VALUE)
+            $this->smarty->assign("debug", true);
     }
 
     protected function setDirs() {
@@ -128,7 +138,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
                     )
-            )),
+                )),
             array(
                 "label" => "?",
                 "items" => array(
@@ -142,7 +152,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                         "link" => "http://www.open-miage.org/team.html",
                         "blank" => true
                     )
-            ))
+                ))
         ));
     }
 
