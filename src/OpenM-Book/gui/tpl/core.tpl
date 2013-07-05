@@ -18,9 +18,6 @@
             <div id="divJSON"></div>
         </div>
         {include file='include/coreJS.tpl'}
-
-        <script type="text/javascript">
-            {include file='include/coreJS-initializing.tpl'}
-        </script>
+        {include file='include/coreJS-initializing.tpl'}
     </body>
 </html>

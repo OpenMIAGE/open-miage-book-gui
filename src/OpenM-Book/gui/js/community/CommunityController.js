@@ -29,7 +29,6 @@ var OpenM_Book_CommunityPagesController = {
             this.AllCommunitiesPagesControlers[community.id] = communityControler;
         }
 
-
         return communityControler;
     }
 }
@@ -187,7 +186,7 @@ function OpenM_Book_CommunityUsersNotValidController(community) {
         this.gui.users = new Array();
         var userController;
         for (var i in this.community.usersNotValidTree) {
-            user = OpenM_Book_UserDAO.get(i, false, false);
+            user = OpenM_Book_UserDAO.get(i, false, false, false);
             for (var j in this.community.usersNotValidTree[i]) {
                 userController = new OpenM_Book_CommunityUserNotValidController(user, this.community.usersNotValidTree[i][j]);
                 this.users.push(userController);
@@ -214,17 +213,17 @@ function OpenM_Book_CommunityUserNotValidController(user, community) {
     this.buttonDisplayProfil = new OpenM_Book_ButtonDisplayProfilController(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
 
-    var controler = this;
+    var controller = this;
 
     this.gui.click = function() {
-        OpenM_URLController.clickToUser(controler.user);
+        OpenM_URLController.clickToUser(controller.user);
     }
     this.buttonValidate.gui.click = function(e) {
-        alert(controler.user.name);
+        alert(controller.user.name);
         e.preventDefault();
     }
     this.buttonDisplayProfil.gui.click = function() {
-        OpenM_URLController.clickToUser(controler.user);
+        OpenM_URLController.clickToUser(controller.user);
     }
 }
 
@@ -299,38 +298,38 @@ function OpenM_Book_CommunityButtonAddCommunityController(community) {
     this.popover = new OpenM_Book_CommunityPopOverNameController(this.community);
     this.gui.popover = this.popover.gui;
 
-    var controler = this;
+    var controller = this;
     this.popover.gui.submit = function(e) {
-        var name = controler.popover.gui.getName();
+        var name = controller.popover.gui.getName();
         if (name) {
-            OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);
-            controler.gui.a.popover('hide');
+            OpenM_Book_CommunityDAO.addCommunity(name, controller.community.id);
+            controller.gui.a.popover('hide');
         } else
             alert("Il manque le nom de la communauté");
         e.preventDefault();
     }
 }
 
-function OpenM_Book_CommunityPopOverNameController(community) {
+function OpenM_Book_CommunityPopOverNameController(community, value) {
     this.community = community;
-    this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id);
+    this.value = value;
+    this.gui = new OpenM_Book_CommunityPopOverNameGui(this.community.id, value);
 
 }
 function OpenM_Book_CommunityButtonRenameController(community) {
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonRenameGui(this.community.id, this.community.name);
-    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community);
+    this.popover = new OpenM_Book_CommunityPopOverNameController(this.community, this.community.name);
     this.popover.gui.text = 'Nouveau nom';
     this.gui.popover = this.popover.gui;
 
     //le click
-    var controler = this;
+    var controller = this;
     this.popover.gui.submit = function(e) {
-        var name = controler.popover.gui.getName();
+        var name = controller.popover.gui.getName();
         if (name) {
-            alert('en attante de la méthode DAO');
-            //OpenM_Book_CommunityDAO.addCommunity(name, controler.community.id);
-            controler.gui.a.popover('hide');
+            controller.community.rename(name);
+            controller.gui.a.popover('hide');
         } else
             alert("Il manque le nouveau nom de la communauté");
         e.preventDefault();
@@ -340,11 +339,11 @@ function OpenM_Book_CommunityButtonRenameController(community) {
 function OpenM_Book_CommunityButtonDeleteController(community) {
     this.community = community;
     this.gui = new OpenM_Book_CommunityButtonDeleteGui(this.community.id, this.community.name);
-    var controler = this;
+    var controller = this;
     this.gui.click = function(e) {
         e.preventDefault();
-        if (confirm('Voulez-vous vraiment supprimer la communauté : ' + controler.community.name)) {
-            OpenM_Book_CommunityDAO.removeCommunity(controler.community.id);
+        if (confirm('Voulez-vous vraiment supprimer la communauté : ' + controller.community.name)) {
+            OpenM_Book_CommunityDAO.removeCommunity(controller.community.id);
         }
     }
 }
