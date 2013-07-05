@@ -10,15 +10,15 @@ var OpenM_Book_UsersPagesController = {
             if(OpenM_Book_UserDAO.me != '')                
                 user = OpenM_Book_UserDAO.me;                
             else{
-                user = OpenM_Book_UserDAO.get(userId,true); 
+                user = OpenM_Book_UserDAO.get(userId, true, true); 
                 OpenM_Book_UserDAO.me = user;
             }
                                        
             this.defaultUserId = user.id;
         }else if(!userId)
-            user = OpenM_Book_UserDAO.get(this.defaultUserId);
+            user = OpenM_Book_UserDAO.get(this.defaultUserId, true);
         else
-            user = OpenM_Book_UserDAO.get(userId);
+            user = OpenM_Book_UserDAO.get(userId, true);
                 
         var userControler = this.AllUserPagesControlers[user.id];
         if (!userControler){
@@ -109,8 +109,8 @@ function OpenM_Book_UserFieldController(user,field,inModification){
     this.field = field;
     this.inModification = inModification;
     this.gui = new OpenM_Book_UserFieldGui(user, field,this.inModification);
-    this.gui.fieldValue =this.user[this.field];
-    this.gui.fieldName = this.user.fieldsNames[this.field]; 
+//    this.gui.fieldValue =this.user[this.field];
+//    this.gui.fieldName = this.user.fieldsNames[this.field]; 
     
     this.updateInModification = function(inModification){
         this.inModification = inModification;
