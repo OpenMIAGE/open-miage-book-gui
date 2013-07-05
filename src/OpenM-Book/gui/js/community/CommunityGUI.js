@@ -34,7 +34,8 @@ function OpenM_Book_CommunityPageGui() {
             cadre.append(usersNotValid);
             usersNotValid.append(this.usersNotValid.content());
 
-        } else {
+        }
+        else {
             //on chache
             cadre.empty();
         }
@@ -482,8 +483,9 @@ function OpenM_Book_CommunityButtonDeleteGui() {
 }
 
 //A continuer
-function OpenM_Book_CommunityPopOverNameGui(communityId) {
+function OpenM_Book_CommunityPopOverNameGui(communityId, name) {
     this.communityId = communityId;
+    this.name = name;
 
     // this.inputId = 'OpenM_Book_CommunityPopOverNameGui'
     this.input = $(document.createElement("input"));
@@ -491,13 +493,12 @@ function OpenM_Book_CommunityPopOverNameGui(communityId) {
     this.a = $(document.createElement("a"));
     this.parentId = '';
     this.submit = '';
-    this.text = 'Nom';
 
     this.content = function() {
         //création du popover
         this.input.remove();
         this.input = $(document.createElement("input"));
-        this.input.attr("type", "text").attr("placeholder", this.text);
+        this.input.attr("type", "text").attr("placeholder", this.text).attr("value",this.name);
         this.input.addClass("input-large");
 
         this.popover.remove();
