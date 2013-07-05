@@ -358,7 +358,7 @@ var OpenM_Book_CommunityDAO = {
             var u;
             for (i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]) {
                 u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
-                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false);
+                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
                 user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
                 users[user.id] = user;
                 user.validIn[community.id] = community;
@@ -388,7 +388,7 @@ var OpenM_Book_CommunityDAO = {
             community.usersNotValidTree = new Array();
             for (i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]) {
                 u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
-                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false);
+                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
                 user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
                 users[user.id] = user;
                 communityId = u[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];

@@ -28,13 +28,23 @@ class OpenM_CoreView extends OpenM_BookView {
     }
 
     public function view() {
-        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER));
+        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), true);
         $me = $this->isRegistered();
         $this->smarty->assign("me", OpenM_MapConvertor::mapToJSON($me));
         $this->addLinks();
         $this->addNavBarItems();
         $this->addClientsJS();
         $this->showAlert();
+        $this->setDebugMode();
+        $this->smarty->assign("core_js", array(
+            "OpenM-Book/gui/js/community/CommunityController.js",
+            "OpenM-Book/gui/js/community/CommunityDAO.js",
+            "OpenM-Book/gui/js/community/CommunityGUI.js",
+            "OpenM-Book/gui/js/user/UserDAO.js", "OpenM-Book/gui/js/user/UserController.js",
+            "OpenM-Book/gui/js/user/UserGUI.js",
+            "OpenM-Book/gui/js/menuGUI.js", "OpenM-SSO/gui/js/OpenM_SSOClientConnectionManager.js",
+            "OpenM-Book/gui/js/CommonGUI.js"
+        ));
         $this->smarty->display('core.tpl');
     }
 

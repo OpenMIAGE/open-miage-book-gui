@@ -186,7 +186,7 @@ function OpenM_Book_CommunityUsersNotValidController(community) {
         this.gui.users = new Array();
         var userController;
         for (var i in this.community.usersNotValidTree) {
-            user = OpenM_Book_UserDAO.get(i, false, false);
+            user = OpenM_Book_UserDAO.get(i, false, false, false);
             for (var j in this.community.usersNotValidTree[i]) {
                 userController = new OpenM_Book_CommunityUserNotValidController(user, this.community.usersNotValidTree[i][j]);
                 this.users.push(userController);
