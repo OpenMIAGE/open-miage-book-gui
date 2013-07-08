@@ -1,33 +1,42 @@
 function OpenM_Book_UserPageGUI(){
-    this.fields = undefined;
-    this.buttonModification = undefined;
-    /*this.fieldFirstName = undefined;
-    this.fieldLastName = undefined;*/
-    this.div = undefined;
     
     this.display = function(enabled){
          cadre = $("#"+OpenM_Book_PagesGui.divParentId);
          
          if(enabled===true || enabled === undefined){             
+                //span10.append(this.fields.content());                
                 
                 cadre.empty();
-                cadre.addClass("row-fluid");
-              //  this.div = $(document.createElement('div')).addClass("row-fluid");
-              //  cadre.append(this.div);
+                cadre.addClass("row-fluid").addClass("span10 well");
+               
+                cadre.append(this.fields.content());
+               
+                // Création du bloc "Miage et Emploi"
+                var blocMiageAndSociete = $(document.createElement('div')).addClass("span5 blocMiageAndSociete");
+                var conteneurMiageEtEmploi = $(document.createElement('div')).addClass("row-fluid");
+                
+                // Titre du bloc
+                var titleMiageAndSociete = $(document.createElement("p")).addClass("titleMiageAndSociete");
+                titleMiageAndSociete.text("Informations Etude & Société");
+                conteneurMiageEtEmploi.append(titleMiageAndSociete);
 
-                var span10 = $(document.createElement('div')).addClass("span10");
-                var span2 = $(document.createElement('div')).addClass("span2");
-                cadre.append(span10);
-                cadre.append(span2);
+                // Affichage de la promo Miage
+                var labelPromo = $(document.createElement("p"));
+                labelPromo.text("Promo : " + "2010");
+                conteneurMiageEtEmploi.append(labelPromo);
+
+                // Affichage de la société
+                var labelEmployer = $(document.createElement("p"));
+                labelEmployer.text("Société actuelle : Astek SO");
+                conteneurMiageEtEmploi.append(labelEmployer);
                 
-                
-                span2.append(this.buttonModification.content());
-                
-                span10.append(this.fields.content());
-               //span10.append(this.fieldFirstName.content());
-                //span10.append(this.fieldLastName.content());
-                
-                
+                // Ajout de tout le contenu dans la page
+                blocMiageAndSociete.append(conteneurMiageEtEmploi);
+                cadre.append(blocMiageAndSociete);
+                //span1.append(this.fields.content());                 
+  
+                  //this.div = $(document.createElement('div')).addClass("row-fluid");
+                  //  cadre.append(this.div);                
          }else{
              cadre.empty();  
          }  
@@ -78,25 +87,23 @@ function OpenM_Book_UserButtonModificationGui(inModification){
 
 function OpenM_Book_UserFieldsGui(){
     this.c = $(document.createElement("div"));
-    this.allFiels = new Array();
+    this.allFields = new Array();
     
     this.content = function(){
-        this.c.empty().addClass("row-fluid");
-        //this.c =  $(document.createElement("div")).addClass("row-fluid");
-        if (this.allFiels.length != 0){
-            for(var i in this.allFiels){
-                this.c.append(this.allFiels[i].content());
-            }
+        if (this.allFields.length !== 0){
+            
+            // On affiche le bandeau
+            this.c.append(getBandeauProfil(this.allFields));
+            this.c.append(getBlocInfosGenerales(this.allFields));
         }
         
-        
-        return this.c ;
+        return this.c;
     }
     
     this.addField= function(field){
-        this.allFiels.push(field);
+        this.allFields.push(field);
     }
-    
+
 }
 
 function OpenM_Book_UserFieldGui(user, field, inModification){
@@ -152,4 +159,53 @@ function OpenM_Book_UserFieldGui(user, field, inModification){
         
         
     }
+}
+
+// Affichage du bandeau profil (photo + nom + prénom)
+function getBandeauProfil(fields) {        
+        var bandeauProfil = $(document.createElement('div'));
+        
+        // Photo de profil
+        var photoUser = $(document.createElement("img")).attr({
+                                                                alt: "Photo du Profil",
+                                                                title: "Photo du profil",
+                                                                src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+                                                            }).addClass("photoCSS");
+        bandeauProfil.append(photoUser);
+        
+        // Nom de l'utilisateur
+        var titreLabel = $(document.createElement("span")).addClass("nameCSS");
+        titreLabel.text(fields[0].fieldValue + " " + fields[1].fieldValue);
+        bandeauProfil.append(titreLabel);
+
+        // Bouton de modification
+        /*var updateButton = $(document.createElement('span')).addClass("buttonUpdateProfil");
+        updateButton.append(OpenM_Book_UserButtonModificationGui());
+        bandeauProfil.append(updateButton);*/
+    
+        return bandeauProfil;
+}
+
+// Affichage du bloc d'information générales
+function getBlocInfosGenerales(fields) { 
+    // Création du bloc d'information générales
+    var blocInfosGenerales = $(document.createElement('div')).addClass("span5 blocInfosGenerales"); 
+    var conteneurInfosGenerales = $(document.createElement('div')).addClass("row-fluid");
+
+    // Titre du bloc
+    var titleBlocInfosGenerales = $(document.createElement("p")).addClass("titleBlocInfosGenerales");
+    titleBlocInfosGenerales.text("Informations Générales");
+    conteneurInfosGenerales.append(titleBlocInfosGenerales);
+    // Affichage du mail
+    var labelMail = $(document.createElement("p"));
+    //labelMail.text(fields.otherProperties[0].value);
+    //labelMail.text("Mail : " + " lerouge.sylvain@gmail.com " + fields[3].keys(0));
+    conteneurInfosGenerales.append(labelMail);
+
+    // Affichage de la ville
+    var labelTown = $(document.createElement("p"));
+    labelTown.text("Ville actuelle : Toulouse");
+    conteneurInfosGenerales.append(labelTown);
+    blocInfosGenerales.append(conteneurInfosGenerales);
+    return blocInfosGenerales;
 }
