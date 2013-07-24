@@ -41,7 +41,7 @@ function OpenM_Book_UserPageController(user){
     this.gui.fields = this.fields.gui;
     this.fields.addField(new OpenM_Book_UserFieldController(this.user, "firstName"));
     this.fields.addField(new OpenM_Book_UserFieldController(this.user, "lastName"));
-    
+    this.fields.addField(new OpenM_Book_UserFieldController(this.user, "otherProperties[0]"));
     
     /*this.fieldFirstName = new OpenM_Book_UserFieldController(this.user, "firstName");
     this.gui.fieldFirstName = this.fieldFirstName.gui;    
