@@ -260,6 +260,7 @@ var OpenM_Book_CommunityDAO = {
             community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
 
             if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] != 'undefined') {
+                var liste = new Array();
                 for (var i = 0; i < data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER].length; i++) {
                     var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
                     var subCommunityJSON = data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i];
@@ -281,7 +282,12 @@ var OpenM_Book_CommunityDAO = {
                     if (community.ancestorsLoaded)
                         subCommunity.ancestorsLoaded = true;
                     community.addChild(subCommunity);
+                    liste[subCommunity.id] = subCommunity;
                 }
+                $.each(community.childs,function(key, value){
+                    if(value && liste[value.id] == 'undefined')
+                        community.childs[key] == undefined;
+                });
             }
             community.loaded = true;
             community.update();
