@@ -22,122 +22,119 @@ function OpenM_Book_CommunityExchangeObject() {
     this.ancestorsLoaded = false;
     this.users = new Array();
     this.usersNotValidTree = new Array();
-
     this.loaded = false;
 
-    this.addChild = function(community) {
-        if (this.childs[community.id] === undefined) {
-            this.childs[community.id] = community;
-            community.parent = this;
-            this.nbChild++;
-        }
-    }
-
-    this.removeChild = function(community) {
-        if (this.childs[community.id]) {
-            delete this.childs[community.id];
-            this.nbChild--;
-        }
-    }
-
-    //permet de savoir si il y a des actions a effectuer sur la communauté
-    this.userCanMakeAction = function() {
-        var retour = false;
-        if (this.userCanAddSubCommunity)
-            retour = true;
-        if (this.userCanRegister)
-            retour = true;
-        return retour;
-    }
-
-    //par récurcivité, récupérent les ancetres, si on n'a pas d'ancetre, on fait une requete au srv'
-    this.getAncestors = function(ancestorsArray) {
-        if (ancestorsArray === undefined)
-            ancestorsArray = new Array();
-
-        if (!this.ancestorsLoaded && this.parent && this.parent.ancestorsLoaded)
-            this.ancestorsLoaded = true;
-
-        if (!this.ancestorsLoaded) {
-            OpenM_Book_CommunityDAO.getAncestors(this, true);
-            this.ancestorsLoaded = true;
-        }
-
-        if (this.parent === undefined)
-            return ancestorsArray;
-
-        this.parent.getAncestors(ancestorsArray);
-        ancestorsArray.push(this.parent);
-
-        return ancestorsArray;
-    }
-
-    this.rename = function(newName) {
-        var community = this;
-        OpenM_Book_Moderator.renameCommunity(this.id, newName, function(data) {
-            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
-                community.name = newName;
-                community.update();
-            }
-        });
-    }
-
-    this.registerMe = function() {
-        var community = this;
-        OpenM_Book.registerMeIntoCommunity(this.id, function(data) {
-            if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
-                community.userAlreadyRegistred = true;
-                if (community.validationRequired) {
-                    if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] == 'undefined')
-                        community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
-                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
-                    community.updateUsersNotValid();
-                }
-                else {
-                    community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
-                    community.updateUsers();
-                }
-            }
-        });
-    }
-
     //update listener
-
     this.AllCallBack = new Array();
     this.AllUsersCallBack = new Array();
     this.AllUsersNotValidCallBack = new Array();
-
-    this.addUpdateCallBack = function(c) {
-        this.AllCallBack.push(c);
-    }
-
-    this.addUpdateUsersCallBack = function(c) {
-        this.AllUsersCallBack.push(c);
-    }
-
-    this.addUpdateUsersNotValidCallBack = function(c) {
-        this.AllUsersNotValidCallBack.push(c);
-    }
-
-    this.update = function() {
-        for (var i in this.AllCallBack) {
-            this.AllCallBack[i]();
-        }
-    }
-
-    var community = this;
-    this.updateUsers = function() {
-        for (var i in this.AllUsersCallBack) {
-            this.AllUsersCallBack[i](community);
-        }
-    }
-
-    this.updateUsersNotValid = function() {
-        for (var i in this.AllUsersNotValidCallBack) {
-            this.AllUsersNotValidCallBack[i](community);
-        }
-    }
 }
+
+OpenM_Book_CommunityExchangeObject.prototype.addChild = function(community) {
+    if (this.childs[community.id] === undefined) {
+        this.childs[community.id] = community;
+        community.parent = this;
+        this.nbChild++;
+    }
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.removeChild = function(community) {
+    if (this.childs[community.id]) {
+        delete this.childs[community.id];
+        this.nbChild--;
+    }
+};
+
+//permet de savoir si il y a des actions a effectuer sur la communauté
+OpenM_Book_CommunityExchangeObject.prototype.userCanMakeAction = function() {
+    var retour = false;
+    if (this.userCanAddSubCommunity)
+        retour = true;
+    if (this.userCanRegister)
+        retour = true;
+    return retour;
+};
+
+//par récurcivité, récupérent les ancetres, si on n'a pas d'ancetre, on fait une requete au srv'
+OpenM_Book_CommunityExchangeObject.prototype.getAncestors = function(ancestorsArray) {
+    if (ancestorsArray === undefined)
+        ancestorsArray = new Array();
+
+    if (!this.ancestorsLoaded && this.parent && this.parent.ancestorsLoaded)
+        this.ancestorsLoaded = true;
+
+    if (!this.ancestorsLoaded) {
+        OpenM_Book_CommunityDAO.getAncestors(this, true);
+        this.ancestorsLoaded = true;
+    }
+
+    if (this.parent === undefined)
+        return ancestorsArray;
+
+    this.parent.getAncestors(ancestorsArray);
+    ancestorsArray.push(this.parent);
+
+    return ancestorsArray;
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.rename = function(newName) {
+    var community = this;
+    OpenM_Book_Moderator.renameCommunity(this.id, newName, function(data) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
+            community.name = newName;
+            community.update();
+        }
+    });
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.registerMe = function() {
+    var community = this;
+    OpenM_Book.registerMeIntoCommunity(this.id, function(data) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
+            community.userAlreadyRegistred = true;
+            if (community.validationRequired) {
+                if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] === 'undefined')
+                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
+                community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
+                community.updateUsersNotValid();
+            }
+            else {
+                community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
+                community.updateUsers();
+            }
+        }
+    });
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.addUpdateCallBack = function(c) {
+    this.AllCallBack.push(c);
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.addUpdateUsersCallBack = function(c) {
+    this.AllUsersCallBack.push(c);
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.addUpdateUsersNotValidCallBack = function(c) {
+    this.AllUsersNotValidCallBack.push(c);
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.update = function() {
+    for (var i in this.AllCallBack) {
+        this.AllCallBack[i]();
+    }
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.updateUsers = function() {
+    for (var i in this.AllUsersCallBack) {
+        this.AllUsersCallBack[i](this);
+    }
+};
+
+OpenM_Book_CommunityExchangeObject.prototype.updateUsersNotValid = function() {
+    for (var i in this.AllUsersNotValidCallBack) {
+        this.AllUsersNotValidCallBack[i](this);
+    }
+};
 
 
 var OpenM_Book_CommunityDAO = {
@@ -171,7 +168,7 @@ var OpenM_Book_CommunityDAO = {
             return this.parseAndLoadAncestors(OpenM_Book.getCommunityAncestors(community.id), community);
     },
     'getUsers': function(community, synchro) {
-        if (synchro === undefined || synchro == true) {
+        if (synchro === undefined || synchro === true) {
             var c = community;
             OpenM_Book.getCommunityUsers(c.id, function(data) {
                 OpenM_Book_CommunityDAO.parseUsers(data, c);
@@ -181,7 +178,7 @@ var OpenM_Book_CommunityDAO = {
         return community.users;
     },
     'getUsersNotValid': function(community, synchro) {
-        if (synchro === undefined || synchro == true) {
+        if (synchro === undefined || synchro === true) {
             var c = community;
             OpenM_Book.getCommunityNotValidUsers(c.id, function(data) {
                 OpenM_Book_CommunityDAO.parseUsersNotValid(data, c);
@@ -196,7 +193,7 @@ var OpenM_Book_CommunityDAO = {
         if (community) {
             OpenM_Book.addCommunity(name, communityId, function(data) {
                 OpenM_Book_PagesGui.showJSON(data);
-                if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+                if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
                     OpenM_Book_PagesGui.showSucces("Sous communauté ajouté");
                     var c = new OpenM_Book_CommunityExchangeObject();
                     c.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
@@ -223,7 +220,7 @@ var OpenM_Book_CommunityDAO = {
         if (community) {
             OpenM_Book_Moderator.removeCommunity(community.id, function(data) {
                 OpenM_Book_PagesGui.showJSON(data);
-                if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+                if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
                     var parent = community.parent;
                     parent.removeChild(community);
                     delete OpenM_Book_CommunityDAO.allCommunities[community.id];
@@ -244,22 +241,22 @@ var OpenM_Book_CommunityDAO = {
     },
     'parseAndLoad': function(data, community) {
         OpenM_Book_PagesGui.showJSON(data);
-        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             if (!this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]])
                 this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]] = community;
 
             community.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
             community.name = data[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
-            community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.forbidenToAddSubCommunity = (data[OpenM_Book.RETURN_FORBIDDEN_TO_ADD_COMMUNITY_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.userCanRegister = (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.userAlreadyRegistred = (data[OpenM_Book.RETURN_USER_ALREADY_REGISTERED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
-            community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] == OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.forbidenToAddSubCommunity = (data[OpenM_Book.RETURN_FORBIDDEN_TO_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.userCanRegister = (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.userAlreadyRegistred = (data[OpenM_Book.RETURN_USER_ALREADY_REGISTERED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
 
-            if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] != 'undefined') {
+            if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] !== 'undefined') {
                 var liste = new Array();
                 for (var i = 0; i < data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER].length; i++) {
                     var subCommunity = this.allCommunities[data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER][i][OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER]];
@@ -272,7 +269,7 @@ var OpenM_Book_CommunityDAO = {
                     }
 
                     var name = subCommunityJSON[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER]
-                    if (subCommunity.name != name) {
+                    if (subCommunity.name !== name) {
                         subCommunity.name = name;
                         subCommunity.update();
                     }
@@ -284,9 +281,9 @@ var OpenM_Book_CommunityDAO = {
                     community.addChild(subCommunity);
                     liste[subCommunity.id] = subCommunity;
                 }
-                $.each(community.childs,function(key, value){
-                    if(value && liste[value.id] == 'undefined')
-                        community.childs[key] == undefined;
+                $.each(community.childs, function(key, value) {
+                    if (value && liste[value.id] === 'undefined')
+                        community.childs[key] === undefined;
                 });
             }
             community.loaded = true;
@@ -302,13 +299,13 @@ var OpenM_Book_CommunityDAO = {
     'parseAndLoadAncestors': function(data, community) {
         var ancestors = new Array();
         OpenM_Book_PagesGui.showJSON(data);
-        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             if (data[community.id]) {
                 var Idparent = data[community.id][OpenM_Book.RETURN_COMMUNITY_PARENT_PARAMETER];
                 var communityTmp = community;
 
                 for (var i in data) {
-                    if (i != OpenM_Book.RETURN_STATUS_PARAMETER) {
+                    if (i !== OpenM_Book.RETURN_STATUS_PARAMETER) {
                         var parentCommunity = this.allCommunities[Idparent];
                         if (!parentCommunity) {
                             parentCommunity = new OpenM_Book_CommunityExchangeObject();
@@ -318,7 +315,7 @@ var OpenM_Book_CommunityDAO = {
                             this.allCommunities[parentCommunity.id] = parentCommunity;
                         }
                         else {
-                            if (data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER] != parentCommunity.name) {
+                            if (data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER] !== parentCommunity.name) {
                                 parentCommunity.name = data[communityTmp.id][OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
                                 parentCommunity.update();
                             }
@@ -351,7 +348,7 @@ var OpenM_Book_CommunityDAO = {
     },
     'parseUsers': function(data, community) {
         OpenM_Book_PagesGui.showJSON(data);
-        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             var user;
             var users = new Array();
             var i;
@@ -378,7 +375,7 @@ var OpenM_Book_CommunityDAO = {
     },
     'parseUsersNotValid': function(data, community) {
         OpenM_Book_PagesGui.showJSON(data);
-        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] == OpenM_Book.RETURN_STATUS_OK_VALUE) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             var user;
             var users = new Array();
             var i;
@@ -405,4 +402,4 @@ var OpenM_Book_CommunityDAO = {
             community.updateUsersNotValid();
         }
     }
-}
+};
