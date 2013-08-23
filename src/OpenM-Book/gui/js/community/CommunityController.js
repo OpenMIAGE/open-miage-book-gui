@@ -1,11 +1,11 @@
 OpenM_BookController.community = {};
 
 OpenM_BookController.community.Pages = {
-    'AllCommunitiesPagesControlers': new Array(),
-    'defaultCommunityId': '',
-    'userActivated': true,
-    'userNotValidActivated': true,
-    'communityPage': function(communityId, reload) {
+    AllCommunitiesPagesControlers: new Array(),
+    defaultCommunityId: '',
+    userActivated: true,
+    userNotValidActivated: true,
+    communityPage: function(communityId, reload) {
         var community = null;
         if (reload === false)
             return this.AllCommunitiesPagesControlers[communityId];
@@ -36,7 +36,7 @@ OpenM_BookController.community.Pages = {
 
 OpenM_BookController.community.Page = function(community) {
     this.community = community;
-    this.gui = new OpenM_BookGUI.community.Pages();
+    this.gui = new OpenM_BookGUI.community.Page();
     this.tree = new OpenM_BookController.community.Tree(community);
     this.gui.tree = this.tree.gui;
     this.childs = new OpenM_BookController.community.Childs(community);
@@ -209,35 +209,40 @@ OpenM_BookController.community.UserNotValid = function(user, community) {
     this.user = user;
     this.community = community;
     this.gui = new OpenM_BookGUI.community.UserNotValid(this.user.id, this.user.name, this.community.name);
-    this.buttonValidate = new OpenM_BookController.community.button.Validate(this.user);
+    this.buttonValidate = new OpenM_BookController.community.button.Validate(this.user, this.community);
     this.gui.buttonValidate = this.buttonValidate.gui;
     this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
 
     var controller = this;
 
-    this.gui.click = function() {
-        OpenM_BookController.commons.URL.clickToUser(controller.user);
+    this.gui.clickCommunity = function() {
+        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
     };
-    this.buttonValidate.gui.click = function(e) {
-        alert(controller.user.name);
-        e.preventDefault();
-    };
-    this.buttonDisplayProfil.gui.click = function() {
+    this.gui.clickUser = function() {
         OpenM_BookController.commons.URL.clickToUser(controller.user);
     };
 };
 
 OpenM_BookController.community.button = {};
 
-OpenM_BookController.community.button.Validate = function(user) {
+OpenM_BookController.community.button.Validate = function(user, community) {
     this.user = user;
+    this.community = community;
     this.gui = new OpenM_BookGUI.community.button.Validate();
+    var controller = this;
+    this.gui.click = function(e) {
+        alert(controller.user.name);
+    };
 };
 
 OpenM_BookController.community.button.DisplayProfile = function(user) {
     this.user = user;
     this.gui = new OpenM_BookGUI.community.button.DisplayProfile(this.user.name);
+    var controller = this;
+    this.gui.click = function() {
+        OpenM_BookController.commons.URL.clickToUser(controller.user);
+    };
 };
 
 OpenM_BookController.community.Actions = function(community) {
