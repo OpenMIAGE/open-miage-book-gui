@@ -73,7 +73,7 @@ OpenM_BookController.commons.URL = {
         }
         else if(this.isUserHash()){
             OpenM_BookGUI.menu.Left.selectUser();
-            OpenM_Book_UsersPagesController.userPage(this.getUserId()).display();
+            OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
             
         }else        
         {

@@ -195,7 +195,7 @@ OpenM_BookController.community.UsersNotValid.prototype.updateUsers = function() 
     this.gui.users = new Array();
     var userController;
     for (var i in this.community.usersNotValidTree) {
-        user = OpenM_Book_UserDAO.get(i, false, false, false);
+        user = OpenM_BookDAO.user.DAO.get(i, false, false, false);
         for (var j in this.community.usersNotValidTree[i]) {
             userController = new OpenM_BookController.community.UserNotValid(user, this.community.usersNotValidTree[i][j]);
             this.users.push(userController);
@@ -271,7 +271,7 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
         this.gui.buttons.push(this.add.gui);
     }
 
-    if (this.community.userIsModerator || OpenM_Book_UserDAO.me.isAdmin) {
+    if (this.community.userIsModerator || OpenM_BookDAO.user.DAO.me.isAdmin) {
         this.rename = new OpenM_BookController.community.button.Rename(this.community);
         this.gui.buttons.push(this.rename.gui);
 

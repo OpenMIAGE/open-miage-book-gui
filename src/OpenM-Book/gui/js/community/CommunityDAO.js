@@ -98,13 +98,13 @@ OpenM_BookDAO.community.ExchangeObject.prototype.registerMe = function() {
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             community.userAlreadyRegistred = true;
             if (community.validationRequired) {
-                if (typeof community.usersNotValidTree[OpenM_Book_UserDAO.me.id] === 'undefined')
-                    community.usersNotValidTree[OpenM_Book_UserDAO.me.id] = new Array();
-                community.usersNotValidTree[OpenM_Book_UserDAO.me.id][community.id] = community;
+                if (typeof community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] === 'undefined')
+                    community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] = new Array();
+                community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][community.id] = community;
                 community.updateUsersNotValid();
             }
             else {
-                community.users[OpenM_Book_UserDAO.me.id] = OpenM_Book_UserDAO.me;
+                community.users[OpenM_BookDAO.user.DAO.me.id] = OpenM_BookDAO.user.DAO.me;
                 community.updateUsers();
             }
         }
@@ -360,7 +360,7 @@ OpenM_BookDAO.community.DAO = {
             var u;
             for (i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]) {
                 u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
-                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
+                user = OpenM_BookDAO.user.DAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
                 user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
                 users[user.id] = user;
                 user.validIn[community.id] = community;
@@ -390,7 +390,7 @@ OpenM_BookDAO.community.DAO = {
             community.usersNotValidTree = new Array();
             for (i in data[OpenM_Book.RETURN_USER_LIST_PARAMETER]) {
                 u = data[OpenM_Book.RETURN_USER_LIST_PARAMETER][i];
-                user = OpenM_Book_UserDAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
+                user = OpenM_BookDAO.user.DAO.get(u[OpenM_Book.RETURN_USER_ID_PARAMETER], false, false, false);
                 user.name = u[OpenM_Book.RETURN_USER_NAME_PARAMETER];
                 users[user.id] = user;
                 communityId = u[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];

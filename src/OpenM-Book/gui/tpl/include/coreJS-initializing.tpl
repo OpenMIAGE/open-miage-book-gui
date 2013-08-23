@@ -23,9 +23,9 @@
                 OpenM_SSOConnectionProxy.timer_interval_reconnection = 2000;
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
-                        OpenM_Book_UserDAO.me = new OpenM_Book_UserExchangeObject();
-                        OpenM_Book_UserDAO.parseAndLoad(JSON.parse('{/literal}{$me}{literal}'), OpenM_Book_UserDAO.me);
-                        if (!OpenM_Book_UserDAO.me.loaded)
+                        OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
+                        OpenM_BookDAO.user.DAO.parseAndLoad(JSON.parse('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
+                        if (!OpenM_BookDAO.user.DAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
                         OpenM_BookGUI.menu.Left.init();
                         OpenM_BookController.commons.URL.load();
