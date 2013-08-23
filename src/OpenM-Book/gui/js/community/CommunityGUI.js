@@ -1,13 +1,15 @@
-function OpenM_Book_CommunityPageGui() {
+OpenM_BookGUI.community = {};
+
+OpenM_BookGUI.community.Pages = function () {
     this.tree = null;
     this.actions = null;
     this.childs = null;
     this.users = null;
     this.usersNotValid = null;
-}
+};
 
-OpenM_Book_CommunityPageGui.prototype.display = function(enabled) {
-    var cadre = $("#" + OpenM_Book_PagesGui.divParentId);
+OpenM_BookGUI.community.Pages.prototype.display = function(enabled) {
+    var cadre = $("#" + OpenM_BookGUI.Pages.divParentId);
     if (enabled === true || enabled === undefined) {
         cadre.empty();
 
@@ -42,12 +44,12 @@ OpenM_Book_CommunityPageGui.prototype.display = function(enabled) {
     }
 };
 
-function OpenM_Book_CommunityTreeGui(communityId) {
+OpenM_BookGUI.community.Tree = function (communityId) {
     this.id = communityId;
     this.communities = new Array();
-}
+};
 
-OpenM_Book_CommunityTreeGui.prototype.content = function() {
+OpenM_BookGUI.community.Tree.prototype.content = function() {
     var div = $(document.createElement('div'));
     div.addClass("span12 well");
     div.append("<p>Navigation:</p>");
@@ -63,15 +65,15 @@ OpenM_Book_CommunityTreeGui.prototype.content = function() {
     return div;
 };
 
-function OpenM_Book_CommunityInTreeGui(communityId, name, active) {
+OpenM_BookGUI.community.InTree = function (communityId, name, active) {
     this.id = communityId;
     this.name = name;
     this.active = active;
     this.a = undefined;
     this.click = undefined;
-}
+};
 
-OpenM_Book_CommunityInTreeGui.prototype.content = function() {
+OpenM_BookGUI.community.InTree.prototype.content = function() {
     if (this.active) {
         this.a = $(document.createElement('a'));
         this.a.addClass("btn btn-primary btn-large");
@@ -85,19 +87,19 @@ OpenM_Book_CommunityInTreeGui.prototype.content = function() {
     return this.a;
 };
 
-OpenM_Book_CommunityInTreeGui.prototype.updateName = function(name) {
+OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
     this.name = name;
     if (this.a !== undefined)
         this.a.text(this.name);
 };
 
-function OpenM_Book_CommunityChildsGui(communityId) {
+OpenM_BookGUI.community.Childs = function (communityId) {
     this.communityId = communityId;
     this.communities = new Array();
     this.c = $(document.createElement('div'));
-}
+};
 
-OpenM_Book_CommunityChildsGui.prototype.content = function() {
+OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
     if (this.communities.length !== 0) {
         this.c.addClass("span12 well");
@@ -114,14 +116,14 @@ OpenM_Book_CommunityChildsGui.prototype.content = function() {
     }
 };
 
-function OpenM_Book_CommunityChildGui(communityId, name) {
+OpenM_BookGUI.community.Child = function (communityId, name) {
     this.communityId = communityId;
     this.name = name;
     this.c = undefined;
     this.click = undefined;
-}
+};
 
-OpenM_Book_CommunityChildGui.prototype.content = function() {
+OpenM_BookGUI.community.Child.prototype.content = function() {
     this.c = $(document.createElement('a'));
     this.c.addClass("btn btn-primary btn-large btn-space");
     this.c.text(this.name);
@@ -129,19 +131,19 @@ OpenM_Book_CommunityChildGui.prototype.content = function() {
     return this.c;
 };
 
-OpenM_Book_CommunityChildGui.prototype.updateName = function(name) {
+OpenM_BookGUI.community.Child.prototype.updateName = function(name) {
     this.name = name;
     if (this.c !== undefined)
         this.c.text(this.name);
 };
 
-function OpenM_Book_CommunityUsersGui(communityId) {
+OpenM_BookGUI.community.Users =function (communityId) {
     this.communityId = communityId;
     this.users = new Array();
     this.c = $(document.createElement('div'));
-}
+};
 
-OpenM_Book_CommunityUsersGui.prototype.content = function() {
+OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("span12 well");
@@ -157,19 +159,19 @@ OpenM_Book_CommunityUsersGui.prototype.content = function() {
     }
 };
 
-function OpenM_Book_CommunityUserGui(id, name) {
+OpenM_BookGUI.community.User=function (id, name) {
     this.id = id;
     this.name = name;
     this.click = undefined;
     this.c = $(document.createElement('div'));
-}
+};
 
-OpenM_Book_CommunityUserGui.prototype.content = function() {
+OpenM_BookGUI.community.User.prototype.content = function() {
     this.c.remove();
     this.c = $(document.createElement('div'));
     this.c.addClass("user-little span3");
     var img = $(document.createElement("img")).addClass("user-little-img");
-    img.attr("src", OpenM_Book_PagesGui.ressource_dir + OpenM_Book_PagesGui.userPhotoDefault);
+    img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.c.append(img);
     var a = $(document.createElement("a"));
     a.text(this.name);
@@ -179,13 +181,13 @@ OpenM_Book_CommunityUserGui.prototype.content = function() {
     return this.c;
 };
 
-function OpenM_Book_CommunityUsersNotValidGui(communityId) {
+OpenM_BookGUI.community.UsersNotValid=function (communityId) {
     this.communityId = communityId;
     this.users = new Array();
     this.c = $(document.createElement('div'));
-}
+};
 
-OpenM_Book_CommunityUsersNotValidGui.prototype.content = function() {
+OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("span12 well");
@@ -202,7 +204,7 @@ OpenM_Book_CommunityUsersNotValidGui.prototype.content = function() {
     }
 };
 
-function OpenM_Book_CommunityUserNotValidGui(id, name, communityName) {
+OpenM_BookGUI.community.UserNotValid =function (id, name, communityName) {
     this.id = id;
     this.name = name;
     this.communityName = communityName;
@@ -210,14 +212,14 @@ function OpenM_Book_CommunityUserNotValidGui(id, name, communityName) {
     this.buttonDisplayProfil = '';
     this.c = $(document.createElement('div'));
     this.click = undefined;
-}
+};
 
-OpenM_Book_CommunityUserNotValidGui.prototype.content = function() {
+OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.remove();
     this.c = $(document.createElement('div'));
     this.c.addClass("user-little span3");
     var img = $(document.createElement("img")).addClass("user-little-img");
-    img.attr("src", OpenM_Book_PagesGui.ressource_dir + OpenM_Book_PagesGui.userPhotoDefault);
+    img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.c.append(img);
     img.click(this.click);
     var a = $(document.createElement("a"));
@@ -231,7 +233,9 @@ OpenM_Book_CommunityUserNotValidGui.prototype.content = function() {
     return this.c;
 };
 
-function OpenM_Book_ButtonValidateUserGui() {
+OpenM_BookGUI.community.button = {};
+
+OpenM_BookGUI.community.button.Validate=function () {
     this.text = "Valider";
     this.style = 'btn-inverse';
     this.iconColor = "icon-white";
@@ -239,9 +243,9 @@ function OpenM_Book_ButtonValidateUserGui() {
     this.a = $(document.createElement('a'));
     this.click = '';
 
-}
+};
 
-OpenM_Book_ButtonValidateUserGui.prototype.content = function() {
+OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).addClass("btn " + this.style);
     this.a.addClass("btn-space");
@@ -254,7 +258,7 @@ OpenM_Book_ButtonValidateUserGui.prototype.content = function() {
     return this.a;
 };
 
-function OpenM_Book_ButtonDisplayProfilGui() {
+OpenM_BookGUI.community.button.DisplayProfile=function () {
     this.text = "Voir";
     this.style = 'btn-inverse';
     this.iconColor = "icon-white";
@@ -262,9 +266,9 @@ function OpenM_Book_ButtonDisplayProfilGui() {
     this.a = $(document.createElement('a'));
     this.click = undefined;
 
-}
+};
 
-OpenM_Book_ButtonDisplayProfilGui.prototype.content = function() {
+OpenM_BookGUI.community.button.DisplayProfile.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).addClass("btn " + this.style);
     this.a.addClass("btn-space");
@@ -276,13 +280,13 @@ OpenM_Book_ButtonDisplayProfilGui.prototype.content = function() {
     return this.a;
 };
 
-function OpenM_Book_CommunityActionsGui(communityId) {
+OpenM_BookGUI.community.Actions=function (communityId) {
     this.communityId = communityId;
     this.c = $(document.createElement('div'));
     this.buttons = new Array();
-}
+};
 
-OpenM_Book_CommunityActionsGui.prototype.content = function() {
+OpenM_BookGUI.community.Actions.prototype.content = function() {
     this.c.empty();
     if (this.buttons.length !== 0) {
         this.c.addClass("span12 well");
@@ -299,7 +303,7 @@ OpenM_Book_CommunityActionsGui.prototype.content = function() {
     return this.c;
 };
 
-function OpenM_Book_CommunityButtonRegisterGui(communityId) {
+OpenM_BookGUI.community.button.Register=function (communityId) {
     this.communityId = communityId;
     this.text = "S'enregistrer";
     this.toolTipText = "S'enregistrer dans cette communauté";
@@ -310,9 +314,9 @@ function OpenM_Book_CommunityButtonRegisterGui(communityId) {
     this.active = true;
     this.click = undefined;
     this.a = $(document.createElement('a'));
-}
+};
 
-OpenM_Book_CommunityButtonRegisterGui.prototype.content = function() {
+OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).addClass("btn " + this.style);
     this.a.addClass("btn-space");
@@ -340,10 +344,10 @@ OpenM_Book_CommunityButtonRegisterGui.prototype.content = function() {
     return this.a;
 };
 
-function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName) {
+OpenM_BookGUI.community.button.AddCommunity=function (communityId, communityName) {
     this.communityId = communityId;
     this.communityName = communityName;
-    this.id = 'OpenM_Book_CommunityButtonAddCommunityGui-' + this.communityId;
+    this.id = 'OpenM_BookGUI.community.button.AddCommunity-' + this.communityId;
     this.text = "Ajouter";
     this.toolTipText = this.text + " une sous communauté à '" + this.communityName + "'";
     this.style = 'btn-inverse';
@@ -352,9 +356,9 @@ function OpenM_Book_CommunityButtonAddCommunityGui(communityId, communityName) {
     this.iconStyle = "icon-ok";
     this.popover = '';
     this.a = $(document.createElement('a'));
-}
+};
 
-OpenM_Book_CommunityButtonAddCommunityGui.prototype.content = function() {
+OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).attr("id", this.id).addClass("btn " + this.style);
     this.a.addClass("btn-space");
@@ -386,9 +390,9 @@ OpenM_Book_CommunityButtonAddCommunityGui.prototype.content = function() {
     return this.a;
 };
 
-function OpenM_Book_CommunityButtonRenameGui(communityId) {
+OpenM_BookGUI.community.button.Rename=function (communityId) {
     this.communityId = communityId;
-    this.id = "OpenM_Book_CommunityButtonRenameGui-" + this.communityId;
+    this.id = "OpenM_BookGUI.community.button.Rename-" + this.communityId;
     this.a = $(document.createElement("a"));
     this.text = "Renommer";
     this.toolTipText = this.text + " la communauté";
@@ -397,9 +401,9 @@ function OpenM_Book_CommunityButtonRenameGui(communityId) {
     this.iconColor = "icon-white";
     this.iconStyle = "icon-refresh";
     this.popover = '';
-}
+};
 
-OpenM_Book_CommunityButtonRenameGui.prototype.content = function() {
+OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).attr("id", this.id).addClass("btn " + this.style).addClass("btn-space");
     var icon = $(document.createElement("i"));
@@ -429,7 +433,7 @@ OpenM_Book_CommunityButtonRenameGui.prototype.content = function() {
     return this.a;
 };
 
-function OpenM_Book_CommunityButtonDeleteGui() {
+OpenM_BookGUI.community.button.Delete=function () {
     this.a = $(document.createElement("a"));
     this.text = "Supprimer";
     this.toolTipText = this.text + " la communauté (définitivement)";
@@ -438,9 +442,9 @@ function OpenM_Book_CommunityButtonDeleteGui() {
     this.iconColor = "icon-white";
     this.iconStyle = "icon-trash";
     this.click = '';
-}
+};
 
-OpenM_Book_CommunityButtonDeleteGui.prototype.content = function() {
+OpenM_BookGUI.community.button.Delete.prototype.content = function() {
     this.a.remove();
     this.a = $(document.createElement('a')).addClass("btn " + this.style);
     this.a.addClass("btn-space");
@@ -454,25 +458,27 @@ OpenM_Book_CommunityButtonDeleteGui.prototype.content = function() {
     return this.a;
 };
 
+OpenM_BookGUI.community.popover = {};
+
 //A continuer
-function OpenM_Book_CommunityPopOverNameGui(communityId, name) {
+OpenM_BookGUI.community.popover.Name=function (communityId, name) {
     this.communityId = communityId;
     this.name = name;
 
-    // this.inputId = 'OpenM_Book_CommunityPopOverNameGui'
+    // this.inputId = 'OpenM_BookGUI.community.popover.Name'
     this.input = $(document.createElement("input"));
     this.popover = $(document.createElement("form"));
     this.a = $(document.createElement("a"));
     this.parentId = '';
     this.submit = '';
 
-}
+};
 
-OpenM_Book_CommunityPopOverNameGui.prototype.getName = function() {
+OpenM_BookGUI.community.popover.Name.prototype.getName = function() {
     return this.input.val();
 };
 
-OpenM_Book_CommunityPopOverNameGui.prototype.content = function() {
+OpenM_BookGUI.community.popover.Name.prototype.content = function() {
     //création du popover
     this.input.remove();
     this.input = $(document.createElement("input"));

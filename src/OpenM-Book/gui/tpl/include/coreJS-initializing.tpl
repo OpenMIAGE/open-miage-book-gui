@@ -7,16 +7,16 @@
 <script type="text/javascript">
     {literal}
         $(function() {
-            OpenM_URLController.loader = "loader";
+            OpenM_BookController.commons.URL.loader = "loader";
             var ressource = "{/literal}{$resources_dir}{literal}";
-            OpenM_URLController.jsLoadFinished = function() {
-                OpenM_Book_PagesGui.ressource_dir = ressource;
-                OpenM_Book_PagesGui.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
-                OpenM_Book_PagesGui.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';
-                OpenM_Book_PagesGui.divParentId = "divParent";
-                OpenM_Book_PagesGui.divJSON = "divJSON";
-                OpenM_MenuGUI.menuId = "menuDesktop";
-                OpenM_MenuGUI.menuMobileId = "menuMobile";
+            OpenM_BookController.commons.URL.jsLoadFinished = function() {
+                OpenM_BookGUI.Pages.ressource_dir = ressource;
+                OpenM_BookGUI.Pages.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
+                OpenM_BookGUI.Pages.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';
+                OpenM_BookGUI.Pages.divParentId = "divParent";
+                OpenM_BookGUI.Pages.divJSON = "divJSON";
+                OpenM_BookGUI.menu.Left.menuId = "menuDesktop";
+                OpenM_BookGUI.menu.Left.menuMobileId = "menuMobile";
                 OpenM_SSOConnectionProxy.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";
                 OpenM_SSOConnectionProxy.session_mode = OpenM_SSOConnectionProxy.MODE_API_SELECTION;
                 OpenM_SSOConnectionProxy.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
@@ -27,8 +27,8 @@
                         OpenM_Book_UserDAO.parseAndLoad(JSON.parse('{/literal}{$me}{literal}'), OpenM_Book_UserDAO.me);
                         if (!OpenM_Book_UserDAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
-                        OpenM_MenuGUI.init();
-                        OpenM_URLController.load();
+                        OpenM_BookGUI.menu.Left.init();
+                        OpenM_BookController.commons.URL.load();
                     }
                     else {
                         location.reload();
@@ -36,12 +36,12 @@
                 });
             }
     {/literal}{if !$debug}
-            OpenM_URLController.jsLoad("{$clients_js}");
+            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
         {foreach from=$core_js item=js}
-            OpenM_URLController.jsLoad(ressource + "{$js}");
+            OpenM_BookController.commons.URL.jsLoad(ressource + "{$js}");
         {/foreach}
     {else}{literal}
-            OpenM_URLController.jsLoadFinished();
+            OpenM_BookController.commons.URL.jsLoadFinished();
     {/literal}{/if}{literal}
         });
     {/literal}

@@ -1,7 +1,7 @@
 function OpenM_Book_UserPageGUI(){
     
     this.display = function(enabled){
-         cadre = $("#"+OpenM_Book_PagesGui.divParentId);
+         cadre = $("#"+OpenM_BookGUI.Pages.divParentId);
          
          if(enabled===true || enabled === undefined){             
                 //span10.append(this.fields.content());                
