@@ -1,4 +1,6 @@
-var OpenM_Book_PagesGui = {
+var OpenM_BookGUI = {};
+
+OpenM_BookGUI.Pages = {
     'divParentId': '', 
     'ressource_dir': '',
     'ressource_loader': '',
@@ -12,7 +14,7 @@ var OpenM_Book_PagesGui = {
     },
     'showJSON': function(data){
         var div = $("#"+this.divJSON);
-        if (div.size() == 0)
+        if (div.size() === 0)
             return;
         if(!this.divJSONInitialized){
             this.divJSONInitialized = true;
@@ -52,4 +54,4 @@ var OpenM_Book_PagesGui = {
         });
         $(".alert").show("slow"); 
     }
-}
+};
