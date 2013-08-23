@@ -37,14 +37,14 @@ class OpenM_CoreView extends OpenM_BookView {
         $this->showAlert();
         $this->setDebugMode();
         $this->smarty->assign("core_js", array(
+            "OpenM-Book/gui/js/CommonGUI.js",
+            "OpenM-Book/gui/js/menuGUI.js",
             "OpenM-Book/gui/js/community/CommunityController.js",
             "OpenM-Book/gui/js/community/CommunityDAO.js",
             "OpenM-Book/gui/js/community/CommunityGUI.js",
             "OpenM-Book/gui/js/user/UserDAO.js",
             "OpenM-Book/gui/js/user/UserController.js",
-            "OpenM-Book/gui/js/user/UserGUI.js",
-            "OpenM-Book/gui/js/menuGUI.js",
-            "OpenM-Book/gui/js/CommonGUI.js"
+            "OpenM-Book/gui/js/user/UserGUI.js"
         ));
         $this->smarty->display('core.tpl');
     }
