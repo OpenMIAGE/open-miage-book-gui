@@ -150,12 +150,14 @@ OpenM_BookDAO.community.DAO = {
     get: function(communityId, synchro, reload) {
         var community;
         community = this.allCommunities[communityId];
-        if (!community)
+        if (!community) {
             community = new OpenM_BookDAO.community.ExchangeObject();
+            this.allCommunities[communityId] = community;
+        }
 
         if (communityId)
             community.id = communityId;
-        
+
         if (reload === true || reload === undefined) {
             if (!synchro)
                 OpenM_Book.getCommunity(communityId, function(data) {
