@@ -70,30 +70,31 @@ OpenM_BookDAO.user.DAO.initMe = function(callBack) {
     }
 };
 
-OpenM_BookDAO.user.DAO.get = function(userId, allProperties, synchro, reload) {
+OpenM_BookDAO.user.DAO.get = function(userId, basicOnly, synchro, reload) {
     var user;
     user = this.allUsers[userId];
     if (!user) {
         user = new OpenM_BookDAO.user.ExchangeObject();
         this.allUsers[userId] = user;
     }
-    if (allProperties !== undefined) {
-        if (allProperties === true)
-            allProperties = OpenM_Book_User.FALSE_PARAMETER_VALUE;
+    if (basicOnly !== undefined) {
+        if (basicOnly === false)
+            basicOnly = OpenM_Book_User.FALSE_PARAMETER_VALUE;
         else
-            allProperties = OpenM_Book_User.TRUE_PARAMETER_VALUE;
-    }
+            basicOnly = OpenM_Book_User.TRUE_PARAMETER_VALUE;
+    } else
+        basicOnly = null;
 
     if (userId)
         user.id = userId;
 
     if (reload === true || reload === undefined) {
         if (!synchro)
-            OpenM_Book_User.getUserProperties(userId, allProperties, function(data) {
+            OpenM_Book_User.getUserProperties(userId, basicOnly, function(data) {
                 OpenM_BookDAO.user.DAO.parseAndLoad(data, user);
             });
         else
-            this.parseAndLoad(OpenM_Book_User.getUserProperties(userId), allProperties, user);
+            this.parseAndLoad(OpenM_Book_User.getUserProperties(userId), basicOnly, user);
     }
     return user;
 };
@@ -164,20 +165,36 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
 
         user.communities = new Array();
         for (var i = 0; i < data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER].length; i++) {
-            var communityJSON = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
-            var community = OpenM_BookDAO.community.DAO.get(communityJSON[OpenM_Groups.RETURN_GROUP_ID_PARAMETER], false, false);
-            if (community.name !== communityJSON[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER]) {
-                community.name = communityJSON[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
+            var json = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
+            var community = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_GROUP_ID_PARAMETER], false, false);
+            if (community.name !== json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER]) {
+                community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
                 community.update();
             }
             user.communities.push(community);
         }
 
-        if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
-            //TODO
-            //        "CAL":{"2543":{"CID":3,"CNA":"Toutes les communautes"},"2546":{"CID":3,"CNA":"Toutes les communautes"},"2555":{"CID":2543,"CNA":"balou"},"2570":{"CID":3,"CNA":"Toutes les communautes"},"2636":{"CID":2570,"CNA":"iiiaaaaab"},"2643":{"CID":2546,"CNA":"djo test 3"},"2696":{"CID":2546,"CNA":"djo test 3"}}}
+        function defineParent(d, c) {
+            if (c === undefined)
+                return;
+            if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)
+                return;
+            if (c.parent === undefined) {
+                var json = d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id];
+                c.parent = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_COMMUNITY_ID_PARAMETER], false, false);
+                if (c.parent.name !== json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER]) {
+                    c.parent.name = json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER];
+                    c.parent.update();
+                }
+                defineParent(d, c.parent);
+            }
         }
 
+        if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
+            $.each(user.communities, function(key, value) {
+                defineParent(data, value);
+            });
+        }
         user.updateCommunities();
     } else {
         if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
