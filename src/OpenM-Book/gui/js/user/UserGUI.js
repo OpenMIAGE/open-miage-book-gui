@@ -2,52 +2,58 @@ OpenM_BookGUI.user = {};
 
 OpenM_BookGUI.user.Page = function() {
 
-    this.display = function(enabled) {
-        cadre = $("#" + OpenM_BookGUI.Pages.divParentId);
+    this.modification = null;
+    this.save = null;
+    this.fields = null;
+};
 
-        if (enabled === true || enabled === undefined) {
-            //span10.append(this.fields.content());                
+OpenM_BookGUI.user.Page.prototype.content = function() {
+    cadre.empty();
+    cadre.addClass("row-fluid").addClass("span10 well");
 
-            cadre.empty();
-            cadre.addClass("row-fluid").addClass("span10 well");
+    cadre.append(this.fields.content());
 
-            cadre.append(this.fields.content());
+    // Création du bloc "Miage et Emploi"
+    var blocMiageAndSociete = $(document.createElement('div')).addClass("span5 blocMiageAndSociete");
+    var conteneurMiageEtEmploi = $(document.createElement('div')).addClass("row-fluid");
 
-            // Création du bloc "Miage et Emploi"
-            var blocMiageAndSociete = $(document.createElement('div')).addClass("span5 blocMiageAndSociete");
-            var conteneurMiageEtEmploi = $(document.createElement('div')).addClass("row-fluid");
+    // Titre du bloc
+    var titleMiageAndSociete = $(document.createElement("p")).addClass("titleMiageAndSociete");
+    titleMiageAndSociete.text("Informations Etude & Société");
+    conteneurMiageEtEmploi.append(titleMiageAndSociete);
 
-            // Titre du bloc
-            var titleMiageAndSociete = $(document.createElement("p")).addClass("titleMiageAndSociete");
-            titleMiageAndSociete.text("Informations Etude & Société");
-            conteneurMiageEtEmploi.append(titleMiageAndSociete);
+    // Affichage de la promo Miage
+    var labelPromo = $(document.createElement("p"));
+    labelPromo.text("Promo : " + "2010");
+    conteneurMiageEtEmploi.append(labelPromo);
 
-            // Affichage de la promo Miage
-            var labelPromo = $(document.createElement("p"));
-            labelPromo.text("Promo : " + "2010");
-            conteneurMiageEtEmploi.append(labelPromo);
+    // Affichage de la société
+    var labelEmployer = $(document.createElement("p"));
+    labelEmployer.text("Société actuelle : Astek SO");
+    conteneurMiageEtEmploi.append(labelEmployer);
 
-            // Affichage de la société
-            var labelEmployer = $(document.createElement("p"));
-            labelEmployer.text("Société actuelle : Astek SO");
-            conteneurMiageEtEmploi.append(labelEmployer);
+    // Ajout de tout le contenu dans la page
+    blocMiageAndSociete.append(conteneurMiageEtEmploi);
+    cadre.append(blocMiageAndSociete);
+    //span1.append(this.fields.content());                 
 
-            // Ajout de tout le contenu dans la page
-            blocMiageAndSociete.append(conteneurMiageEtEmploi);
-            cadre.append(blocMiageAndSociete);
-            //span1.append(this.fields.content());                 
+    //this.div = $(document.createElement('div')).addClass("row-fluid");
+    //  cadre.append(this.div);                
+};
 
-            //this.div = $(document.createElement('div')).addClass("row-fluid");
-            //  cadre.append(this.div);                
-        } else {
-            cadre.empty();
-        }
-    };
+OpenM_BookGUI.user.Page.prototype.display = function(enabled) {
+    cadre = $("#" + OpenM_BookGUI.Pages.divParentId);
+
+    if (enabled === true || enabled === undefined) {
+        this.content();
+    } else {
+        cadre.empty();
+    }
 };
 
 OpenM_BookGUI.user.button = {};
 
-OpenM_BookGUI.user.button.Modification=function (inModification) {
+OpenM_BookGUI.user.button.Modification = function(inModification) {
     this.text = "Modifier";
     this.style = 'btn-info btn-large btn-space';
     this.iconColor = "icon-white";
@@ -89,28 +95,26 @@ OpenM_BookGUI.user.button.Modification=function (inModification) {
     };
 };
 
-OpenM_BookGUI.user.Fields=function () {
-    this.c = $(document.createElement("div"));
-    this.allFields = new Array();
+OpenM_BookGUI.user.Fields = function() {
+    this.fieldBlocks = new Array();
 
     this.content = function() {
-        if (this.allFields.length !== 0) {
 
-            // On affiche le bandeau
-            this.c.append(getBandeauProfil(this.allFields));
-            this.c.append(getBlocInfosGenerales(this.allFields));
-        }
-
-        return this.c;
+        return;
     };
-
-    this.addField = function(field) {
-        this.allFields.push(field);
-    };
-
 };
 
-OpenM_BookGUI.user.Field=function (user, field, inModification) {
+OpenM_BookGUI.user.FieldBlock = function(name) {
+    this.name = name;
+    this.fields = new Array();
+
+    this.content = function() {
+
+        return;
+    };
+};
+
+OpenM_BookGUI.user.Field = function() {
     this.user = user;
     this.field = field;
     this.inModification = inModification;
@@ -134,7 +138,7 @@ OpenM_BookGUI.user.Field=function (user, field, inModification) {
             var labelVal = $(document.createElement("span"));
             labelVal.text(this.fieldValue);
             this.c.append(labelVal);
-            return this.c
+            return this.c;
         } else {
             //modif
             this.c.empty();
@@ -164,6 +168,9 @@ OpenM_BookGUI.user.Field=function (user, field, inModification) {
 
     };
 };
+
+
+//à refactorer sur le même principe que CommunityGUI.js
 
 // Affichage du bandeau profil (photo + nom + prénom)
 function getBandeauProfil(fields) {
