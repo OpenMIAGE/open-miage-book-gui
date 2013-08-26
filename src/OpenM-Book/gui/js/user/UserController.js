@@ -45,7 +45,6 @@ OpenM_BookController.user.Page = function(user) {
         
     this.fields = new OpenM_BookController.user.Fields(this.user);
     this.gui.fields = this.fields.gui;
-
 };
 
 OpenM_BookController.user.Page.prototype.display = function(enabled) {
@@ -64,9 +63,19 @@ OpenM_BookController.user.button.Modification = function(user, page) {
     };
 };
 
+OpenM_BookController.user.button.Save = function(user, page) {
+    this.user = user;
+    this.page = page;
+    this.gui = new OpenM_BookGUI.user.button.Save();
+    var controller = this;
+    this.gui.click = function() {
+        
+    };
+};
+
 OpenM_BookController.user.Fields = function(user) {
     this.user = user;
-    this.fields = new Array();
+    this.fieldBloc = new Array();
     this.gui = new OpenM_BookGUI.user.Fields();
     
 };

@@ -1,59 +1,33 @@
 OpenM_BookGUI.user = {};
 
 OpenM_BookGUI.user.Page = function() {
-
+    this.cadre = null;
     this.modification = null;
     this.save = null;
     this.fields = null;
 };
 
 OpenM_BookGUI.user.Page.prototype.content = function() {
-    cadre.empty();
-    cadre.addClass("row-fluid").addClass("span10 well");
-
-    cadre.append(this.fields.content());
-
-    // Création du bloc "Miage et Emploi"
-    var blocMiageAndSociete = $(document.createElement('div')).addClass("span5 blocMiageAndSociete");
-    var conteneurMiageEtEmploi = $(document.createElement('div')).addClass("row-fluid");
-
-    // Titre du bloc
-    var titleMiageAndSociete = $(document.createElement("p")).addClass("titleMiageAndSociete");
-    titleMiageAndSociete.text("Informations Etude & Société");
-    conteneurMiageEtEmploi.append(titleMiageAndSociete);
-
-    // Affichage de la promo Miage
-    var labelPromo = $(document.createElement("p"));
-    labelPromo.text("Promo : " + "2010");
-    conteneurMiageEtEmploi.append(labelPromo);
-
-    // Affichage de la société
-    var labelEmployer = $(document.createElement("p"));
-    labelEmployer.text("Société actuelle : Astek SO");
-    conteneurMiageEtEmploi.append(labelEmployer);
-
-    // Ajout de tout le contenu dans la page
-    blocMiageAndSociete.append(conteneurMiageEtEmploi);
-    cadre.append(blocMiageAndSociete);
-    //span1.append(this.fields.content());                 
-
-    //this.div = $(document.createElement('div')).addClass("row-fluid");
-    //  cadre.append(this.div);                
+    this.page = $(document.createElement("div"));
+    this.page.addClass("row-fluid").addClass("span10 well");
+    this.page.append(this.fields.content());
+    if (this.modification !== null)
+        this.page.append(this.modification.content());
+    if (this.save !== null)
+        this.page.append(this.save.content());
+    return this.cadre;
 };
 
 OpenM_BookGUI.user.Page.prototype.display = function(enabled) {
-    cadre = $("#" + OpenM_BookGUI.Pages.divParentId);
-
-    if (enabled === true || enabled === undefined) {
-        this.content();
-    } else {
-        cadre.empty();
-    }
+    if (this.cadre !== null)
+        this.cadre.remove();
+    if (enabled === true || enabled === undefined)
+        $("#" + OpenM_BookGUI.Pages.divParentId).append(this.content());
 };
 
 OpenM_BookGUI.user.button = {};
 
-OpenM_BookGUI.user.button.Modification = function(inModification) {
+OpenM_BookGUI.user.button.Modification = function() {
     this.text = "Modifier";
     this.style = 'btn-info btn-large btn-space';
     this.iconColor = "icon-white";
