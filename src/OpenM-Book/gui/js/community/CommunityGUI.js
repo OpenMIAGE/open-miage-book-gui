@@ -1,6 +1,6 @@
 OpenM_BookGUI.community = {};
 
-OpenM_BookGUI.community.Pages = function () {
+OpenM_BookGUI.community.Page = function() {
     this.tree = null;
     this.actions = null;
     this.childs = null;
@@ -8,7 +8,7 @@ OpenM_BookGUI.community.Pages = function () {
     this.usersNotValid = null;
 };
 
-OpenM_BookGUI.community.Pages.prototype.display = function(enabled) {
+OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
     var cadre = $("#" + OpenM_BookGUI.Pages.divParentId);
     if (enabled === true || enabled === undefined) {
         cadre.empty();
@@ -36,15 +36,13 @@ OpenM_BookGUI.community.Pages.prototype.display = function(enabled) {
         var usersNotValid = $(document.createElement('div')).addClass("row-fluid");
         cadre.append(usersNotValid);
         usersNotValid.append(this.usersNotValid.content());
-
     }
     else {
-        //on chache
         cadre.empty();
     }
 };
 
-OpenM_BookGUI.community.Tree = function (communityId) {
+OpenM_BookGUI.community.Tree = function(communityId) {
     this.id = communityId;
     this.communities = new Array();
 };
@@ -65,7 +63,7 @@ OpenM_BookGUI.community.Tree.prototype.content = function() {
     return div;
 };
 
-OpenM_BookGUI.community.InTree = function (communityId, name, active) {
+OpenM_BookGUI.community.InTree = function(communityId, name, active) {
     this.id = communityId;
     this.name = name;
     this.active = active;
@@ -93,7 +91,7 @@ OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
         this.a.text(this.name);
 };
 
-OpenM_BookGUI.community.Childs = function (communityId) {
+OpenM_BookGUI.community.Childs = function(communityId) {
     this.communityId = communityId;
     this.communities = new Array();
     this.c = $(document.createElement('div'));
@@ -116,7 +114,7 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
     }
 };
 
-OpenM_BookGUI.community.Child = function (communityId, name) {
+OpenM_BookGUI.community.Child = function(communityId, name) {
     this.communityId = communityId;
     this.name = name;
     this.c = undefined;
@@ -137,7 +135,7 @@ OpenM_BookGUI.community.Child.prototype.updateName = function(name) {
         this.c.text(this.name);
 };
 
-OpenM_BookGUI.community.Users =function (communityId) {
+OpenM_BookGUI.community.Users = function(communityId) {
     this.communityId = communityId;
     this.users = new Array();
     this.c = $(document.createElement('div'));
@@ -146,9 +144,9 @@ OpenM_BookGUI.community.Users =function (communityId) {
 OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
-        this.c.addClass("span12 well");
+        this.c.addClass("well").css("overflow", "hidden");
         this.c.append("<p>Users :</p>");
-        var div = $(document.createElement('div')).addClass("row-fluid");
+        var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
         for (var i in this.users) {
             div.append(this.users[i].content());
@@ -159,7 +157,7 @@ OpenM_BookGUI.community.Users.prototype.content = function() {
     }
 };
 
-OpenM_BookGUI.community.User=function (id, name) {
+OpenM_BookGUI.community.User = function(id, name) {
     this.id = id;
     this.name = name;
     this.click = undefined;
@@ -168,8 +166,7 @@ OpenM_BookGUI.community.User=function (id, name) {
 
 OpenM_BookGUI.community.User.prototype.content = function() {
     this.c.remove();
-    this.c = $(document.createElement('div'));
-    this.c.addClass("user-little span3");
+    this.c = $(document.createElement('div')).css("float", "left");
     var img = $(document.createElement("img")).addClass("user-little-img");
     img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.c.append(img);
@@ -181,7 +178,7 @@ OpenM_BookGUI.community.User.prototype.content = function() {
     return this.c;
 };
 
-OpenM_BookGUI.community.UsersNotValid=function (communityId) {
+OpenM_BookGUI.community.UsersNotValid = function(communityId) {
     this.communityId = communityId;
     this.users = new Array();
     this.c = $(document.createElement('div'));
@@ -190,10 +187,10 @@ OpenM_BookGUI.community.UsersNotValid=function (communityId) {
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
-        this.c.addClass("span12 well");
+        this.c.addClass("well").css("overflow", "hidden");
         this.c.append("<p>Users Non Validé :</p>");
-        this.c.append("<p>Les utilisateurs présents ici, ne sont pas valider. Cela signifie qu'ils postulent pour entrer dans la communauté. C'est a vous de valider leur adhésion. Plusieurs validation d'utilisateur sont requises pour etre accépter </p>");
-        var div = $(document.createElement('div')).addClass("row-fluid");
+//        this.c.append("<p>Les utilisateurs présents ici, ne sont pas valider. Cela signifie qu'ils postulent pour entrer dans la communauté. C'est a vous de valider leur adhésion. Plusieurs validation d'utilisateur sont requises pour etre accépter </p>");
+        var div = $(document.createElement('div'));
         this.c.append(div);
         for (var i in this.users) {
             div.append(this.users[i].content());
@@ -204,30 +201,33 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     }
 };
 
-OpenM_BookGUI.community.UserNotValid =function (id, name, communityName) {
+OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
     this.id = id;
     this.name = name;
     this.communityName = communityName;
     this.buttonValidate = '';
     this.buttonDisplayProfil = '';
     this.c = $(document.createElement('div'));
-    this.click = undefined;
+    this.clickUser = undefined;
+    this.clickCommunity = undefined;
 };
 
 OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.remove();
-    this.c = $(document.createElement('div'));
-    this.c.addClass("user-little span3");
+    this.c = $(document.createElement('div')).css("float", "left");
     var img = $(document.createElement("img")).addClass("user-little-img");
     img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.c.append(img);
     img.click(this.click);
     var a = $(document.createElement("a"));
     a.text(this.name);
-    a.click(this.click);
+    a.click(this.clickUser);
+    var d = $(document.createElement("a"));
+    d.text(" in '" + this.communityName + "'");
+    d.click(this.clickCommunity);
     this.c.append(a);
     this.c.append("<br>");
-    this.c.append(" in '" + this.communityName + "'");
+    this.c.append(d);
     this.c.append("<br>");
     this.c.append(this.buttonValidate.content());
     return this.c;
@@ -235,14 +235,13 @@ OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
 
 OpenM_BookGUI.community.button = {};
 
-OpenM_BookGUI.community.button.Validate=function () {
+OpenM_BookGUI.community.button.Validate = function() {
     this.text = "Valider";
     this.style = 'btn-inverse';
     this.iconColor = "icon-white";
     this.iconStyle = "icon-ok-circle";
     this.a = $(document.createElement('a'));
     this.click = '';
-
 };
 
 OpenM_BookGUI.community.button.Validate.prototype.content = function() {
@@ -254,11 +253,10 @@ OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     this.a.append(icon);
     this.a.append(this.text);
     this.a.click(this.click);
-
     return this.a;
 };
 
-OpenM_BookGUI.community.button.DisplayProfile=function () {
+OpenM_BookGUI.community.button.DisplayProfile = function() {
     this.text = "Voir";
     this.style = 'btn-inverse';
     this.iconColor = "icon-white";
@@ -276,11 +274,11 @@ OpenM_BookGUI.community.button.DisplayProfile.prototype.content = function() {
     icon.addClass(this.iconColor + " " + this.iconStyle);
     this.a.append(icon);
     this.a.append(this.text);
-    this.a.click(this.click);
+    this.a.click(this.clickUser);
     return this.a;
 };
 
-OpenM_BookGUI.community.Actions=function (communityId) {
+OpenM_BookGUI.community.Actions = function(communityId) {
     this.communityId = communityId;
     this.c = $(document.createElement('div'));
     this.buttons = new Array();
@@ -303,7 +301,7 @@ OpenM_BookGUI.community.Actions.prototype.content = function() {
     return this.c;
 };
 
-OpenM_BookGUI.community.button.Register=function (communityId) {
+OpenM_BookGUI.community.button.Register = function(communityId) {
     this.communityId = communityId;
     this.text = "S'enregistrer";
     this.toolTipText = "S'enregistrer dans cette communauté";
@@ -344,7 +342,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     return this.a;
 };
 
-OpenM_BookGUI.community.button.AddCommunity=function (communityId, communityName) {
+OpenM_BookGUI.community.button.AddCommunity = function(communityId, communityName) {
     this.communityId = communityId;
     this.communityName = communityName;
     this.id = 'OpenM_BookGUI.community.button.AddCommunity-' + this.communityId;
@@ -390,7 +388,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     return this.a;
 };
 
-OpenM_BookGUI.community.button.Rename=function (communityId) {
+OpenM_BookGUI.community.button.Rename = function(communityId) {
     this.communityId = communityId;
     this.id = "OpenM_BookGUI.community.button.Rename-" + this.communityId;
     this.a = $(document.createElement("a"));
@@ -433,7 +431,7 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     return this.a;
 };
 
-OpenM_BookGUI.community.button.Delete=function () {
+OpenM_BookGUI.community.button.Delete = function() {
     this.a = $(document.createElement("a"));
     this.text = "Supprimer";
     this.toolTipText = this.text + " la communauté (définitivement)";
@@ -461,7 +459,7 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
 OpenM_BookGUI.community.popover = {};
 
 //A continuer
-OpenM_BookGUI.community.popover.Name=function (communityId, name) {
+OpenM_BookGUI.community.popover.Name = function(communityId, name) {
     this.communityId = communityId;
     this.name = name;
 
