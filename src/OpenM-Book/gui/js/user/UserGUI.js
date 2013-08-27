@@ -1,147 +1,137 @@
 OpenM_BookGUI.user = {};
 
 OpenM_BookGUI.user.Page = function() {
-    this.cadre = null;
     this.modification = null;
     this.save = null;
     this.fields = null;
+    this.name = '';
+    this.firstName = '';
+    this.lastName = '';
 };
 
 OpenM_BookGUI.user.Page.prototype.content = function() {
-    this.page = $(document.createElement("div"));
-    this.page.addClass("row-fluid").addClass("span10 well");
-    this.page.append(this.fields.content());
+    var page = $(document.createElement("div"));
+    page.addClass("row-fluid");
+    page.append($(document.createElement("div")).append(this.name));
+    page.append(this.fields.content());
     if (this.modification !== null)
-        this.page.append(this.modification.content());
+        page.append(this.modification.content());
     if (this.save !== null)
-        this.page.append(this.save.content());
-    return this.cadre;
+        page.append(this.save.content());
+    return page;
 };
 
 OpenM_BookGUI.user.Page.prototype.display = function(enabled) {
-    if (this.cadre !== null)
-        this.cadre.remove();
+    $("#" + OpenM_BookGUI.Pages.divParentId).empty();
     if (enabled === true || enabled === undefined)
         $("#" + OpenM_BookGUI.Pages.divParentId).append(this.content());
+
 };
 
 OpenM_BookGUI.user.button = {};
 
 OpenM_BookGUI.user.button.Modification = function() {
-    this.text = "Modifier";
-    this.style = 'btn-info btn-large btn-space';
-    this.iconColor = "icon-white";
-    this.iconStyle = "icon-pencil";
-    this.a = $(document.createElement('a'));
-    this.aSave = $(document.createElement('a'));
     this.click = undefined;
-    this.clickSave = undefined;
-    this.styleSave = 'btn-info btn-large';
-    this.iconColorSave = "icon-white";
-    this.iconStyleSave = "icon-ok";
-    this.inModification = inModification;
 
     this.content = function() {
-        this.a.empty()
-                .addClass("btn " + this.style);
+        var a = $(document.createElement("a"))
+                .addClass("btn btn-info btn-large btn-space");
         var icon = $(document.createElement("i"))
-                .addClass(this.iconColor + " " + this.iconStyle);
-        this.a.append(icon)
-                .append('&nbsp;' + this.text)
-                .click(this.click)
-                .removeClass("active");
-        this.aSave.empty().hide();
-
-        if (this.inModification) {
-            this.a.addClass('active');
-            this.aSave.addClass("btn " + this.style);
-            var icon = $(document.createElement("i"))
-                    .addClass(this.iconColorSave + " " + this.iconStyleSave);
-            this.aSave.append(icon)
-                    .append('&nbsp;' + this.text)
-                    .click(this.clickSave);
-
-
-        }
-
-
-        return this.a;
+                .addClass("icon-white icon-pencil");
+        a.append(icon)
+                .append('&nbsp;Modifier')
+                .click(this.click);
+        return a;
     };
+};
+
+OpenM_BookGUI.user.button.Save = function() {
+    this.click = undefined;
+
+    this.content = function() {
+        var a = $(document.createElement("a"));
+        a.addClass('active');
+        a.addClass("btn btn-info btn-large btn-space");
+        var icon = $(document.createElement("i"))
+                .addClass("icon-white icon-ok");
+        this.a.append(icon)
+                .append('&nbsp;Modifier')
+                .click(this.clickSave);
+        return a;
+    };
+
 };
 
 OpenM_BookGUI.user.Fields = function() {
     this.fieldBlocks = new Array();
+    this.c = $(document.createElement("div"));
+};
 
-    this.content = function() {
+OpenM_BookGUI.user.Fields.prototype.content = function() {
+    this.c.empty();
+    for (var i in this.fieldBlocks) {
+        this.c.append(this.fieldBlocks[i].content());
+    }
+    return this.c;
+};
 
-        return;
-    };
+OpenM_BookGUI.user.Fields.prototype.update = function() {
+    this.content();
 };
 
 OpenM_BookGUI.user.FieldBlock = function(name) {
     this.name = name;
     this.fields = new Array();
 
-    this.content = function() {
-
-        return;
-    };
 };
 
-OpenM_BookGUI.user.Field = function() {
-    this.user = user;
-    this.field = field;
-    this.inModification = inModification;
-    this.fieldName = this.field;
-    this.fieldValue = "";
-    this.c = $(document.createElement("div"));
-    this.input = undefined;
-
-
-    this.content = function() {
-        if (!this.inModification) {
-            //display
-            this.c.empty();
-            //this.c = $(document.createElement("div"));
-            this.c.addClass("span2");
-            this.c.addClass("user-field");
-            var label = $(document.createElement("span"));
-            label.text(this.fieldName + " :");
-            this.c.append(label);
-            this.c.append("<br>");
-            var labelVal = $(document.createElement("span"));
-            labelVal.text(this.fieldValue);
-            this.c.append(labelVal);
-            return this.c;
-        } else {
-            //modif
-            this.c.empty();
-            // this.c = $(document.createElement("div"));
-            this.c.addClass("span2");
-            this.c.addClass("user-field");
-            this.c.addClass("control-group");
-            var label = $(document.createElement("label")).addClass("control-label");
-            label.attr("for", this.fieldName)
-                    .text(this.fieldName);
-            this.c.append(label);
-            var div = $(document.createElement("div")).addClass("controls");
-            this.input = $(document.createElement("input"))
-                    .attr("id", this.fieldName)
-                    .attr("type", "text")
-                    .attr("placeholder", this.fieldName)
-                    .val(this.fieldValue)
-                    .addClass("input-small");
-            div.append(this.input);
-            this.c.append(div);
-
-            //div.append(labelVal)
-            //this.c.append(div);
-            return this.c;
-        }
-
-
-    };
+OpenM_BookGUI.user.FieldBlock.prototype.content = function() {
+    var div = $(document.createElement("div")).addClass("row-fluid");
+    var c = $(document.createElement("div")).addClass("span6 well");
+    div.append(c);
+    c.append(this.name+" :");
+    for (var i in this.fields) {
+        c.append(this.fields[i].content());
+    }
+    return div;
 };
+
+OpenM_BookGUI.user.Field = function(name, value, isInModificationMode) {
+    this.isInModificationMode = (isInModificationMode !== undefined) ? isInModificationMode : false;
+    this.name = name;
+    this.value = value;
+};
+
+OpenM_BookGUI.user.Field.prototype.content = function() {
+    var content = $(document.createElement("div"));
+    if (this.isInModificationMode === false) {
+        content.addClass("user-field");
+        var label = $(document.createElement("span"));
+        label.text(this.name + " :");
+        //content.append(label);
+        var labelVal = $(document.createElement("span"));
+        labelVal.text(this.value);
+        content.append(labelVal);
+    } else {
+        content.addClass("user-field");
+        content.addClass("control-group");
+        var label = $(document.createElement("label")).addClass("control-label");
+        label.attr("for", this.name)
+                .text(this.name);
+        content.append(label);
+        var div = $(document.createElement("div")).addClass("controls");
+        var input = $(document.createElement("input"))
+                .attr("id", this.name)
+                .attr("type", "text")
+                .attr("placeholder", this.name)
+                .val(this.value)
+                .addClass("input-small");
+        div.append(input);
+        content.append(div);
+    }
+    return content;
+};
+
 
 
 //à refactorer sur le même principe que CommunityGUI.js
