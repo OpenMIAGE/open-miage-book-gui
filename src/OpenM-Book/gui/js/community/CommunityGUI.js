@@ -165,8 +165,8 @@ OpenM_BookGUI.community.User = function(id, name) {
 };
 
 OpenM_BookGUI.community.User.prototype.content = function() {
-    this.c.remove();
-    this.c = $(document.createElement('div')).css("float", "left");
+    this.c.empty();
+    this.c.css("float", "left");
     var img = $(document.createElement("img")).addClass("user-little-img");
     img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.c.append(img);
@@ -176,6 +176,11 @@ OpenM_BookGUI.community.User.prototype.content = function() {
     a.click(this.click);
     img.click(this.click);
     return this.c;
+};
+
+OpenM_BookGUI.community.User.prototype.updateName = function(newName){
+    this.name = newName;
+    this.content();
 };
 
 OpenM_BookGUI.community.UsersNotValid = function(communityId) {

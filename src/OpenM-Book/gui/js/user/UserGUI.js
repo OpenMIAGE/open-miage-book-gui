@@ -160,7 +160,7 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
     div.append(c);
     var first = true;
     for (var i in this.communities) {
-        if(first)
+        if (first)
             first = false;
         else
             c.append(" / ");
@@ -172,13 +172,19 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
 OpenM_BookGUI.user.Community = function(name) {
     this.name = name;
     this.click = undefined;
+    this.c = $(document.createElement("a"));
 };
 
 OpenM_BookGUI.user.Community.prototype.content = function() {
-    var content = $(document.createElement("a"));
-    content.append(this.name);
-    content.click(this.click);
-    return content;
+    this.c.empty();
+    this.c.append(this.name);
+    this.c.click(this.click);
+    return this.c;
+};
+
+OpenM_BookGUI.user.Community.prototype.updateName = function(newName) {
+    this.name = newName;
+    this.content();
 };
 
 //

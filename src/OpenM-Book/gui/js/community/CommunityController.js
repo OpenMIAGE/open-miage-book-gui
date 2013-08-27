@@ -173,6 +173,12 @@ OpenM_BookController.community.User = function(user) {
     this.gui.click = function() {
         OpenM_BookController.commons.URL.clickToUser(controller.user);
     };
+    
+    this.updateName = function(){
+        controller.gui.updateName(controller.user.name);
+    };
+    
+    this.user.addUpdateCallBack(this.updateName);
 };
 
 OpenM_BookController.community.UsersNotValid = function(community) {

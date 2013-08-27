@@ -175,4 +175,10 @@ OpenM_BookController.user.Community = function(community) {
     this.gui.click = function(){
         OpenM_BookController.commons.URL.clickToCommunity(controller.community);
     };
+    
+    this.update = function(){
+        controller.gui.updateName(controller.community.name);
+    };
+    
+    this.community.addUpdateCallBack(this.update);
 };
