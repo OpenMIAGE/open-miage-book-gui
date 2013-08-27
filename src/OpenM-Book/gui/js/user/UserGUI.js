@@ -3,7 +3,7 @@ OpenM_BookGUI.user = {};
 OpenM_BookGUI.user.Page = function() {
     this.modification = null;
     this.save = null;
-    this.fields = null;
+    this.communities = null;
     this.name = '';
     this.firstName = '';
     this.lastName = '';
@@ -18,6 +18,7 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
         page.append(this.modification.content());
     if (this.save !== null)
         page.append(this.save.content());
+    page.append(this.communities.content());
     return page;
 };
 
@@ -89,7 +90,7 @@ OpenM_BookGUI.user.FieldBlock.prototype.content = function() {
     var div = $(document.createElement("div")).addClass("row-fluid");
     var c = $(document.createElement("div")).addClass("span6 well");
     div.append(c);
-    c.append(this.name+" :");
+    c.append(this.name + " :");
     for (var i in this.fields) {
         c.append(this.fields[i].content());
     }
@@ -132,55 +133,78 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
     return content;
 };
 
+OpenM_BookGUI.user.Communities = function() {
+    this.communityBlocks = new Array();
+    this.c = $(document.createElement("div"));
+};
 
+OpenM_BookGUI.user.Communities.prototype.content = function() {
+    this.c.empty();
+    for (var i in this.communityBlocks) {
+        this.c.append(this.communityBlocks[i].content());
+    }
+    return this.c;
+};
 
-//à refactorer sur le même principe que CommunityGUI.js
+OpenM_BookGUI.user.Communities.prototype.update = function() {
+    this.content();
+};
 
-// Affichage du bandeau profil (photo + nom + prénom)
-function getBandeauProfil(fields) {
-    var bandeauProfil = $(document.createElement('div'));
+OpenM_BookGUI.user.CommunityBlock = function() {
+    this.communities = new Array();
+};
 
-    // Photo de profil
-    var photoUser = $(document.createElement("img")).attr({
-        alt: "Photo du Profil",
-        title: "Photo du profil",
-        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
-    }).addClass("photoCSS");
-    bandeauProfil.append(photoUser);
+OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
+    var div = $(document.createElement("div")).addClass("row-fluid");
+    var c = $(document.createElement("div")).addClass("span6 well");
+    div.append(c);
+    var first = true;
+    for (var i in this.communities) {
+        if(first)
+            first = false;
+        else
+            c.append(" / ");
+        c.append(this.communities[i].content());
+    }
+    return div;
+};
 
-    // Nom de l'utilisateur
-    var titreLabel = $(document.createElement("span")).addClass("nameCSS");
-    titreLabel.text(fields[0].fieldValue + " " + fields[1].fieldValue);
-    bandeauProfil.append(titreLabel);
+OpenM_BookGUI.user.Community = function(name) {
+    this.name = name;
+    this.click = undefined;
+};
 
-    // Bouton de modification
-    /*var updateButton = $(document.createElement('span')).addClass("buttonUpdateProfil");
-     updateButton.append(OpenM_BookGUI.user.button.Modification());
-     bandeauProfil.append(updateButton);*/
+OpenM_BookGUI.user.Community.prototype.content = function() {
+    var content = $(document.createElement("a"));
+    content.append(this.name);
+    content.click(this.click);
+    return content;
+};
 
-    return bandeauProfil;
-}
-
-// Affichage du bloc d'information générales
-function getBlocInfosGenerales(fields) {
-    // Création du bloc d'information générales
-    var blocInfosGenerales = $(document.createElement('div')).addClass("span5 blocInfosGenerales");
-    var conteneurInfosGenerales = $(document.createElement('div')).addClass("row-fluid");
-
-    // Titre du bloc
-    var titleBlocInfosGenerales = $(document.createElement("p")).addClass("titleBlocInfosGenerales");
-    titleBlocInfosGenerales.text("Informations Générales");
-    conteneurInfosGenerales.append(titleBlocInfosGenerales);
-    // Affichage du mail
-    var labelMail = $(document.createElement("p"));
-    //labelMail.text(fields.otherProperties[0].value);
-    //labelMail.text("Mail : " + " lerouge.sylvain@gmail.com " + fields[3].keys(0));
-    conteneurInfosGenerales.append(labelMail);
-
-    // Affichage de la ville
-    var labelTown = $(document.createElement("p"));
-    labelTown.text("Ville actuelle : Toulouse");
-    conteneurInfosGenerales.append(labelTown);
-    blocInfosGenerales.append(conteneurInfosGenerales);
-    return blocInfosGenerales;
-}
+//
+////à refactorer sur le même principe que CommunityGUI.js
+//
+//// Affichage du bandeau profil (photo + nom + prénom)
+//function getBandeauProfil(fields) {
+//    var bandeauProfil = $(document.createElement('div'));
+//
+//    // Photo de profil
+//    var photoUser = $(document.createElement("img")).attr({
+//        alt: "Photo du Profil",
+//        title: "Photo du profil",
+//        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+//    }).addClass("photoCSS");
+//    bandeauProfil.append(photoUser);
+//
+//    // Nom de l'utilisateur
+//    var titreLabel = $(document.createElement("span")).addClass("nameCSS");
+//    titreLabel.text(fields[0].fieldValue + " " + fields[1].fieldValue);
+//    bandeauProfil.append(titreLabel);
+//
+//    // Bouton de modification
+//    /*var updateButton = $(document.createElement('span')).addClass("buttonUpdateProfil");
+//     updateButton.append(OpenM_BookGUI.user.button.Modification());
+//     bandeauProfil.append(updateButton);*/
+//
+//    return bandeauProfil;
+//}

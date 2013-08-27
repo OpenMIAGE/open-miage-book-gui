@@ -41,7 +41,7 @@ OpenM_BookController.user.Page = function(user) {
     this.gui = new OpenM_BookGUI.user.Page();
 
     var controller = this;
-    this.update = function(){
+    this.update = function() {
         controller.gui.name = controller.user.name;
         controller.gui.firstName = controller.user.firstName;
         controller.gui.lastName = controller.user.lastName;
@@ -51,12 +51,13 @@ OpenM_BookController.user.Page = function(user) {
         this.modification = new OpenM_BookController.user.button.Modification(this.user, this);
         this.gui.modification = this.modification.gui;
     }
-    
-    
 
     this.fields = new OpenM_BookController.user.Fields(this.user);
-    this.gui.fields = this.fields.gui;    
-    
+    this.gui.fields = this.fields.gui;
+
+    this.communities = new OpenM_BookController.user.Communities(this.user);
+    this.gui.communities = this.communities.gui;
+
     this.user.addUpdateCallBack(this.update);
     this.update();
 };
@@ -130,12 +131,48 @@ OpenM_BookController.user.Field = function(name, id, value) {
 
 OpenM_BookController.user.Communities = function(user) {
     this.user = user;
-    this.communities = new Array();
+    this.communityBlocks = new Array();
     this.gui = new OpenM_BookGUI.user.Communities();
 
+    var controller = this;
+    this.update = function() {
+        controller.communityBlocks = new Array();
+        controller.gui.communityBlocks = new Array();
+        
+        function ancestors(community, block){
+            var c = new OpenM_BookController.user.Community(community);
+            if(community.parent !== undefined)
+                ancestors(community.parent, block);
+            block.communities.push(c);
+            block.gui.communities.push(c.gui);
+        }
+        
+        for (var i in controller.user.communities) {
+            var c = controller.user.communities[i];
+            var block = new OpenM_BookController.user.CommunityBlock();
+            controller.communityBlocks.push(block);
+            controller.gui.communityBlocks.push(block.gui);
+            ancestors(c, block);
+        }
+        controller.gui.update();
+    };
+
+    this.user.addUpdateCommunitiesCallBack(this.update);
+    this.update();
+
+};
+
+OpenM_BookController.user.CommunityBlock = function() {
+    this.communities = new Array();
+    this.gui = new OpenM_BookGUI.user.CommunityBlock();
 };
 
 OpenM_BookController.user.Community = function(community) {
     this.community = community;
-    this.gui = new OpenM_BookGUI.user.Community();
+    this.gui = new OpenM_BookGUI.user.Community(this.community.name);
+    
+    var controller = this;
+    this.gui.click = function(){
+        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
+    };
 };
