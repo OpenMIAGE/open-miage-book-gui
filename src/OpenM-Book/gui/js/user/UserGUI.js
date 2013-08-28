@@ -7,19 +7,27 @@ OpenM_BookGUI.user.Page = function() {
     this.name = '';
     this.firstName = '';
     this.lastName = '';
+    this.page = $(document.createElement("div"));
+};
+
+OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
+    this.name = name;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.content();
 };
 
 OpenM_BookGUI.user.Page.prototype.content = function() {
-    var page = $(document.createElement("div"));
-    page.addClass("row-fluid");
-    page.append($(document.createElement("div")).append(this.name));
-    page.append(this.fields.content());
+    this.page.empty();
+    this.page.addClass("row-fluid");
+    this.page.append($(document.createElement("div")).append(this.name));
+    this.page.append(this.fields.content());
     if (this.modification !== null)
-        page.append(this.modification.content());
+        this.page.append(this.modification.content());
     if (this.save !== null)
-        page.append(this.save.content());
-    page.append(this.communities.content());
-    return page;
+        this.page.append(this.save.content());
+    this.page.append(this.communities.content());
+    return this.page;
 };
 
 OpenM_BookGUI.user.Page.prototype.display = function(enabled) {

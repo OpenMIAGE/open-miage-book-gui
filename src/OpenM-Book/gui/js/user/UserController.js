@@ -95,18 +95,22 @@ OpenM_BookController.user.Fields = function(user) {
 
     var controller = this;
     this.update = function() {
-        controller.fieldBlocks = new Array();
-        controller.gui.fieldBlocks = new Array();
         for (var i in controller.user.otherProperties) {
             var v = controller.user.otherProperties[i]["var"];
-            var block = new OpenM_BookController.user.FieldBlock(v.name);
-            controller.fieldBlocks.push(block);
-            controller.gui.fieldBlocks.push(block.gui);
+            var block = controller.fieldBlocks[v.id];
+            if (!block) {
+                block = new OpenM_BookController.user.FieldBlock(v.name);
+                controller.fieldBlocks[v.id] = block;
+                controller.gui.fieldBlocks.push(block.gui);
+            }
             for (var j in controller.user.otherProperties[i].values) {
                 var value = controller.user.otherProperties[i].values[j];
-                var field = new OpenM_BookController.user.Field(v.name, value.id, value.value);
-                block.fields.push(field);
-                block.gui.fields.push(field.gui);
+                var field = block.fields[value.id];
+                if (!field) {
+                    field = new OpenM_BookController.user.Field(v.name, value.id, value.value);
+                    block.fields[value.id] = field;
+                    block.gui.fields.push(field.gui);
+                }
             }
         }
         controller.gui.update();
@@ -136,23 +140,26 @@ OpenM_BookController.user.Communities = function(user) {
 
     var controller = this;
     this.update = function() {
-        controller.communityBlocks = new Array();
-        controller.gui.communityBlocks = new Array();
-        
-        function ancestors(community, block){
-            var c = new OpenM_BookController.user.Community(community);
-            if(community.parent !== undefined)
+        function ancestors(community, block) {
+            var c = block.communities[community.id];
+            if (!c) {
+                c = new OpenM_BookController.user.Community(community);
+                block.communities[community.id] = c;
+            }
+            if (community.parent !== undefined)
                 ancestors(community.parent, block);
-            block.communities.push(c);
             block.gui.communities.push(c.gui);
         }
-        
+
         for (var i in controller.user.communities) {
             var c = controller.user.communities[i];
-            var block = new OpenM_BookController.user.CommunityBlock();
-            controller.communityBlocks.push(block);
-            controller.gui.communityBlocks.push(block.gui);
-            ancestors(c, block);
+            var block = controller.communityBlocks[c.id];
+            if (!block) {
+                block = new OpenM_BookController.user.CommunityBlock();
+                controller.communityBlocks[c.id] = block;
+                controller.gui.communityBlocks.push(block.gui);
+                ancestors(c, block);
+            }
         }
         controller.gui.update();
     };
@@ -170,15 +177,15 @@ OpenM_BookController.user.CommunityBlock = function() {
 OpenM_BookController.user.Community = function(community) {
     this.community = community;
     this.gui = new OpenM_BookGUI.user.Community(this.community.name);
-    
+
     var controller = this;
-    this.gui.click = function(){
+    this.gui.click = function() {
         OpenM_BookController.commons.URL.clickToCommunity(controller.community);
     };
-    
-    this.update = function(){
+
+    this.update = function() {
         controller.gui.updateName(controller.community.name);
     };
-    
+
     this.community.addUpdateCallBack(this.update);
 };
