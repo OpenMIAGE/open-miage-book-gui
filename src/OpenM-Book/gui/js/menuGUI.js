@@ -1,13 +1,13 @@
 OpenM_BookGUI.menu = {};
 
 OpenM_BookGUI.menu.Left = {
-    'menuMobileId': '',
-    'menuId': '',
-    'userEntry': $(document.createElement('li')),
-    'userEntryMobile': $(document.createElement('li')),
-    'communityEntry': $(document.createElement('li')),
-    'communityEntryMobile': $(document.createElement('li')),
-    'init': function() {
+    menuMobileId: '',
+    menuId: '',
+    userEntry: $(document.createElement('li')),
+    userEntryMobile: $(document.createElement('li')),
+    communityEntry: $(document.createElement('li')),
+    communityEntryMobile: $(document.createElement('li')),
+    init: function() {
         if (this.menuMobileId !== '') {
             var menuMobile = $("#" + this.menuMobileId);
             menuMobile.addClass("navbar navbar menunavigation-phone hidden-desktop");
@@ -43,13 +43,13 @@ OpenM_BookGUI.menu.Left = {
             ul2.append(this.communityEntry.append('<a href="' + OpenM_BookController.commons.URL.community() + '">Communauté</a>'));
         }
     },
-    'selectUser': function() {
+    selectUser: function() {
         this.userEntry.addClass("active");
         this.userEntryMobile.addClass("active");
         this.communityEntry.removeClass("active");
         this.communityEntryMobile.removeClass("active");
     },
-    'selectCommunity': function() {
+    selectCommunity: function() {
         this.communityEntry.addClass("active");
         this.communityEntryMobile.addClass("active");
         this.userEntry.removeClass("active");

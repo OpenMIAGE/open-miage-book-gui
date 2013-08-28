@@ -173,6 +173,12 @@ OpenM_BookController.community.User = function(user) {
     this.gui.click = function() {
         OpenM_BookController.commons.URL.clickToUser(controller.user);
     };
+    
+    this.updateName = function(){
+        controller.gui.updateName(controller.user.name);
+    };
+    
+    this.user.addUpdateCallBack(this.updateName);
 };
 
 OpenM_BookController.community.UsersNotValid = function(community) {
@@ -301,7 +307,7 @@ OpenM_BookController.community.button.Register = function(community) {
 
 OpenM_BookController.community.button.Add = function(community) {
     this.community = community;
-    this.gui = new OpenM_BookGUI.community.button.AddCommunity(this.community.id, this.community.name);
+    this.gui = new OpenM_BookGUI.community.button.AddCommunity(this.community.name);
     this.gui.active = this.community.userCanAddSubCommunity;
     this.popover = new OpenM_BookController.community.popover.Name(this.community);
     this.gui.popover = this.popover.gui;
@@ -324,7 +330,7 @@ OpenM_BookController.community.popover = {};
 OpenM_BookController.community.popover.Name = function(community, value) {
     this.community = community;
     this.value = value;
-    this.gui = new OpenM_BookGUI.community.popover.Name(this.community.id, value);
+    this.gui = new OpenM_BookGUI.community.popover.Name(value);
 };
 
 OpenM_BookController.community.button.Rename = function(community) {
