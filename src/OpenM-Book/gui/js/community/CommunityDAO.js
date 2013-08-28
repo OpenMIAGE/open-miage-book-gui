@@ -84,9 +84,11 @@ OpenM_BookDAO.community.ExchangeObject.prototype.getAncestors = function(ancesto
 
 OpenM_BookDAO.community.ExchangeObject.prototype.rename = function(newName) {
     var community = this;
+    var name = newName;
     OpenM_Book_Moderator.renameCommunity(this.id, newName, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
-            community.name = newName;
+            community.name = name;
             community.update();
         }
     });

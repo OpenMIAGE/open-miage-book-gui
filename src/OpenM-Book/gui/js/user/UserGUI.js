@@ -7,19 +7,27 @@ OpenM_BookGUI.user.Page = function() {
     this.name = '';
     this.firstName = '';
     this.lastName = '';
+    this.page = $(document.createElement("div"));
+};
+
+OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
+    this.name = name;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.content();
 };
 
 OpenM_BookGUI.user.Page.prototype.content = function() {
-    var page = $(document.createElement("div"));
-    page.addClass("row-fluid");
-    page.append($(document.createElement("div")).append(this.name));
-    page.append(this.fields.content());
+    this.page.empty();
+    this.page.addClass("row-fluid");
+    this.page.append($(document.createElement("div")).append(this.name));
+    this.page.append(this.fields.content());
     if (this.modification !== null)
-        page.append(this.modification.content());
+        this.page.append(this.modification.content());
     if (this.save !== null)
-        page.append(this.save.content());
-    page.append(this.communities.content());
-    return page;
+        this.page.append(this.save.content());
+    this.page.append(this.communities.content());
+    return this.page;
 };
 
 OpenM_BookGUI.user.Page.prototype.display = function(enabled) {
@@ -160,7 +168,7 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
     div.append(c);
     var first = true;
     for (var i in this.communities) {
-        if(first)
+        if (first)
             first = false;
         else
             c.append(" / ");
@@ -172,13 +180,19 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
 OpenM_BookGUI.user.Community = function(name) {
     this.name = name;
     this.click = undefined;
+    this.c = $(document.createElement("a"));
 };
 
 OpenM_BookGUI.user.Community.prototype.content = function() {
-    var content = $(document.createElement("a"));
-    content.append(this.name);
-    content.click(this.click);
-    return content;
+    this.c.empty();
+    this.c.append(this.name);
+    this.c.click(this.click);
+    return this.c;
+};
+
+OpenM_BookGUI.user.Community.prototype.updateName = function(newName) {
+    this.name = newName;
+    this.content();
 };
 
 //
