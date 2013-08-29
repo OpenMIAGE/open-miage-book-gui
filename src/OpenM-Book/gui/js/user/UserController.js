@@ -95,30 +95,51 @@ OpenM_BookController.user.Fields = function(user) {
 
     var controller = this;
     this.update = function() {
-        for (var i in controller.user.otherProperties) {
-            var v = controller.user.otherProperties[i]["var"];
-            var block = controller.fieldBlocks[v.id];
-            if (!block) {
-                block = new OpenM_BookController.user.FieldBlock(v.name);
-                controller.fieldBlocks[v.id] = block;
-                controller.gui.fieldBlocks.push(block.gui);
-            }
-            for (var j in controller.user.otherProperties[i].values) {
-                var value = controller.user.otherProperties[i].values[j];
-                var field = block.fields[value.id];
-                if (!field) {
-                    field = new OpenM_BookController.user.Field(v.name, value.id, value.value);
-                    block.fields[value.id] = field;
-                    block.gui.fields.push(field.gui);
-                }
-            }
-        }
-        controller.gui.update();
+        controller.updateFieldBlocks();
     };
 
     this.user.addUpdateCallBack(this.update);
     this.update();
 
+};
+
+OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
+    var properties = new Array();
+    var values = new Array();
+    for (var i in this.user.otherProperties) {
+        var v = this.user.otherProperties[i]["var"];
+        var block = this.fieldBlocks[v.id];
+        if (!block) {
+            block = new OpenM_BookController.user.FieldBlock(v.name);
+            this.fieldBlocks[v.id] = block;
+            this.gui.fieldBlocks[v.id] = block.gui;
+        }
+        properties[v.id] = block;
+        values = new Array();
+        for (var j in this.user.otherProperties[i].values) {
+            var value = this.user.otherProperties[i].values[j];
+            var field = block.fields[value.id];
+            if (!field) {
+                field = new OpenM_BookController.user.Field(v.name, value.id, value.value);
+                block.fields[value.id] = field;
+                block.gui.fields[value.id] = field.gui;
+            }
+            values[value.id] = value;
+        }
+        for (var i in block.fields) {
+            if (values[i] === undefined) {
+                block.gui.fields.splice(i, 1);
+                block.fields.splice(i, 1);
+            }
+        }
+    }
+    for (var i in this.fieldBlocks) {
+        if (properties[i] === undefined) {
+            this.gui.fieldBlocks.splice(i, 1);
+            this.fieldBlocks.splice(i, 1);
+        }
+    }
+    this.gui.update();
 };
 
 OpenM_BookController.user.FieldBlock = function(name) {
@@ -140,33 +161,37 @@ OpenM_BookController.user.Communities = function(user) {
 
     var controller = this;
     this.update = function() {
-        function ancestors(community, block) {
-            var c = block.communities[community.id];
-            if (!c) {
-                c = new OpenM_BookController.user.Community(community);
-                block.communities[community.id] = c;
-            }
-            if (community.parent !== undefined)
-                ancestors(community.parent, block);
-            block.gui.communities.push(c.gui);
-        }
-
-        for (var i in controller.user.communities) {
-            var c = controller.user.communities[i];
-            var block = controller.communityBlocks[c.id];
-            if (!block) {
-                block = new OpenM_BookController.user.CommunityBlock();
-                controller.communityBlocks[c.id] = block;
-                controller.gui.communityBlocks.push(block.gui);
-                ancestors(c, block);
-            }
-        }
-        controller.gui.update();
+        controller.updateCommunityBlocks();
     };
 
     this.user.addUpdateCommunitiesCallBack(this.update);
     this.update();
 
+};
+
+OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function() {
+    function ancestors(community, block) {
+        var c = block.communities[community.id];
+        if (!c) {
+            c = new OpenM_BookController.user.Community(community);
+            block.communities[community.id] = c;
+        }
+        if (community.parent !== undefined)
+            ancestors(community.parent, block);
+        block.gui.communities.push(c.gui);
+    }
+
+    for (var i in this.user.communities) {
+        var c = this.user.communities[i];
+        var block = this.communityBlocks[c.id];
+        if (!block) {
+            block = new OpenM_BookController.user.CommunityBlock();
+            this.communityBlocks[c.id] = block;
+            this.gui.communityBlocks.push(block.gui);
+            ancestors(c, block);
+        }
+    }
+    this.gui.update();
 };
 
 OpenM_BookController.user.CommunityBlock = function() {
