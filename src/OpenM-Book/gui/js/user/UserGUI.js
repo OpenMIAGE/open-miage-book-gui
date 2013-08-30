@@ -185,7 +185,11 @@ OpenM_BookGUI.user.Community = function(name) {
 
 OpenM_BookGUI.user.Community.prototype.content = function() {
     this.c.empty();
-    this.c.append(this.name);
+    this.c.addClass("btn btn-primary");
+    var icon = $(document.createElement("i"));
+    icon.addClass("icon-white icon-zoom-in");
+    this.c.append(icon);
+    this.c.text(this.name);
     this.c.click(this.click);
     return this.c;
 };

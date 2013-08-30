@@ -145,7 +145,7 @@ OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("well").css("overflow", "hidden");
-        this.c.append("<p>Users :</p>");
+        this.c.append("<p>Utilisateur(s) :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
         for (var i in this.users) {
@@ -189,7 +189,7 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("well").css("overflow", "hidden");
-        this.c.append("<p>Users Non Validé :</p>");
+        this.c.append("<p>Utilisateur(s) Non Validé(s) :</p>");
         var div = $(document.createElement('div'));
         this.c.append(div);
         for (var i in this.users) {
@@ -207,23 +207,20 @@ OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
     this.communityName = communityName;
     this.buttonValidate = undefined;
     this.buttonDisplayProfil = undefined;
+    this.buttonDisplayCommunity = undefined;
     this.c = $(document.createElement('div'));
-    this.clickCommunity = undefined;
     this.imageProfile = undefined;
 };
 
 OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
-    this.c.css("float", "left");
+    this.c.css("float", "left").css("padding", 5);
     this.c.append(this.imageProfile.content());
-    var d = $(document.createElement("a"));
-    d.text(" in '" + this.communityName + "'");
-    d.click(this.clickCommunity);
-    this.c.append(this.buttonDisplayProfil.content());
-    this.c.append("<br>");
-    this.c.append(d);
-    this.c.append("<br>");
-    this.c.append(this.buttonValidate.content());
+    this.c.append(this.buttonValidate.content())
+            .append(" ")
+            .append(this.buttonDisplayProfil.content())
+            .append(" dans ")
+            .append(this.buttonDisplayCommunity.content());
     return this.c;
 };
 
@@ -236,7 +233,7 @@ OpenM_BookGUI.community.button.Validate = function() {
 
 OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     this.a.empty();
-    this.a.addClass("btn btn-inverse");
+    this.a.addClass("btn btn-success");
     this.a.addClass("btn-space");
     var icon = $(document.createElement("i"));
     icon.addClass("icon-white icon-ok-circle");
@@ -246,20 +243,48 @@ OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     return this.a;
 };
 
-OpenM_BookGUI.community.button.DisplayProfile = function() {
+OpenM_BookGUI.community.button.DisplayProfile = function(name) {
+    this.name = name;
     this.a = $(document.createElement('a'));
     this.click = undefined;
 };
 
 OpenM_BookGUI.community.button.DisplayProfile.prototype.content = function() {
     this.a.empty();
-    this.a.addClass("btn btn-inverse btn-space");
+    this.a.addClass("btn btn-info");
     var icon = $(document.createElement("i"));
     icon.addClass("icon-white icon-zoom-in");
     this.a.append(icon);
-    this.a.append("Voir");
+    this.a.text(this.name);
     this.a.click(this.click);
     return this.a;
+};
+
+OpenM_BookGUI.community.button.DisplayProfile.prototype.updateName = function(newName) {
+    this.name = newName;
+    this.a.text(this.name);
+};
+
+OpenM_BookGUI.community.button.DisplayCommunity = function(name) {
+    this.name = name;
+    this.a = $(document.createElement('a'));
+    this.click = undefined;
+};
+
+OpenM_BookGUI.community.button.DisplayCommunity.prototype.content = function() {
+    this.a.empty();
+    this.a.addClass("btn btn-primary");
+    var icon = $(document.createElement("i"));
+    icon.addClass("icon-white icon-zoom-in");
+    this.a.append(icon);
+    this.a.text(this.name);
+    this.a.click(this.click);
+    return this.a;
+};
+
+OpenM_BookGUI.community.button.DisplayCommunity.prototype.updateName = function(newName) {
+    this.name = newName;
+    this.a.text(this.name);
 };
 
 OpenM_BookGUI.community.image = {};
@@ -271,7 +296,7 @@ OpenM_BookGUI.community.image.Profile = function() {
 
 OpenM_BookGUI.community.image.Profile.prototype.content = function() {
     this.img.empty();
-    this.img.addClass("user-little-img");
+    this.img.addClass("user-little-img").css("cursor","pointer");
     this.img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.img.click(this.click);
     return this.img;
