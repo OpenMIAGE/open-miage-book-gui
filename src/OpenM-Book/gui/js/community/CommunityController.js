@@ -93,12 +93,12 @@ OpenM_BookController.community.InTree = function(community, active) {
 };
 
 OpenM_BookController.community.InTree.all = new Array();
-OpenM_BookController.community.InTree.from = function(community, active){
-    if(OpenM_BookController.community.InTree.all[((active)?1:-1)*community.id]!==undefined)
-        return OpenM_BookController.community.InTree.all[((active)?1:-1)*community.id];
-    
+OpenM_BookController.community.InTree.from = function(community, active) {
+    if (OpenM_BookController.community.InTree.all[((active) ? 1 : -1) * community.id] !== undefined)
+        return OpenM_BookController.community.InTree.all[((active) ? 1 : -1) * community.id];
+
     var inTree = new OpenM_BookController.community.InTree(community);
-    OpenM_BookController.community.InTree.all[((active)?1:-1)*community.id] = inTree;
+    OpenM_BookController.community.InTree.all[((active) ? 1 : -1) * community.id] = inTree;
     return inTree;
 };
 
@@ -152,10 +152,10 @@ OpenM_BookController.community.Child = function(community) {
 };
 
 OpenM_BookController.community.Child.all = new Array();
-OpenM_BookController.community.Child.from = function(community){
-    if(OpenM_BookController.community.Child.all[community.id]!==undefined)
+OpenM_BookController.community.Child.from = function(community) {
+    if (OpenM_BookController.community.Child.all[community.id] !== undefined)
         return OpenM_BookController.community.Child.all[community.id];
-    
+
     var child = new OpenM_BookController.community.Child(community);
     OpenM_BookController.community.Child.all[community.id] = child;
     return child;
@@ -190,23 +190,17 @@ OpenM_BookController.community.Users.prototype.updateUsers = function() {
 OpenM_BookController.community.User = function(user) {
     this.user = user;
     this.gui = new OpenM_BookGUI.community.User(this.user.id, this.user.name);
-    var controller = this;
-    this.gui.click = function() {
-        OpenM_BookController.commons.URL.clickToUser(controller.user);
-    };
-
-    this.updateName = function() {
-        controller.gui.updateName(controller.user.name);
-    };
-
-    this.user.addUpdateCallBack(this.updateName);
+    this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
+    this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
+    this.imageProfile = new OpenM_BookController.community.image.Profile(this.user);
+    this.gui.imageProfile = this.imageProfile.gui;
 };
 
 OpenM_BookController.community.User.all = new Array();
-OpenM_BookController.community.User.from = function(user){
-    if(OpenM_BookController.community.User.all[user.id]!==undefined)
+OpenM_BookController.community.User.from = function(user) {
+    if (OpenM_BookController.community.User.all[user.id] !== undefined)
         return OpenM_BookController.community.User.all[user.id];
-    
+
     var u = new OpenM_BookController.community.User(user);
     OpenM_BookController.community.User.all[user.id] = u;
     return u;
@@ -232,7 +226,7 @@ OpenM_BookController.community.UsersNotValid.prototype.updateUsers = function() 
     for (var i in this.community.usersNotValidTree) {
         user = OpenM_BookDAO.user.DAO.get(i, false, false, false);
         for (var j in this.community.usersNotValidTree[i]) {
-            userController = new OpenM_BookController.community.UserNotValid(user, this.community.usersNotValidTree[i][j]);
+            userController = OpenM_BookController.community.UserNotValid.from(user, this.community.usersNotValidTree[i][j]);
             this.users.push(userController);
             this.gui.users.push(userController.gui);
         }
@@ -246,6 +240,8 @@ OpenM_BookController.community.UserNotValid = function(user, community) {
     this.gui = new OpenM_BookGUI.community.UserNotValid(this.user.id, this.user.name, this.community.name);
     this.buttonValidate = new OpenM_BookController.community.button.Validate(this.user, this.community);
     this.gui.buttonValidate = this.buttonValidate.gui;
+    this.imageProfile = new OpenM_BookController.community.image.Profile(this.user);
+    this.gui.imageProfile = this.imageProfile.gui;
     this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
 
@@ -257,6 +253,20 @@ OpenM_BookController.community.UserNotValid = function(user, community) {
     this.gui.clickUser = function() {
         OpenM_BookController.commons.URL.clickToUser(controller.user);
     };
+};
+
+OpenM_BookController.community.UserNotValid.all = new Array();
+OpenM_BookController.community.UserNotValid.from = function(user, community) {
+    if (OpenM_BookController.community.UserNotValid.all[user.id] !== undefined) {
+        if (OpenM_BookController.community.UserNotValid.all[user.id][community.id] !== undefined)
+            return OpenM_BookController.community.UserNotValid.all[user.id][community.id];
+    }
+    else
+        OpenM_BookController.community.UserNotValid.all[user.id] = new Array();
+
+    var u = new OpenM_BookController.community.UserNotValid(user, community);
+    OpenM_BookController.community.UserNotValid.all[user.id][community.id] = u;
+    return u;
 };
 
 OpenM_BookController.community.button = {};
@@ -280,12 +290,37 @@ OpenM_BookController.community.button.DisplayProfile = function(user) {
     };
 };
 
+OpenM_BookController.community.image = {};
+
+OpenM_BookController.community.image.Profile = function(user) {
+    this.user = user;
+    this.gui = new OpenM_BookGUI.community.image.Profile();
+    var controller = this;
+    this.gui.click = function() {
+        OpenM_BookController.commons.URL.clickToUser(controller.user);
+    };
+    this.update = function() {
+        controller.gui.content();
+    };
+    this.user.addUpdateCallBack(this.update);
+};
+
+OpenM_BookController.community.image.Profile.all = new Array();
+OpenM_BookController.community.image.Profile.from = function(user) {
+    if (OpenM_BookController.community.image.Profile.all[user.id] !== undefined)
+        return OpenM_BookController.community.image.Profile.all[user.id];
+
+    var u = new OpenM_BookController.community.image.Profile(user);
+    OpenM_BookController.community.image.Profile.all[user.id] = u;
+    return u;
+};
+
 OpenM_BookController.community.Actions = function(community) {
     this.community = community;
     this.register = null;
     this.add = null;
     this.rename = null;
-    this.deleteBt = null;
+    this.delete = null;
     this.gui = new OpenM_BookGUI.community.Actions(this.community.id);
 
     var controller = this;
@@ -316,8 +351,8 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
         this.gui.buttons.push(this.rename.gui);
 
         if (!this.community.cantBeRemoved) {
-            this.deleteBt = new OpenM_BookController.community.button.Delete(this.community);
-            this.gui.buttons.push(this.deleteBt.gui);
+            this.delete = new OpenM_BookController.community.button.Delete(this.community);
+            this.gui.buttons.push(this.delete.gui);
         }
     }
 
