@@ -296,7 +296,7 @@ OpenM_BookGUI.community.image.Profile = function() {
 
 OpenM_BookGUI.community.image.Profile.prototype.content = function() {
     this.img.empty();
-    this.img.addClass("user-little-img");
+    this.img.addClass("user-little-img").css("cursor","pointer");
     this.img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.img.click(this.click);
     return this.img;
