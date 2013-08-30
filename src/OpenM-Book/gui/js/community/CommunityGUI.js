@@ -348,7 +348,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.addClass("btn btn-inverse");
     this.a.addClass("btn-space");
     var icon = $(document.createElement("i"));
-    icon.addClass("icon-white icon-ok");
+    icon.addClass("icon-white icon-star-empty");
     this.a.append(icon);
 
     if (this.active) {
@@ -367,7 +367,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.text("S'enregistrer");
+    this.a.append(" S'enregistrer");
     return this.a;
 };
 
@@ -382,7 +382,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.addClass("btn btn-inverse");
     this.a.addClass("btn-space");
     var icon = $(document.createElement("i"));
-    icon.addClass("icon-white icon-ok");
+    icon.addClass("icon-white icon-plus");
     this.a.append(icon);
 
     var option = {
@@ -406,7 +406,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
         });
     });
     this.a.tooltip();
-    this.a.text("Ajouter");
+    this.a.append(" Ajouter");
     return this.a;
 };
 
@@ -446,7 +446,7 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
         });
     });
 
-    this.a.text("Renommer");
+    this.a.append(" Renommer");
     return this.a;
 };
 
@@ -467,7 +467,7 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
             .attr("data-toggle", "tooltip")
             .attr("data-original-title", "Supprimer la communauté (définitivement)");
     this.a.tooltip();
-    this.a.text("Supprimer");
+    this.a.append(" Supprimer");
     this.a.click(this.click);
     return this.a;
 };
