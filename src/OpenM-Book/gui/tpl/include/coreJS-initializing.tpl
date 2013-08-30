@@ -15,6 +15,7 @@
                 OpenM_BookGUI.Pages.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';
                 OpenM_BookGUI.Pages.divParentId = "divParent";
                 OpenM_BookGUI.Pages.divJSON = "divJSON";
+                {/literal}{if $debug}OpenM_BookGUI.Pages.divJSONactivated = true;{/if}{literal}
                 OpenM_BookGUI.menu.Left.menuId = "menuDesktop";
                 OpenM_BookGUI.menu.Left.menuMobileId = "menuMobile";
                 OpenM_SSOConnectionProxy.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";
