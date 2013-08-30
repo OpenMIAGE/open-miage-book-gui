@@ -244,15 +244,8 @@ OpenM_BookController.community.UserNotValid = function(user, community) {
     this.gui.imageProfile = this.imageProfile.gui;
     this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
-
-    var controller = this;
-
-    this.gui.clickCommunity = function() {
-        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
-    };
-    this.gui.clickUser = function() {
-        OpenM_BookController.commons.URL.clickToUser(controller.user);
-    };
+    this.buttonDisplayCommunity = new OpenM_BookController.community.button.DisplayCommunity(this.community);
+    this.gui.buttonDisplayCommunity = this.buttonDisplayCommunity.gui;
 };
 
 OpenM_BookController.community.UserNotValid.all = new Array();
@@ -288,6 +281,23 @@ OpenM_BookController.community.button.DisplayProfile = function(user) {
     this.gui.click = function() {
         OpenM_BookController.commons.URL.clickToUser(controller.user);
     };
+    this.update = function() {
+        controller.gui.updateName(controller.user.name);
+    };
+    this.user.addUpdateCallBack(this.update);
+};
+
+OpenM_BookController.community.button.DisplayCommunity = function(community) {
+    this.community = community;
+    this.gui = new OpenM_BookGUI.community.button.DisplayCommunity(this.community.name);
+    var controller = this;
+    this.gui.click = function() {
+        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
+    };
+    this.update = function() {
+        controller.gui.updateName(controller.community.name);
+    };
+    this.community.addUpdateCallBack(this.update);
 };
 
 OpenM_BookController.community.image = {};
