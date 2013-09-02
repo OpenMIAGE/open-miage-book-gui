@@ -224,10 +224,14 @@ OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
 
 OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
-    this.c.css("float", "left").css("padding", 5);
+    this.c.css("float", "left")
+            .css("padding", 10)
+            .css("margin", 5)
+            .css("background", "white")
+            .css("border-radius", 10);
     this.c.append(this.imageProfile.content());
     this.c.append(this.buttonValidate.content())
-            .append(" ")
+            .append("<br />")
             .append(this.buttonDisplayProfil.content())
             .append(" dans ")
             .append(this.buttonDisplayCommunity.content());
