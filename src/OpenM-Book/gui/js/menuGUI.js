@@ -18,7 +18,10 @@ OpenM_BookGUI.menu.Left = {
             a.attr('data-target', "#subMenuMenuMobile");
             a.append('<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>');
             div.append(a);
-            div.append('<a class="brand" href="#">' + OpenM_BookDAO.user.DAO.me.firstName + '<br>' + OpenM_BookDAO.user.DAO.me.lastName + '</a>');
+            div.append('<a href="' + OpenM_BookController.commons.URL.user() + '">'
+                    + OpenM_BookDAO.user.DAO.me.firstName
+                    + '<br>'
+                    + OpenM_BookDAO.user.DAO.me.lastName + '</a>');
             var div2 = $(document.createElement('div')).addClass("nav-collapse collapse");
             div2.attr("id", "subMenuMenuMobile");
             div.append(div2);
@@ -37,9 +40,22 @@ OpenM_BookGUI.menu.Left = {
             div3.append(ul2);
             var li = $(document.createElement('li')).addClass("cadre-nom");
             ul2.append(li);
-            li.append('<h3>' + OpenM_BookDAO.user.DAO.me.firstName + '</h3><h3>' + OpenM_BookDAO.user.DAO.me.lastName + '</h3>');
+            var firstName = $(document.createElement("h3"));
+            firstName.css("cursor", "pointer")
+                    .append(OpenM_BookDAO.user.DAO.me.firstName)
+                    .click(function() {
+                OpenM_BookController.commons.URL.clickToUser();
+            });
+            var LastName = $(document.createElement("h3"));
+            LastName.css("cursor", "pointer")
+                    .append(OpenM_BookDAO.user.DAO.me.lastName)
+                    .click(function() {
+                OpenM_BookController.commons.URL.clickToUser();
+            });
+            li.append(firstName)
+                    .append(LastName);
             ul2.append("<hr>");
-            ul2.append(this.userEntry.append('<a href="' + OpenM_BookController.commons.URL.user() + '">Mon Profil</a>'));
+            ul2.append(this.userEntry.append('<a href="' + OpenM_BookController.commons.URL.user() + '">Profil</a>'));
             ul2.append(this.communityEntry.append('<a href="' + OpenM_BookController.commons.URL.community() + '">Communauté</a>'));
         }
     },

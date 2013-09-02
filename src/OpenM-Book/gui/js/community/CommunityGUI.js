@@ -115,20 +115,10 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
     if (this.communities.length > 0)
         this.c.prepend(" <i class='icon-play'></i> <i class='icon-play'></i> ");
 
-//    if (this.communities.length !== 0) {
-
-//        this.c.addClass("span12 well");
-//        this.c.append("<p>Sous-communautés :</p>");
-//        var div = $(document.createElement('div')).addClass("row-fluid");
-//        this.c.append(div);
     for (var i in this.communities) {
         this.c.append(this.communities[i].content());
     }
     return this.c;
-//    } else {
-//        //pas d'enfant pour la commu 
-//        return this.c;
-//    }
 };
 
 OpenM_BookGUI.community.Child = function(communityId, name) {
@@ -313,8 +303,11 @@ OpenM_BookGUI.community.image.Profile = function() {
 
 OpenM_BookGUI.community.image.Profile.prototype.content = function() {
     this.img.empty();
-    this.img.addClass("user-little-img").css("cursor", "pointer");
-    this.img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
+    this.img.css("cursor", "pointer").attr({
+        alt: "Photo du Profil",
+        title: "Photo du profil",
+        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+    }).addClass("photoCSS");
     this.img.click(this.click);
     return this.img;
 };
@@ -400,7 +393,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     var gui = this;
     this.a.click(function() {
         gui.popover.input.focus();
-        gui.popover.popover.on("submit", gui.popover.submit);
+        gui.popover.popover.on("click", "button", gui.popover.submit);
         gui.popover.popover.on("click", "a", function() {
             gui.a.click();
         });
@@ -440,7 +433,7 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     var gui = this;
     this.a.click(function() {
         gui.popover.input.focus();
-        gui.popover.popover.on("submit", gui.popover.submit);
+        gui.popover.popover.on("click", "button", gui.popover.submit);
         gui.popover.popover.on("click", "a", function() {
             gui.a.click();
         });
@@ -479,7 +472,7 @@ OpenM_BookGUI.community.popover.Name = function(name) {
     this.name = name;
     this.input = $(document.createElement("input"));
     this.popover = $(document.createElement("form"));
-    this.a = $(document.createElement("a"));
+    this.a = $(document.createElement("button"));
     this.submit = '';
 };
 
