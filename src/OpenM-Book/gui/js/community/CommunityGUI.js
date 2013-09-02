@@ -261,7 +261,7 @@ OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     var icon = $(document.createElement("i"));
     icon.addClass("icon-white icon-ok-circle");
     this.a.append(icon);
-    this.a.append("Valider");
+    this.a.append(" Accepter");
     this.a.click(this.click);
     return this.a;
 };
