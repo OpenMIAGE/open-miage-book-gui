@@ -13,19 +13,34 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
     if (enabled === true || enabled === undefined) {
         cadre.empty();
 
-        //le tree
-        var tree = $(document.createElement('div')).addClass("row-fluid");
-        cadre.append(tree);
-        tree.append(this.tree.content());
-        //Les actions
-        var actions = $(document.createElement('div')).addClass("row-fluid");
-        cadre.append(actions);
-        actions.append(this.actions.content());
+        //la navigation
+        var communities = $(document.createElement('div'));
+        cadre.append(communities);
+        communities.addClass("row10 well");
+        communities.append("<p>Communautés :</p>");
+        var community = this.tree.content();
+        communities.append(community);
+        communities.append("<br />");
 
-        //les childs
-        var childs = $(document.createElement('div')).addClass("row-fluid");
-        cadre.append(childs);
-        childs.append(this.childs.content());
+        //Les actions
+        var actions = $(document.createElement("div"))
+                .append(this.actions.content())
+                .append("<br />").hide();
+        communities.append(actions);
+        var actionDisplayButton = $(document.createElement("button"));
+        actionDisplayButton.addClass("btn btn-inverse").append("<i class='icon-wrench icon-white'></i>");
+        actionDisplayButton.click(function() {
+            if (actions.is(":visible"))
+                actions.hide();
+            else
+                actions.show();
+        });
+        community.append("&nbsp;&nbsp;")
+                .append(actionDisplayButton);
+
+        var div = this.childs.content();
+        div.addClass("inline");
+        communities.append(div);
 
         //les users
         var users = $(document.createElement('div')).addClass("row-fluid");
@@ -49,8 +64,6 @@ OpenM_BookGUI.community.Tree = function(communityId) {
 
 OpenM_BookGUI.community.Tree.prototype.content = function() {
     var div = $(document.createElement('div'));
-    div.addClass("span12 well");
-    div.append("<p>Navigation:</p>");
     var first = true;
     $.each(this.communities, function(key, value) {
         if (first === true)
@@ -99,19 +112,23 @@ OpenM_BookGUI.community.Childs = function(communityId) {
 
 OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
-    if (this.communities.length !== 0) {
-        this.c.addClass("span12 well");
-        this.c.append("<p>Sous-communautés :</p>");
-        var div = $(document.createElement('div')).addClass("row-fluid");
-        this.c.append(div);
-        for (var i in this.communities) {
-            div.append(this.communities[i].content());
-        }
-        return this.c;
-    } else {
-        //pas d'enfant pour la commu 
-        return this.c;
+    if (this.communities.length > 0)
+        this.c.prepend(" <i class='icon-play'></i> <i class='icon-play'></i> ");
+
+//    if (this.communities.length !== 0) {
+
+//        this.c.addClass("span12 well");
+//        this.c.append("<p>Sous-communautés :</p>");
+//        var div = $(document.createElement('div')).addClass("row-fluid");
+//        this.c.append(div);
+    for (var i in this.communities) {
+        this.c.append(this.communities[i].content());
     }
+    return this.c;
+//    } else {
+//        //pas d'enfant pour la commu 
+//        return this.c;
+//    }
 };
 
 OpenM_BookGUI.community.Child = function(communityId, name) {
@@ -296,7 +313,7 @@ OpenM_BookGUI.community.image.Profile = function() {
 
 OpenM_BookGUI.community.image.Profile.prototype.content = function() {
     this.img.empty();
-    this.img.addClass("user-little-img").css("cursor","pointer");
+    this.img.addClass("user-little-img").css("cursor", "pointer");
     this.img.attr("src", OpenM_BookGUI.Pages.ressource_dir + OpenM_BookGUI.Pages.userPhotoDefault);
     this.img.click(this.click);
     return this.img;
@@ -311,15 +328,8 @@ OpenM_BookGUI.community.Actions = function(communityId) {
 OpenM_BookGUI.community.Actions.prototype.content = function() {
     this.c.empty();
     if (this.buttons.length !== 0) {
-        this.c.addClass("span12 well");
-        var p = $(document.createElement('p'));
-        p.text("Les actions possibles :");
-        this.c.append(p);
-        var div = $(document.createElement('div'));
-        div.addClass("row-fluid");
-        this.c.append(div);
         for (var i in this.buttons) {
-            div.append(this.buttons[i].content());
+            this.c.append(this.buttons[i].content());
         }
     }
     return this.c;
@@ -338,7 +348,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.addClass("btn btn-inverse");
     this.a.addClass("btn-space");
     var icon = $(document.createElement("i"));
-    icon.addClass("icon-white icon-ok");
+    icon.addClass("icon-white icon-star-empty");
     this.a.append(icon);
 
     if (this.active) {
@@ -357,7 +367,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.text("S'enregistrer");
+    this.a.append(" S'enregistrer");
     return this.a;
 };
 
@@ -372,7 +382,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.addClass("btn btn-inverse");
     this.a.addClass("btn-space");
     var icon = $(document.createElement("i"));
-    icon.addClass("icon-white icon-ok");
+    icon.addClass("icon-white icon-plus");
     this.a.append(icon);
 
     var option = {
@@ -396,7 +406,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
         });
     });
     this.a.tooltip();
-    this.a.text("Ajouter");
+    this.a.append(" Ajouter");
     return this.a;
 };
 
@@ -436,7 +446,7 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
         });
     });
 
-    this.a.text("Renommer");
+    this.a.append(" Renommer");
     return this.a;
 };
 
@@ -457,7 +467,7 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
             .attr("data-toggle", "tooltip")
             .attr("data-original-title", "Supprimer la communauté (définitivement)");
     this.a.tooltip();
-    this.a.text("Supprimer");
+    this.a.append(" Supprimer");
     this.a.click(this.click);
     return this.a;
 };
