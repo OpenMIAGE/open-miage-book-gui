@@ -37,6 +37,8 @@ OpenM_BookController.commons.URL = {
         return (window.location.hash.slice(1, this.communitySelector.length + 1) === this.communitySelector);
     },
     clickToUser: function(user) {
+        if (user === undefined)
+            user = OpenM_BookDAO.user.DAO.me;
         window.location.href = this.user(user);
     },
     userSelector: '/user',
