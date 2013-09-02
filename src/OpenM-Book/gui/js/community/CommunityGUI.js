@@ -36,6 +36,12 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
             else
                 actions.show();
         });
+        actionDisplayButton.attr("rel", "tooltip")
+                .attr("data-placement", "right")
+                .attr("data-toggle", "tooltip")
+                .attr("data-original-title", "Configurer la communauté");
+        actionDisplayButton.tooltip();
+        
         community.append("&nbsp;&nbsp;")
                 .append(actionDisplayButton);
 
@@ -83,18 +89,22 @@ OpenM_BookGUI.community.InTree = function(communityId, name, active) {
     this.id = communityId;
     this.name = name;
     this.active = active;
-    this.a = undefined;
+    this.a = $(document.createElement('a'));
     this.click = undefined;
 };
 
 OpenM_BookGUI.community.InTree.prototype.content = function() {
+    this.a.empty();
     if (this.active) {
-        this.a = $(document.createElement('a'));
         this.a.addClass("btn btn-primary btn-large");
         this.a.click(this.click);
+        this.a.attr("rel", "tooltip");
+        this.a.attr("data-placement", "top");
+        this.a.attr("data-toggle", "tooltip");
+        this.a.attr("data-original-title", "Naviguer dans la communauté " + this.name);
+        this.a.tooltip();
     }
     else {
-        this.a = $(document.createElement('a'));
         this.a.addClass("btn btn-primary btn-large disabled");
     }
     this.a.text(this.name);
@@ -104,7 +114,7 @@ OpenM_BookGUI.community.InTree.prototype.content = function() {
 OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
     this.name = name;
     if (this.a !== undefined)
-        this.a.text(this.name);
+        this.content();
 };
 
 OpenM_BookGUI.community.Childs = function(communityId) {
@@ -127,22 +137,27 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
 OpenM_BookGUI.community.Child = function(communityId, name) {
     this.communityId = communityId;
     this.name = name;
-    this.c = undefined;
+    this.a = $(document.createElement('a'));
     this.click = undefined;
 };
 
 OpenM_BookGUI.community.Child.prototype.content = function() {
-    this.c = $(document.createElement('a'));
-    this.c.addClass("btn btn-primary btn-large btn-space");
-    this.c.text(this.name);
-    this.c.click(this.click);
-    return this.c;
+    this.a.empty();
+    this.a.addClass("btn btn-primary btn-large btn-space");
+    this.a.text(this.name);
+    this.a.attr("rel", "tooltip");
+    this.a.attr("data-placement", "bottom");
+    this.a.attr("data-toggle", "tooltip");
+    this.a.attr("data-original-title", "Naviguer dans la communauté " + this.name);
+    this.a.tooltip();
+    this.a.click(this.click);
+    return this.a;
 };
 
 OpenM_BookGUI.community.Child.prototype.updateName = function(name) {
     this.name = name;
-    if (this.c !== undefined)
-        this.c.text(this.name);
+    if (this.a !== undefined)
+        this.content();
 };
 
 OpenM_BookGUI.community.Users = function(communityId) {
@@ -224,10 +239,14 @@ OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
 
 OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
-    this.c.css("float", "left").css("padding", 5);
+    this.c.css("float", "left")
+            .css("padding", 10)
+            .css("margin", 5)
+            .css("background", "white")
+            .css("border-radius", 10);
     this.c.append(this.imageProfile.content());
     this.c.append(this.buttonValidate.content())
-            .append(" ")
+            .append("<br />")
             .append(this.buttonDisplayProfil.content())
             .append(" dans ")
             .append(this.buttonDisplayCommunity.content());
@@ -261,7 +280,7 @@ OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     var icon = $(document.createElement("i"));
     icon.addClass("icon-white icon-ok-circle");
     this.a.append(icon);
-    this.a.append("Valider");
+    this.a.append(" Accepter");
     this.a.click(this.click);
     return this.a;
 };
