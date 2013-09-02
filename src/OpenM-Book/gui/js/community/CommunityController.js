@@ -47,6 +47,8 @@ OpenM_BookController.community.Page = function(community) {
     this.gui.actions = this.actions.gui;
     this.usersNotValid = new OpenM_BookController.community.UsersNotValid(community);
     this.gui.usersNotValid = this.usersNotValid.gui;
+    this.banned = new OpenM_BookController.community.Banned(community);
+    this.gui.banned = this.banned.gui;
 };
 
 OpenM_BookController.community.Page.prototype.display = function(enabled) {
@@ -262,6 +264,21 @@ OpenM_BookController.community.UserNotValid.from = function(user, community) {
     return u;
 };
 
+OpenM_BookController.community.Banned = function(community) {
+    this.community = community;
+    this.gui = new OpenM_BookGUI.community.Banned(this.community.name);
+    this.gui.banned = this.community.userIsBanned;
+
+    var controller = this;
+    this.update = function() {
+        controller.gui.banned = controller.community.userIsBanned;
+        controller.gui.name = controller.community.name;
+        controller.gui.content();
+    };
+
+    this.community.addUpdateCallBack(this.update);
+};
+
 OpenM_BookController.community.button = {};
 
 OpenM_BookController.community.button.Validate = function(user, community) {
@@ -328,6 +345,7 @@ OpenM_BookController.community.image.Profile.from = function(user) {
 OpenM_BookController.community.Actions = function(community) {
     this.community = community;
     this.register = null;
+    this.unRegister = null;
     this.add = null;
     this.rename = null;
     this.delete = null;
@@ -343,12 +361,16 @@ OpenM_BookController.community.Actions = function(community) {
 };
 
 OpenM_BookController.community.Actions.prototype.updateActions = function() {
-    this.buttons = new Array();
     this.gui.buttons = new Array();
 
     if (this.community.userCanRegister) {
-        this.register = new OpenM_BookController.community.button.Register(this.community);
-        this.gui.buttons.push(this.register.gui);
+        if (!this.community.userAlreadyRegistred) {
+            this.register = new OpenM_BookController.community.button.Register(this.community);
+            this.gui.buttons.push(this.register.gui);
+        } else {
+            this.unRegister = new OpenM_BookController.community.button.UnRegister(this.community);
+            this.gui.buttons.push(this.unRegister.gui);
+        }
     }
 
     if (this.community.userCanAddSubCommunity) {
@@ -376,6 +398,16 @@ OpenM_BookController.community.button.Register = function(community) {
     var controller = this;
     this.gui.click = function() {
         controller.community.registerMe();
+    };
+};
+
+OpenM_BookController.community.button.UnRegister = function(community) {
+    this.community = community;
+    this.gui = new OpenM_BookGUI.community.button.UnRegister(this.community.id);
+    this.gui.active = this.community.userAlreadyRegistred;
+    var controller = this;
+    this.gui.click = function() {
+        controller.community.unRegisterMe();
     };
 };
 

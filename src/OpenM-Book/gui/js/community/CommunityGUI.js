@@ -6,6 +6,7 @@ OpenM_BookGUI.community.Page = function() {
     this.childs = null;
     this.users = null;
     this.usersNotValid = null;
+    this.banned = null;
 };
 
 OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
@@ -51,6 +52,8 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         var usersNotValid = $(document.createElement('div')).addClass("row-fluid");
         cadre.append(usersNotValid);
         usersNotValid.append(this.usersNotValid.content());
+
+        cadre.append(this.banned.content());
     }
     else {
         cadre.empty();
@@ -231,6 +234,19 @@ OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     return this.c;
 };
 
+OpenM_BookGUI.community.Banned = function(name) {
+    this.name = name;
+    this.banned = false;
+    this.c = $(document.createElement('div'));
+};
+
+OpenM_BookGUI.community.Banned.prototype.content = function() {
+    this.c.empty();
+    if (this.banned)
+        this.c.append("Vous êtes banni de la communauté '" + this.name + "'");
+    return this.c;
+};
+
 OpenM_BookGUI.community.button = {};
 
 OpenM_BookGUI.community.button.Validate = function() {
@@ -330,7 +346,6 @@ OpenM_BookGUI.community.Actions.prototype.content = function() {
 
 OpenM_BookGUI.community.button.Register = function(communityId) {
     this.communityId = communityId;
-    this.toolTipText = "S'enregistrer dans cette communauté";
     this.active = true;
     this.click = undefined;
     this.a = $(document.createElement('a'));
@@ -350,17 +365,52 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
             gui.click();
             $(gui.a).addClass('disabled');
         });
-        this.toolTipText = "S'enregistrer dans cette communauté";
+        this.toolTipText = "S'inscrire dans cette communauté";
     } else {
         this.a.addClass("disabled");
-        this.toolTipText = "Vous étes déja enregistrer";
+        this.toolTipText = "Vous étes déja enregistré";
     }
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.append(" S'enregistrer");
+    this.a.append(" S'inscrire");
+    return this.a;
+};
+
+OpenM_BookGUI.community.button.UnRegister = function(communityId) {
+    this.communityId = communityId;
+    this.active = true;
+    this.click = undefined;
+    this.a = $(document.createElement('a'));
+};
+
+OpenM_BookGUI.community.button.UnRegister.prototype.content = function() {
+    this.a.empty();
+    this.a.addClass("btn btn-inverse");
+    this.a.addClass("btn-space");
+    var icon = $(document.createElement("i"));
+    icon.addClass("icon-white icon-remove");
+    this.a.append(icon);
+
+    if (this.active) {
+        var gui = this;
+        this.a.click(function() {
+            gui.click();
+            $(gui.a).addClass('disabled');
+        });
+        this.toolTipText = "Se désinscrire s cette communauté";
+    } else {
+        this.a.addClass("disabled");
+        this.toolTipText = "Vous n'étes pas enregistré dans cette communauté";
+    }
+    this.a.attr("rel", "tooltip");
+    this.a.attr("data-placement", "top");
+    this.a.attr("data-toggle", "tooltip");
+    this.a.attr("data-original-title", this.toolTipText);
+    this.a.tooltip();
+    this.a.append(" Se désinscrire");
     return this.a;
 };
 
