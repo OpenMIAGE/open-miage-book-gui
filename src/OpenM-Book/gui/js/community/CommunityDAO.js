@@ -109,6 +109,32 @@ OpenM_BookDAO.community.ExchangeObject.prototype.registerMe = function() {
                 community.users[OpenM_BookDAO.user.DAO.me.id] = OpenM_BookDAO.user.DAO.me;
                 community.updateUsers();
             }
+            community.update();
+        }
+    });
+};
+
+OpenM_BookDAO.community.ExchangeObject.prototype.unRegisterMe = function() {
+    var community = this;
+    OpenM_Book.removeMeFromCommunity(this.id, function(data) {
+        if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
+            community.userAlreadyRegistred = false;
+            var remove = function(c) {
+                if (c.users[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
+                    c.users.splice(OpenM_BookDAO.user.DAO.me.id, 1);
+                    c.updateUsers();
+                }
+                if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
+                    if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][c.id] !== undefined) {
+                        c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id].splice(c.id, 1);
+                        c.updateUsersNotValid();
+                    }
+                }
+                if (c.parent !== undefined)
+                    remove(c.parent);
+            };
+            remove(community);
+            community.update();
         }
     });
 };
