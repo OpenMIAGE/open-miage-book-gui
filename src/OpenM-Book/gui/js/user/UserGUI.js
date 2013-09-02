@@ -20,13 +20,23 @@ OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
 OpenM_BookGUI.user.Page.prototype.content = function() {
     this.page.empty();
     this.page.addClass("row-fluid");
-    this.page.append($(document.createElement("div")).append(this.name));
+    var bandeauProfil = $(document.createElement('div'));
+    // Photo de profil
+    var photoUser = $(document.createElement("img")).attr({
+        alt: "Photo du Profil",
+        title: "Photo du profil",
+        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+    }).addClass("photoCSS");
+    bandeauProfil.append(photoUser)
+            .append(this.name);
+
+    this.page.append(bandeauProfil);
     this.page.append(this.fields.content());
+    this.page.append(this.communities.content());
     if (this.modification !== null)
         this.page.append(this.modification.content());
     if (this.save !== null)
         this.page.append(this.save.content());
-    this.page.append(this.communities.content());
     return this.page;
 };
 
@@ -148,8 +158,12 @@ OpenM_BookGUI.user.Communities = function() {
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
+    this.c.addClass("row-fluid");
+    var div = $(document.createElement("div")).addClass("span6 well");
+    div.append("Communauté(s) :");
+    this.c.append(div);
     for (var i in this.communityBlocks) {
-        this.c.append(this.communityBlocks[i].content());
+        div.append(this.communityBlocks[i].content());
     }
     return this.c;
 };
@@ -163,15 +177,15 @@ OpenM_BookGUI.user.CommunityBlock = function() {
 };
 
 OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
-    var div = $(document.createElement("div")).addClass("row-fluid");
-    var c = $(document.createElement("div")).addClass("span6 well");
+    var div = $(document.createElement("div")).css("padding", 5);
+    var c = $(document.createElement("div"));
     div.append(c);
     var first = true;
     for (var i in this.communities) {
         if (first)
             first = false;
         else
-            c.append(" / ");
+            c.append(" <i class='icon-play'></i> ");
         c.append(this.communities[i].content());
     }
     return div;
@@ -198,31 +212,3 @@ OpenM_BookGUI.user.Community.prototype.updateName = function(newName) {
     this.name = newName;
     this.content();
 };
-
-//
-////à refactorer sur le même principe que CommunityGUI.js
-//
-//// Affichage du bandeau profil (photo + nom + prénom)
-//function getBandeauProfil(fields) {
-//    var bandeauProfil = $(document.createElement('div'));
-//
-//    // Photo de profil
-//    var photoUser = $(document.createElement("img")).attr({
-//        alt: "Photo du Profil",
-//        title: "Photo du profil",
-//        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
-//    }).addClass("photoCSS");
-//    bandeauProfil.append(photoUser);
-//
-//    // Nom de l'utilisateur
-//    var titreLabel = $(document.createElement("span")).addClass("nameCSS");
-//    titreLabel.text(fields[0].fieldValue + " " + fields[1].fieldValue);
-//    bandeauProfil.append(titreLabel);
-//
-//    // Bouton de modification
-//    /*var updateButton = $(document.createElement('span')).addClass("buttonUpdateProfil");
-//     updateButton.append(OpenM_BookGUI.user.button.Modification());
-//     bandeauProfil.append(updateButton);*/
-//
-//    return bandeauProfil;
-//}

@@ -15,6 +15,8 @@ OpenM_BookGUI.Pages = {
     },
     divJSONfloatingWindow: undefined,
     showJSON: function(data){
+        if(!this.divJSONactivated)
+            return;
         if(this.divJSONfloatingWindow===undefined){
             var f = window.open("", "popup", "toolbar=0, location=0, directories=0, status=0, resizable=0, copyhistory=0, height=400, width=500");
             var body = f.document.body;
