@@ -41,7 +41,7 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
                 .attr("data-toggle", "tooltip")
                 .attr("data-original-title", "Configurer la communauté");
         actionDisplayButton.tooltip();
-        
+
         community.append("&nbsp;&nbsp;")
                 .append(actionDisplayButton);
 
@@ -271,6 +271,8 @@ OpenM_BookGUI.community.button = {};
 OpenM_BookGUI.community.button.Validate = function() {
     this.a = $(document.createElement('a'));
     this.click = '';
+    this.popover = undefined;
+    this.isAlreadyAcceptedByUser = undefined;
 };
 
 OpenM_BookGUI.community.button.Validate.prototype.content = function() {
@@ -281,7 +283,31 @@ OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     icon.addClass("icon-white icon-ok-circle");
     this.a.append(icon);
     this.a.append(" Accepter");
-    this.a.click(this.click);
+    if (this.isAlreadyAcceptedByUser === false) {
+        this.a.attr("rel", "tooltip");
+        this.a.attr("data-placement", "top");
+        this.a.attr("data-toggle", "tooltip");
+        this.a.attr("data-original-title", "Accepter l'utilisateur dans la communauté");
+        this.a.tooltip();
+
+        var option = {
+            title: "Valider l'utilisateur",
+            html: true,
+            placement: 'bottom',
+            content: this.popover.content().context
+        };
+        this.a.popover(option);
+        var gui = this;
+        this.a.click(function() {
+            gui.popover.input.focus();
+            gui.popover.popover.on("click", "button", gui.popover.submit);
+            gui.popover.popover.on("click", "a", function() {
+                gui.a.click();
+            });
+        });
+    } else {
+        this.a.addClass("disabled");
+    }
     return this.a;
 };
 
@@ -474,7 +500,6 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
 
 OpenM_BookGUI.community.button.Rename = function(communityId) {
     this.communityId = communityId;
-    this.id = "OpenM_BookGUI.community.button.Rename-" + this.communityId;
     this.a = $(document.createElement("a"));
     this.popover = undefined;
 };
@@ -491,7 +516,6 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     this.a.attr("data-original-title", "Renommer la communauté");
     this.a.tooltip();
 
-    this.popover.parentId = this.id;
     var option = {
         title: 'Renommer la communauté',
         html: true,

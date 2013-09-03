@@ -130,7 +130,7 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
 
         if (typeof data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER] !== 'undefined') {
             user.otherProperties = new Array();
-            for (var i = 0; i < data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER].length; i++) {
+            for (var i in data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER]) {
                 var property = data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER][i];
                 if (user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]] === undefined)
                     user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]] = {
@@ -162,40 +162,41 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
     OpenM_BookGUI.Pages.showJSON(data);
     if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
-
-        user.communities = new Array();
-        for (var i = 0; i < data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER].length; i++) {
-            var json = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
-            var community = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_GROUP_ID_PARAMETER], false, false);
-            if (community.name !== json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER]) {
-                community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
-                community.update();
-            }
-            user.communities.push(community);
-        }
-
-        function defineParent(d, c) {
-            if (c === undefined)
-                return;
-            if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)
-                return;
-            if (c.parent === undefined) {
-                var json = d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id];
-                c.parent = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_COMMUNITY_ID_PARAMETER], false, false);
-                if (c.parent.name !== json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER]) {
-                    c.parent.name = json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER];
-                    c.parent.update();
+        if (data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER] !== undefined) {
+            user.communities = new Array();
+            for (var i in data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER]) {
+                var json = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
+                var community = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_GROUP_ID_PARAMETER], false, false);
+                if (community.name !== json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER]) {
+                    community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
+                    community.update();
                 }
-                defineParent(d, c.parent);
+                user.communities.push(community);
             }
-        }
 
-        if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
-            $.each(user.communities, function(key, value) {
-                defineParent(data, value);
-            });
+            function defineParent(d, c) {
+                if (c === undefined)
+                    return;
+                if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)
+                    return;
+                if (c.parent === undefined) {
+                    var json = d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id];
+                    c.parent = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_COMMUNITY_ID_PARAMETER], false, false);
+                    if (c.parent.name !== json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER]) {
+                        c.parent.name = json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER];
+                        c.parent.update();
+                    }
+                    defineParent(d, c.parent);
+                }
+            }
+
+            if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
+                for (var value in user.communities) {
+                    defineParent(data, value);
+                }
+            }
+            user.updateCommunities();
         }
-        user.updateCommunities();
     } else {
         if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
             OpenM_BookGUI.Pages.showError(data[OpenM_Groups.RETURN_ERROR_MESSAGE_PARAMETER]);
