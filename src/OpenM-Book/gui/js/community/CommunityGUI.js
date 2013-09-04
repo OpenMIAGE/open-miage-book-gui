@@ -20,7 +20,6 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         //la navigation
         var communities = $(document.createElement('div'));
         c.append(communities);
-        communities.append("<p>Communautés :</p>");
         var community = this.tree.content();
         communities.append(community);
         communities.append("<br />");
@@ -30,22 +29,6 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
                 .append(this.actions.content())
                 .append("<br />");
         communities.append(actions);
-//        var actionDisplayButton = $(document.createElement("button"));
-//        actionDisplayButton.addClass("btn btn-inverse").append("<i class='icon-wrench icon-white'></i>");
-//        actionDisplayButton.click(function() {
-//            if (actions.is(":visible"))
-//                actions.hide();
-//            else
-//                actions.show();
-//        });
-//        actionDisplayButton.attr("rel", "tooltip")
-//                .attr("data-placement", "right")
-//                .attr("data-toggle", "tooltip")
-//                .attr("data-original-title", "Configurer la communauté");
-//        actionDisplayButton.tooltip();
-//
-//        community.append("&nbsp;&nbsp;")
-//                .append(actionDisplayButton);
 
         var div = this.childs.content();
         div.addClass("inline");
@@ -129,8 +112,6 @@ OpenM_BookGUI.community.Childs = function(communityId) {
 
 OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
-    if (this.communities.length > 0)
-        this.c.prepend(" <i class='icon-play'></i> <i class='icon-play'></i> ");
 
     for (var i in this.communities) {
         this.c.append(this.communities[i].content());
@@ -174,7 +155,7 @@ OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.css("overflow", "hidden");
-        this.c.append("<p>Utilisateur(s) :</p>");
+        this.c.append("<p>Membre(s) :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
         for (var i in this.users) {
@@ -223,7 +204,7 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.css("overflow", "hidden");
-        this.c.append("<p>Utilisateur(s) Non Validé(s) :</p>");
+        this.c.append("<p>Membre(s) Non Validé(s) :</p>");
         var div = $(document.createElement('div'));
         this.c.append(div);
         for (var i in this.users) {
