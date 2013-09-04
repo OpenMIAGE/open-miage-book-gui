@@ -13,6 +13,8 @@ OpenM_BookDAO.community.ExchangeObject = function() {
     this.childs = new Array();
     this.nbChild = 0;
     this.userCanAddSubCommunity = false;
+    this.moderatorCanAddSubCommunity = false;
+    this.adminCanAddSubCommunity = false;
     this.userCanRegister = false;
     this.userIsBanned = false;
     this.userAlreadyRegistred = false;
@@ -244,7 +246,6 @@ OpenM_BookDAO.community.DAO = {
             OpenM_Book.addCommunity(name, communityId, function(data) {
                 OpenM_BookGUI.Pages.showJSON(data);
                 if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
-                    OpenM_BookGUI.Pages.showSucces("Sous communauté ajouté");
                     var c = new OpenM_BookDAO.community.ExchangeObject();
                     c.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
                     c.parent = community;
@@ -274,7 +275,6 @@ OpenM_BookDAO.community.DAO = {
                     var parent = community.parent;
                     parent.removeChild(community);
                     OpenM_BookDAO.community.DAO.allCommunities.splice(community.id, 1);
-                    OpenM_BookGUI.Pages.showSucces("Communauté supprimée");
                     OpenM_BookController.commons.URL.clickToCommunity(parent);
                 } else {
                     if (data.hasOwnProperty(OpenM_Book_Moderator.RETURN_ERROR_PARAMETER)) {
@@ -286,8 +286,6 @@ OpenM_BookDAO.community.DAO = {
                 }
             });
         }
-
-
     },
     parseAndLoad: function(data, community) {
         OpenM_BookGUI.Pages.showJSON(data);
@@ -298,6 +296,8 @@ OpenM_BookDAO.community.DAO = {
             community.id = data[OpenM_Book.RETURN_COMMUNITY_ID_PARAMETER];
             community.name = data[OpenM_Book.RETURN_COMMUNITY_NAME_PARAMETER];
             community.userCanAddSubCommunity = (data[OpenM_Book.RETURN_USER_CAN_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.moderatorCanAddSubCommunity = (data[OpenM_Book.RETURN_MODERATOR_CAN_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            community.adminCanAddSubCommunity = (data[OpenM_Book.RETURN_ADMIN_CAN_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.forbidenToAddSubCommunity = (data[OpenM_Book.RETURN_FORBIDDEN_TO_ADD_COMMUNITY_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.userCanRegister = (data[OpenM_Book.RETURN_USER_CAN_REGISTER_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.userIsBanned = (data[OpenM_Book.RETURN_YOU_ARE_BANNED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
