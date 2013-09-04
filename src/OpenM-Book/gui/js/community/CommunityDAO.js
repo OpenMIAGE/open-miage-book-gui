@@ -99,9 +99,9 @@ OpenM_BookDAO.community.ExchangeObject.prototype.registerMe = function() {
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
             community.userAlreadyRegistred = true;
             if (community.validationRequired) {
-                if (typeof community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] === 'undefined')
+                if (community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] === undefined)
                     community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] = new Array();
-                community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][community.id] = community;
+                community.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][community.id] = {'community': community, 'isAlreadyAcceptedByUser': true};
                 community.updateUsersNotValid();
             }
             else {

@@ -199,7 +199,7 @@ OpenM_BookGUI.user.Community = function(name) {
 
 OpenM_BookGUI.user.Community.prototype.content = function() {
     this.c.empty();
-    this.c.addClass("btn btn-primary");
+    this.c.addClass("btn");
     var icon = $(document.createElement("i"));
     icon.addClass("icon-white icon-zoom-in");
     this.c.append(icon);
