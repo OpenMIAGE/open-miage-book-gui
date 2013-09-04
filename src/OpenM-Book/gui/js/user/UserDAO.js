@@ -191,8 +191,8 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
             }
 
             if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
-                for (var value in user.communities) {
-                    defineParent(data, value);
+                for (var i in user.communities) {
+                    defineParent(data, user.communities[i]);
                 }
             }
             user.updateCommunities();
