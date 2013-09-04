@@ -410,7 +410,9 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
         }
     }
 
-    if (this.community.userCanAddSubCommunity) {
+    if (this.community.userCanAddSubCommunity
+            || (this.community.moderatorCanAddSubCommunity && this.community.userIsModerator)
+            || (this.community.adminCanAddSubCommunity && OpenM_BookDAO.user.DAO.me.isAdmin)) {
         this.add = new OpenM_BookController.community.button.Add(this.community);
         this.gui.buttons.push(this.add.gui);
     }
