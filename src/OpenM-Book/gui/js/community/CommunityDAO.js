@@ -44,7 +44,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.addChild = function(community) 
 
 OpenM_BookDAO.community.ExchangeObject.prototype.removeChild = function(community) {
     if (this.childs[community.id]) {
-        delete this.childs[community.id];
+        this.childs.splice(community.id, 1);
         this.nbChild--;
     }
 };
@@ -273,7 +273,7 @@ OpenM_BookDAO.community.DAO = {
                 if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
                     var parent = community.parent;
                     parent.removeChild(community);
-                    delete OpenM_BookDAO.community.DAO.allCommunities[community.id];
+                    OpenM_BookDAO.community.DAO.allCommunities.splice(community.id, 1);
                     OpenM_BookGUI.Pages.showSucces("Communauté supprimée");
                     OpenM_BookController.commons.URL.clickToCommunity(parent);
                 } else {

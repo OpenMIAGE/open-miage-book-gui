@@ -416,7 +416,7 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
         this.rename = new OpenM_BookController.community.button.Rename(this.community);
         this.gui.buttons.push(this.rename.gui);
 
-        if (!this.community.cantBeRemoved) {
+        if (!this.community.cantBeRemoved && this.community.parent !== undefined) {
             this.delete = new OpenM_BookController.community.button.Delete(this.community);
             this.gui.buttons.push(this.delete.gui);
         }
