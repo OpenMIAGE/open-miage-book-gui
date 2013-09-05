@@ -386,6 +386,7 @@ OpenM_BookController.community.Actions = function(community) {
     this.add = null;
     this.rename = null;
     this.delete = null;
+    this.refresh = null;
     this.gui = new OpenM_BookGUI.community.Actions(this.community.id);
 
     var controller = this;
@@ -426,6 +427,9 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
             this.gui.buttons.push(this.delete.gui);
         }
     }
+
+    this.refresh = new OpenM_BookController.community.button.Refresh(this.community);
+    this.gui.buttons.push(this.refresh.gui);
 
     this.gui.content();
 };
@@ -468,6 +472,23 @@ OpenM_BookController.community.button.Add = function(community) {
             alert("Il manque le nom de la communauté");
         e.preventDefault();
     };
+};
+
+OpenM_BookController.community.button.Refresh = function(community) {
+    this.community = community;
+    this.gui = new OpenM_BookGUI.community.button.Refresh(this.community.name);
+
+    var controller = this;
+    this.gui.click = function() {
+        OpenM_BookController.community.Pages.communityPage(controller.community.id).display();
+    };
+
+    this.update = function() {
+        controller.gui.name = controller.community.name;
+        controller.gui.content();
+    };
+
+    this.community.addUpdateCallBack(this.update);
 };
 
 OpenM_BookController.community.popover = {};
