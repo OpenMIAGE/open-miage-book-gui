@@ -31,12 +31,16 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
             .append(this.name);
 
     this.page.append(bandeauProfil);
-    this.page.append(this.fields.content());
-    this.page.append(this.communities.content());
-    if (this.modification !== null)
-        this.page.append(this.modification.content());
-    if (this.save !== null)
-        this.page.append(this.save.content());
+
+    var div = $(document.createElement('div')).addClass("row10 well");
+    this.page.append(div);
+    div.append(this.fields.content());
+    div.append(this.communities.content());
+
+//    if (this.modification !== null)
+//        this.page.append(this.modification.content());
+//    if (this.save !== null)
+//        this.page.append(this.save.content());
     return this.page;
 };
 
@@ -105,8 +109,8 @@ OpenM_BookGUI.user.FieldBlock = function(name) {
 };
 
 OpenM_BookGUI.user.FieldBlock.prototype.content = function() {
-    var div = $(document.createElement("div")).addClass("row-fluid");
-    var c = $(document.createElement("div")).addClass("span6 well");
+    var div = $(document.createElement("div")).css("margin-bottom", 10);
+    var c = $(document.createElement("div"));
     div.append(c);
     c.append(this.name + " :");
     for (var i in this.fields) {
@@ -122,7 +126,7 @@ OpenM_BookGUI.user.Field = function(name, value, isInModificationMode) {
 };
 
 OpenM_BookGUI.user.Field.prototype.content = function() {
-    var content = $(document.createElement("div"));
+    var content = $(document.createElement("div")).css("margin-left", 20);
     if (this.isInModificationMode === false) {
         content.addClass("user-field");
         var label = $(document.createElement("span"));
@@ -158,8 +162,7 @@ OpenM_BookGUI.user.Communities = function() {
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
-    this.c.addClass("row-fluid");
-    var div = $(document.createElement("div")).addClass("span6 well");
+    var div = $(document.createElement("div"));
     div.append("Communauté(s) :");
     this.c.append(div);
     for (var i in this.communityBlocks) {
