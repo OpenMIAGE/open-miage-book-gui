@@ -54,7 +54,7 @@ OpenM_BookGUI.user.button.Modification = function() {
 
     this.content = function() {
         var a = $(document.createElement("a"))
-                .addClass("btn btn-info btn-large btn-space");
+                .addClass("btn btn-info btn-large");
         var icon = $(document.createElement("i"))
                 .addClass("icon-white icon-pencil");
         a.append(icon)
@@ -70,7 +70,7 @@ OpenM_BookGUI.user.button.Save = function() {
     this.content = function() {
         var a = $(document.createElement("a"));
         a.addClass('active');
-        a.addClass("btn btn-info btn-large btn-space");
+        a.addClass("btn btn-info btn-large");
         var icon = $(document.createElement("i"))
                 .addClass("icon-white icon-ok");
         this.a.append(icon)
