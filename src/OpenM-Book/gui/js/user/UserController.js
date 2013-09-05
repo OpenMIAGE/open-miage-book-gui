@@ -171,26 +171,37 @@ OpenM_BookController.user.Communities = function(user) {
 
 OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function() {
     function ancestors(community, block) {
-        var c = block.communities[community.id];
-        if (!c) {
-            c = new OpenM_BookController.user.Community(community);
-            block.communities[community.id] = c;
+        var communityController = block.communities[community.id];
+        if (communityController === undefined) {
+            communityController = new OpenM_BookController.user.Community(community);
+            block.communities[community.id] = communityController;
         }
         if (community.parent !== undefined)
             ancestors(community.parent, block);
-        block.gui.communities.push(c.gui);
+        block.gui.communities.push(communityController.gui);
     }
+
+    var communities = new Array();
 
     for (var i in this.user.communities) {
         var c = this.user.communities[i];
-        var block = this.communityBlocks[c.id];
-        if (!block) {
-            block = new OpenM_BookController.user.CommunityBlock();
-            this.communityBlocks[c.id] = block;
-            this.gui.communityBlocks.push(block.gui);
-            ancestors(c, block);
+        communities[c.id] = c;
+        var b = this.communityBlocks[c.id];
+        if (b === undefined) {
+            b = new OpenM_BookController.user.CommunityBlock();
+            this.communityBlocks[c.id] = b;
+            this.gui.communityBlocks[c.id] = b.gui;
+            ancestors(c, b);
         }
     }
+
+    for (var j in this.communityBlocks) {
+        if (communities[j] === undefined) {
+            this.communityBlocks.splice(j, 1);
+            this.gui.communityBlocks.splice(j, 1);
+        }
+    }
+
     this.gui.update();
 };
 
