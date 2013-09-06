@@ -22,12 +22,10 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         c.append(communities);
         var community = this.tree.content();
         communities.append(community);
-        communities.append("<br />");
 
         //Les actions
         var actions = $(document.createElement("div"))
                 .append(this.actions.content())
-                .append("<br />");
         communities.append(actions);
 
         var div = this.childs.content();
@@ -36,13 +34,11 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
 
         //les users
         var users = $(document.createElement('div')).addClass("row-fluid");
-        c.append("<br />");
         c.append(users);
         users.append(this.users.content());
 
         //les users not valid
         var usersNotValid = $(document.createElement('div')).addClass("row-fluid");
-        c.append("<br />");
         c.append(usersNotValid);
         usersNotValid.append(this.usersNotValid.content());
 
@@ -112,7 +108,8 @@ OpenM_BookGUI.community.Childs = function(communityId) {
 
 OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
-
+    if (this.communities.length > 0)
+        this.c.css("margin-top", 10);
     for (var i in this.communities) {
         this.c.append(this.communities[i].content());
     }
@@ -154,6 +151,7 @@ OpenM_BookGUI.community.Users = function(communityId) {
 OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
+        this.c.css("margin-top", 10);
         this.c.css("overflow", "hidden");
         this.c.append("<p>Membre(s) :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
@@ -203,6 +201,7 @@ OpenM_BookGUI.community.UsersNotValid = function(communityId) {
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
+        this.c.css("margin-top", 10);
         this.c.css("overflow", "hidden");
         this.c.append("<p>Membre(s) Non Validé(s) :</p>");
         var div = $(document.createElement('div'));
@@ -371,6 +370,7 @@ OpenM_BookGUI.community.Actions = function(communityId) {
 OpenM_BookGUI.community.Actions.prototype.content = function() {
     this.c.empty();
     if (this.buttons.length !== 0) {
+        this.c.css("margin-top", 10);
         for (var i in this.buttons) {
             this.c.append(this.buttons[i].content());
         }
