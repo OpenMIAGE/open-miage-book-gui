@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+GUI Label definition
+-->
+<gui>
+    <buttons>
+        <rename>
+            <label>Renommer</label>
+            <icon>icon-white icon-refresh</icon>
+            <tooltip>Renommer la communauté</tooltip>
+            <class>btn btn-warning</class>
+        </rename>
+        <add>
+            <label>Ajouter</label>
+            <icon>icon-white icon-plus</icon>
+            <tooltip>Ajouter une sous communauté à</tooltip>
+            <title>Ajouter une sous communauté</title>
+            <class>btn btn-inverse</class>
+        </add>
+        <delete>
+            <label>Supprimer</label>
+            <icon>icon-white icon-trash</icon>
+            <tooltip>Supprimer la communauté (définitivement)</tooltip>
+            <class>btn btn-danger</class>
+        </delete>
+        <refresh>
+            <label>Rafraichir</label>
+            <tooltip>Rafraichir la communauté</tooltip>
+            <icon>icon-white icon-refresh</icon>
+            <class>btn btn-inverse</class>
+        </refresh>
+        <register>
+            <label>S'inscrire</label>
+            <tooltip>S'inscrire dans cette communauté</tooltip>
+            <tooltipAlreadyRegistered>Vous étes déja enregistré</tooltipAlreadyRegistered>
+            <icon>icon-white icon-star-empty</icon>
+            <class>btn btn-inverse</class>
+        </register>
+        <unRegister>
+            <label>Se désinscrire</label>
+            <tooltip>Se désinscrire s cette communauté</tooltip>
+            <tooltipAlreadyUnRegistered>Vous n'étes pas enregistré dans cette communauté</tooltipAlreadyUnRegistered>
+            <icon>icon-white icon-remove</icon>
+            <class>btn btn-inverse</class>
+        </unRegister>
+        <validate>
+            <title>Valider l'utilisateur</title>
+            <tooltip>Accepter l'utilisateur dans la communauté</tooltip>
+            <icon>icon-white icon-ok</icon>
+            <class>btn btn-success</class>
+        </validate>
+        <displayProfile>
+            <icon>icon-white icon-zoom-in</icon>
+            <class>btn btn-info</class>
+        </displayProfile>        
+        <displayCommunity>
+            <icon>icon-white icon-zoom-in</icon>
+            <class>btn btn-info</class>
+        </displayCommunity>
+    </buttons>
+    <child>
+        <tooltip>Naviguer dans la communauté</tooltip>
+        <class>btn btn-large</class>
+    </child>   
+    <tree>
+        <separator>icon-play</separator>
+    </tree>   
+    <inTree>
+        <tooltip>Naviguer dans la communauté</tooltip>
+        <class>btn btn-large</class>
+        <classDisabled>btn btn-large disabled</classDisabled>
+    </inTree>
+    <users>
+        <label>Membre(s)</label>
+    </users>
+    <usersNotValid>
+        <label>Membre(s) Non Validé(s)</label>
+    </usersNotValid>
+</gui>

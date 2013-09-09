@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+GUI Label definition
+-->
+<gui>
+    <properties>
+        <one-value>
+            <firstName>
+                <label>Prénom</label>
+            </firstName>
+            <lastName>
+                <label>Nom de famille</label>
+            </lastName>
+            <birthday>
+                <label>Date de naissance</label>
+            </birthday>
+        </one-value>
+        <multi-values>
+            <mail>
+                <label>Email(s)</label>
+            </mail>
+            <phone_number>
+                <label>Numéro(s) de téléphone</label>
+            </phone_number>
+            <note>
+                <label>Note(s)</label>
+            </note>
+            <adress>
+                <label>Adresse(s)</label>
+            </adress>
+            <other>
+                <label>Autre(s)</label>
+            </other>
+            <url>
+                <label>Site(s)</label>
+            </url>
+        </multi-values>
+    </properties>
+    <communities>
+        <label>Communauté(s)</label>
+    </communities>
+</gui>
