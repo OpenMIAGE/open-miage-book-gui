@@ -123,6 +123,8 @@ OpenM_BookDAO.community.ExchangeObject.prototype.unRegisterMe = function() {
             var remove = function(c) {
                 if (c.users[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
                     c.users.splice(OpenM_BookDAO.user.DAO.me.id, 1);
+                    OpenM_BookDAO.user.DAO.me.communities.splice(c.id, 1);
+                    OpenM_BookDAO.user.DAO.me.updateCommunities();
                     c.updateUsers();
                 }
                 if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
