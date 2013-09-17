@@ -60,12 +60,14 @@ OpenM_BookGUI.menu.Left = {
                         .append(OpenM_BookDAO.user.DAO.me.firstName)
                         .click(function() {
                     OpenM_BookController.commons.URL.clickToUser();
+                    $("#button-navbar-left").click();
                 });
                 var LastName = $(document.createElement("h3"));
                 LastName.css("cursor", "pointer")
                         .append(OpenM_BookDAO.user.DAO.me.lastName)
                         .click(function() {
                     OpenM_BookController.commons.URL.clickToUser();
+                    $("#button-navbar-left").click();
                 });
                 li.append(firstName)
                         .append(LastName);
