@@ -1,5 +1,7 @@
 OpenM_BookGUI.user = {};
 
+OpenM_BookGUI.user.const = undefined;
+
 OpenM_BookGUI.user.Page = function() {
     this.modification = null;
     this.save = null;
@@ -112,7 +114,7 @@ OpenM_BookGUI.user.FieldBlock.prototype.content = function() {
     var div = $(document.createElement("div")).css("margin-bottom", 10);
     var c = $(document.createElement("div"));
     div.append(c);
-    c.append(this.name + " :");
+    c.append($("properties multi-values "+this.name+" label",OpenM_BookGUI.user.const).text() + " :");
     for (var i in this.fields) {
         c.append(this.fields[i].content());
     }
@@ -163,7 +165,7 @@ OpenM_BookGUI.user.Communities = function() {
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
     var div = $(document.createElement("div"));
-    div.append("Communauté(s) :");
+    div.append($("communities label",OpenM_BookGUI.user.const).text()+" :");
     this.c.append(div);
     for (var i in this.communityBlocks) {
         div.append(this.communityBlocks[i].content());

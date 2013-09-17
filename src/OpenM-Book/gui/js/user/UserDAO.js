@@ -42,7 +42,6 @@ OpenM_BookDAO.user.ExchangeObject.prototype.updateCommunities = function() {
     }
 };
 
-
 OpenM_BookDAO.user.DAO = {
     me: undefined,
     allUsers: new Array()
@@ -171,7 +170,7 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
                     community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
                     community.update();
                 }
-                user.communities.push(community);
+                user.communities[community.id] = community;
             }
 
             function defineParent(d, c) {

@@ -11,12 +11,18 @@ body {
 .edit:hover {
     border: darkgoldenrod solid 1px;
 }
+
+.navbar-fixed-top{
+    position: fixed;
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .navbar-inner{
     border-radius: 0px;
 }
 .nav-tabs-menunavigation{
     position: absolute;
-    margin-top: -20px;
     padding-left: 10px;
     min-height: 100%;
     width: 162px;
@@ -28,13 +34,6 @@ body {
 .cadre-nom{
     padding-right: 20px;
     color: #777777;
-}
-.menunavigation-phone{
-    margin-top: -20px;
-}
-
-.simple-cadre{
-    
 }
 
 /**
@@ -56,6 +55,10 @@ body {
         -moz-border-radius: 0px;
         border-radius: 0px;
         margin-bottom: 0px;
+    }
+
+    .well{
+        margin: 0;
     }
 }
 
@@ -81,12 +84,17 @@ body {
 }
 */
 
+.container-withmenunavigation{
+    margin-top: 40px;
+}
+
 /**
 Pour affichage seulement Ordinateur
 */
 @media (min-width : 979px){
     .container-withmenunavigation{
         margin-left: 162px;
+        margin-top: 50px;
     }
 }
 

@@ -85,6 +85,7 @@ OpenM_BookController.commons.URL = {
         }
         if (this.loader !== '')
             $("#" + this.loader).remove();
+        $('html body').animate({scrollTop: 0});
     },
     storedHash: window.location.hash,
     loader: '',

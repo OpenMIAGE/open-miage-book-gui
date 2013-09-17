@@ -111,11 +111,12 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "url" => $this->properties->get(self::OPENM_ID_PROXY_PATH),
             "api_selected" => $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX)
         ));
+        $this->smarty->assign("root", OpenM_URLViewController::getRoot());
+        $this->smarty->assign("config_path", OpenM_URLViewController::getRoot()."Config/");
     }
 
     protected function addLinks() {
         $this->smarty->assign("links", array(
-            "root" => OpenM_URLViewController::getRoot(),
             "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
         ));
     }
@@ -130,10 +131,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             array(
                 "label" => "account",
                 "items" => array(
-//                    array(
-//                        "label" => "login",
-//                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
-//                    ),
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
