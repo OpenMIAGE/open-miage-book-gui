@@ -20,6 +20,46 @@ OpenM_BookDAO.user.ExchangeObject = function() {
     this.AllCommunitiesCallBack = new Array();
 };
 
+OpenM_BookDAO.user.ExchangeObject.prototype.removePropertyValue = function(field, value) {
+    var controller = this;
+    OpenM_Book_User.removePropertyValue(value.id, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
+        if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
+            controller.otherProperties[field.id].values.splice(value.id, 1);
+            controller.update();
+        }
+    });
+};
+
+OpenM_BookDAO.user.ExchangeObject.prototype.addPropertyValue = function(field, value) {
+    var controller = this;
+    OpenM_Book_User.addPropertyValue(field.id, value, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
+        if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
+            controller.otherProperties[field.id]
+                    .values[data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
+                "id": data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
+                "value": value
+            },
+            controller.update();
+        }
+    });
+};
+
+OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyValue = function(fieldId, valueId, value) {
+    var controller = this;
+    var v = controller.otherProperties[fieldId].values[valueId].value;
+    controller.otherProperties[fieldId].values[valueId].value = value;
+    controller.update();
+    OpenM_Book_User.setPropertyValue(valueId, value, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
+        if (data[OpenM_Book_User.RETURN_ERROR_PARAMETER] !== undefined) {
+            controller.otherProperties[fieldId].values[valueId].value = v;
+            controller.update();
+        }
+    });
+};
+
 OpenM_BookDAO.user.ExchangeObject.prototype.addUpdateCallBack = function(c) {
     this.AllCallBack.push(c);
 };
@@ -140,10 +180,10 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
                         "values": new Array()
                     };
                 if (property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER] !== undefined) {
-                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]].values.push({
+                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]].values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
                         "id": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
                         "value": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_PARAMETER]
-                    });
+                    };
                 }
             }
         }
@@ -160,7 +200,7 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
 
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
     OpenM_BookGUI.Pages.showJSON(data);
-    if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
+    if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Groups.RETURN_STATUS_OK_VALUE) {
         if (data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER] !== undefined) {
             user.communities = new Array();
             for (var i in data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER]) {

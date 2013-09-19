@@ -18,23 +18,44 @@ GUI Label definition
         <multi-values>
             <mail>
                 <label>Email(s)</label>
+                <add>Ajouter un email</add>
+                <icon>icon-envelope</icon>
             </mail>
             <phone_number>
                 <label>Numéro(s) de téléphone</label>
+                <add>Ajouter un numéro de téléphone</add>
+                <icon>icon-user</icon>
             </phone_number>
-            <note>
-                <label>Note(s)</label>
-            </note>
             <adress>
                 <label>Adresse(s)</label>
+                <add>Ajouter une adresse</add>
+                <icon>icon-map-marker</icon>
             </adress>
-            <other>
-                <label>Autre(s)</label>
-            </other>
             <url>
                 <label>Site(s)</label>
+                <add>Ajouter un site</add>
+                <icon>icon-globe</icon>
             </url>
+            <note>
+                <label>Note(s)</label>
+                <add>Ajouter une note</add>
+                <icon>icon-pencil</icon>
+            </note>
+            <other>
+                <label>Autre(s)</label>
+                <add>Ajouter une propriété autre</add>
+            </other>            
         </multi-values>
+        <add>
+            <icon>icon-plus</icon>
+        </add>
+        <buttons>
+            <cancel>
+                <label></label>
+                <icon>icon-white icon-trash</icon>
+                <class>btn btn-danger</class>
+            </cancel>
+        </buttons>
     </properties>
     <communities>
         <label>Communauté(s)</label>

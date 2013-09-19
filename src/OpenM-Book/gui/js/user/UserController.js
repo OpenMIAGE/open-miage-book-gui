@@ -5,6 +5,8 @@ OpenM_BookController.user.Pages = {
     defaultUserId: null,
     communitiesActivated: true,
     userPage: function(userId, reload) {
+        OpenM_BookController.user.FieldModificationController.close();
+
         var user = null;
         if (reload === false)
             return this.AllUserPagesControlers[userId];
@@ -39,6 +41,10 @@ OpenM_BookController.user.Pages = {
 OpenM_BookController.user.Page = function(user) {
     this.user = user;
     this.gui = new OpenM_BookGUI.user.Page();
+    this.gui.click = function(event) {
+        OpenM_BookController.user.FieldModificationController.close();
+        event.stopPropagation();
+    };
 
     var controller = this;
     this.update = function() {
@@ -46,11 +52,6 @@ OpenM_BookController.user.Page = function(user) {
         controller.gui.firstName = controller.user.firstName;
         controller.gui.lastName = controller.user.lastName;
     };
-
-    if (user.id === OpenM_BookDAO.user.DAO.me.id) {
-        this.modification = new OpenM_BookController.user.button.Modification(this.user, this);
-        this.gui.modification = this.modification.gui;
-    }
 
     this.fields = new OpenM_BookController.user.Fields(this.user);
     this.gui.fields = this.fields.gui;
@@ -67,26 +68,6 @@ OpenM_BookController.user.Page.prototype.display = function(enabled) {
 };
 
 OpenM_BookController.user.button = {};
-
-OpenM_BookController.user.button.Modification = function(user, page) {
-    this.user = user;
-    this.page = page;
-    this.gui = new OpenM_BookGUI.user.button.Modification();
-    var controller = this;
-    this.gui.click = function() {
-        alert("TODO");
-    };
-};
-
-OpenM_BookController.user.button.Save = function(user, page) {
-    this.user = user;
-    this.page = page;
-    this.gui = new OpenM_BookGUI.user.button.Save();
-    var controller = this;
-    this.gui.click = function() {
-        alert("TODO");
-    };
-};
 
 OpenM_BookController.user.Fields = function(user) {
     this.user = user;
@@ -120,7 +101,7 @@ OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
             var value = this.user.otherProperties[i].values[j];
             var field = block.fields[value.id];
             if (!field) {
-                field = new OpenM_BookController.user.Field(v.name, value.id, value.value);
+                field = new OpenM_BookController.user.Field(this.user, v, value, this.user === OpenM_BookDAO.user.DAO.me);
                 block.fields[value.id] = field;
                 block.gui.fields[value.id] = field.gui;
             }
@@ -131,6 +112,10 @@ OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
                 block.gui.fields.splice(i, 1);
                 block.fields.splice(i, 1);
             }
+        }
+        if (this.user === OpenM_BookDAO.user.DAO.me) {
+            block.add = new OpenM_BookController.user.FieldAdd(this.user, v);
+            block.gui.add = block.add.gui;
         }
     }
     for (var i in this.fieldBlocks) {
@@ -145,13 +130,94 @@ OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
 OpenM_BookController.user.FieldBlock = function(name) {
     this.name = name;
     this.fields = new Array();
+    this.add = undefined;
     this.gui = new OpenM_BookGUI.user.FieldBlock(this.name);
-
 };
 
-OpenM_BookController.user.Field = function(name, id, value) {
-    this.id = id;
-    this.gui = new OpenM_BookGUI.user.Field(name, value);
+OpenM_BookController.user.Field = function(user, field, value, isModifiable, isVirtual) {
+    this.iamField = true;
+    this.user = user;
+    this.field = field;
+    this.value = value;
+    this.isModifiable = isModifiable;
+    this.gui = new OpenM_BookGUI.user.Field(field.name, value.value, this.isModifiable);
+    this.isVirtual = (isVirtual !== undefined) ? isVirtual : false;
+
+    var controller = this;
+    this.gui.click = function(event) {
+        OpenM_BookController.user.FieldModificationController.open(controller);
+        controller.gui.isInModificationMode = true;
+        controller.gui.content();
+        event.stopPropagation();
+    };
+
+    this.gui.remove = function(event) {
+        if (!controller.isVirtual) {
+            controller.user.removePropertyValue(controller.field, controller.value);
+            OpenM_BookController.user.FieldModificationController.close(false);
+            event.stopPropagation();
+        }
+    };
+
+    this.gui.enter = function(event) {
+        OpenM_BookController.user.FieldModificationController.close();
+        event.stopPropagation();
+    };
+};
+
+OpenM_BookController.user.FieldAdd = function(user, field) {
+    this.iamFieldAdd = true;
+    this.user = user;
+    this.field = field;
+    this.f = undefined;
+    this.gui = new OpenM_BookGUI.user.FieldAdd(this.field.name);
+
+    var controller = this;
+    this.gui.click = function(event) {
+        controller.f = new OpenM_BookController.user.Field(controller.user, controller.field, {name: ""}, true, true);
+        controller.f.gui.isInModificationMode = true;
+        controller.gui.added = controller.f.gui;
+        controller.gui.content();
+        OpenM_BookController.user.FieldModificationController.open(controller);
+        event.stopPropagation();
+    };
+};
+
+OpenM_BookController.user.FieldModificationController = {};
+OpenM_BookController.user.FieldModificationController.opened = null;
+OpenM_BookController.user.FieldModificationController.open = function(controller) {
+    OpenM_BookController.user.FieldModificationController.close();
+    OpenM_BookController.user.FieldModificationController.opened = controller;
+};
+
+OpenM_BookController.user.FieldModificationController.close = function(withSave) {
+    if (withSave === undefined)
+        withSave = true;
+    if (OpenM_BookController.user.FieldModificationController.opened === null)
+        return;
+
+    if (OpenM_BookController.user.FieldModificationController.opened.iamField === true) {
+        OpenM_BookController.user.FieldModificationController.opened.gui.isInModificationMode = false;
+        OpenM_BookController.user.FieldModificationController.opened.gui
+                .value = OpenM_BookController.user.FieldModificationController.opened.gui.val();
+        if (withSave)
+            OpenM_BookController.user.FieldModificationController.opened.user
+                    .setPropertyValue(OpenM_BookController.user.FieldModificationController.opened.field.id,
+                    OpenM_BookController.user.FieldModificationController.opened.value.id,
+                    OpenM_BookController.user.FieldModificationController.opened.gui.val());
+    }
+    else if (OpenM_BookController.user.FieldModificationController.opened.iamFieldAdd === true) {
+        if (OpenM_BookController.user.FieldModificationController.opened.gui.added !== undefined
+                && OpenM_BookController.user.FieldModificationController.opened.gui.added.val() !== "") {
+            OpenM_BookController.user.FieldModificationController.opened.user
+                    .addPropertyValue(OpenM_BookController.user.FieldModificationController.opened.field,
+                    OpenM_BookController.user.FieldModificationController.opened.gui.added.val());
+        }
+        OpenM_BookController.user.FieldModificationController.opened.f = undefined;
+        OpenM_BookController.user.FieldModificationController.opened.gui.added = undefined;
+    }
+    OpenM_BookController.user.FieldModificationController.opened.gui.content();
+    OpenM_BookController.user.FieldModificationController.opened = null;
 };
 
 OpenM_BookController.user.Communities = function(user) {
@@ -215,8 +281,9 @@ OpenM_BookController.user.Community = function(community) {
     this.gui = new OpenM_BookGUI.user.Community(this.community.name);
 
     var controller = this;
-    this.gui.click = function() {
+    this.gui.click = function(event) {
         OpenM_BookController.commons.URL.clickToCommunity(controller.community);
+        event.stopPropagation();
     };
 
     this.update = function() {
