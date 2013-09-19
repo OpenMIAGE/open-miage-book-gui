@@ -62,9 +62,15 @@ OpenM_BookGUI.user.Fields = function() {
 
 OpenM_BookGUI.user.Fields.prototype.content = function() {
     this.c.empty();
-    for (var i in this.fieldBlocks) {
-        this.c.append(this.fieldBlocks[i].content());
-    }
+    var gui = this;
+    $("properties > multi-values > *", OpenM_BookGUI.user.const).each(function(key, value) {
+        for (var i in gui.fieldBlocks) {
+            if (value.tagName === gui.fieldBlocks[i].name) {
+                gui.c.append(gui.fieldBlocks[i].content());
+                return;
+            }
+        }
+    });
     return this.c;
 };
 
