@@ -200,7 +200,9 @@ OpenM_BookController.user.FieldModificationController.close = function(withSave)
         OpenM_BookController.user.FieldModificationController.opened.gui.isInModificationMode = false;
         OpenM_BookController.user.FieldModificationController.opened.gui
                 .value = OpenM_BookController.user.FieldModificationController.opened.gui.val();
-        if (withSave)
+        if (withSave &&
+                OpenM_BookController.user.FieldModificationController.opened.value.value !==
+                OpenM_BookController.user.FieldModificationController.opened.gui.val())
             OpenM_BookController.user.FieldModificationController.opened.user
                     .setPropertyValue(OpenM_BookController.user.FieldModificationController.opened.field.id,
                     OpenM_BookController.user.FieldModificationController.opened.value.id,
