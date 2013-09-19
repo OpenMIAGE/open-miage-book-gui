@@ -24,8 +24,23 @@ OpenM_BookDAO.user.ExchangeObject.prototype.removePropertyValue = function(field
     var controller = this;
     OpenM_Book_User.removePropertyValue(value.id, function(data) {
         OpenM_BookGUI.Pages.showJSON(data);
-        if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Groups.RETURN_STATUS_OK_VALUE) {
+        if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
             controller.otherProperties[field.id].values.splice(value.id, 1);
+            controller.update();
+        }
+    });
+};
+
+OpenM_BookDAO.user.ExchangeObject.prototype.addPropertyValue = function(field, value) {
+    var controller = this;
+    OpenM_Book_User.addPropertyValue(field.id, value, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
+        if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
+            controller.otherProperties[field.id]
+                    .values[data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
+                "id": data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
+                "value": value
+            },
             controller.update();
         }
     });

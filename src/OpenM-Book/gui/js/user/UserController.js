@@ -5,7 +5,7 @@ OpenM_BookController.user.Pages = {
     defaultUserId: null,
     communitiesActivated: true,
     userPage: function(userId, reload) {
-        OpenM_BookController.user.FieldModificationController.reinit();
+        OpenM_BookController.user.FieldModificationController.save();
 
         var user = null;
         if (reload === false)
@@ -42,7 +42,7 @@ OpenM_BookController.user.Page = function(user) {
     this.user = user;
     this.gui = new OpenM_BookGUI.user.Page();
     this.gui.click = function(event) {
-        OpenM_BookController.user.FieldModificationController.reinit();
+        OpenM_BookController.user.FieldModificationController.save();
         event.stopPropagation();
     };
 
@@ -157,6 +157,11 @@ OpenM_BookController.user.Field = function(user, field, value, isModifiable, isV
             event.stopPropagation();
         }
     };
+    
+    this.gui.enter = function(event){
+        OpenM_BookController.user.FieldModificationController.save();
+        event.stopPropagation();
+    };
 };
 
 OpenM_BookController.user.FieldAdd = function(user, field) {
@@ -180,20 +185,22 @@ OpenM_BookController.user.FieldAdd = function(user, field) {
 OpenM_BookController.user.FieldModificationController = {};
 OpenM_BookController.user.FieldModificationController.opened = null;
 OpenM_BookController.user.FieldModificationController.open = function(controller) {
-    OpenM_BookController.user.FieldModificationController.reinit();
+    OpenM_BookController.user.FieldModificationController.save();
     OpenM_BookController.user.FieldModificationController.opened = controller;
 };
 
-OpenM_BookController.user.FieldModificationController.reinit = function() {
+OpenM_BookController.user.FieldModificationController.save = function() {
     if (OpenM_BookController.user.FieldModificationController.opened === null)
         return;
 
-    if (OpenM_BookController.user.FieldModificationController.opened.iamField === true){
+    if (OpenM_BookController.user.FieldModificationController.opened.iamField === true) {
         OpenM_BookController.user.FieldModificationController.opened.gui.isInModificationMode = false;
     }
     else if (OpenM_BookController.user.FieldModificationController.opened.iamFieldAdd === true) {
-        if(OpenM_BookController.user.FieldModificationController.opened.gui.added.val()!==""){
-            alert(OpenM_BookController.user.FieldModificationController.opened.gui.added.val());
+        if (OpenM_BookController.user.FieldModificationController.opened.gui.added.val() !== "") {
+            OpenM_BookController.user.FieldModificationController.opened.user
+                    .addPropertyValue(OpenM_BookController.user.FieldModificationController.opened.field,
+                    OpenM_BookController.user.FieldModificationController.opened.gui.added.val());
         }
         OpenM_BookController.user.FieldModificationController.opened.f = undefined;
         OpenM_BookController.user.FieldModificationController.opened.gui.added = undefined;

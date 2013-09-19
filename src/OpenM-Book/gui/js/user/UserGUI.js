@@ -100,6 +100,7 @@ OpenM_BookGUI.user.Field = function(name, value, isModifiable) {
     this.c = $(document.createElement("div"));
     this.remove = undefined;
     this.input = $(document.createElement("input"));
+    this.enter = undefined;
 };
 
 OpenM_BookGUI.user.Field.prototype.val = function() {
@@ -138,6 +139,14 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .val(this.value)
                 .addClass("input-large")
                 .css("margin", 0);
+        this.input.click(function(e) {
+            e.stopPropagation();
+        });
+        var gui = this;
+        this.input.keyup(function(e) {
+            if (e.keyCode === 13)
+                gui.enter(e);
+        });
         div.append(this.input);
         var remove = $(document.createElement("a"))
                 .addClass($("properties buttons cancel class", OpenM_BookGUI.user.const).text())
@@ -145,7 +154,6 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .append(" " + $("properties buttons cancel label", OpenM_BookGUI.user.const).text());
         remove.click(this.remove);
         div.append(remove);
-        var gui = this;
         setTimeout(function() {
             gui.input.focus();
         }, 50);
