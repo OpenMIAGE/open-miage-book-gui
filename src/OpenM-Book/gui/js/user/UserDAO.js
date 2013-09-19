@@ -46,6 +46,20 @@ OpenM_BookDAO.user.ExchangeObject.prototype.addPropertyValue = function(field, v
     });
 };
 
+OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyValue = function(fieldId, valueId, value) {
+    var controller = this;
+    var v = controller.otherProperties[fieldId].values[valueId].value;
+    controller.otherProperties[fieldId].values[valueId].value = value;
+    controller.update();
+    OpenM_Book_User.setPropertyValue(valueId, value, function(data) {
+        OpenM_BookGUI.Pages.showJSON(data);
+        if (data[OpenM_Book_User.RETURN_ERROR_PARAMETER] !== undefined) {
+            controller.otherProperties[fieldId].values[valueId].value = v;
+            controller.update();
+        }
+    });
+};
+
 OpenM_BookDAO.user.ExchangeObject.prototype.addUpdateCallBack = function(c) {
     this.AllCallBack.push(c);
 };

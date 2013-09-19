@@ -26,25 +26,25 @@ GUI Label definition
                 <add>Ajouter un numéro de téléphone</add>
                 <icon>icon-user</icon>
             </phone_number>
-            <note>
-                <label>Note(s)</label>
-                <add>Ajouter une note</add>
-                <icon>icon-pencil</icon>
-            </note>
             <adress>
                 <label>Adresse(s)</label>
                 <add>Ajouter une adresse</add>
                 <icon>icon-map-marker</icon>
             </adress>
-            <other>
-                <label>Autre(s)</label>
-                <add>Ajouter une propriété autre</add>
-            </other>
             <url>
                 <label>Site(s)</label>
                 <add>Ajouter un site</add>
                 <icon>icon-globe</icon>
             </url>
+            <note>
+                <label>Note(s)</label>
+                <add>Ajouter une note</add>
+                <icon>icon-pencil</icon>
+            </note>
+            <other>
+                <label>Autre(s)</label>
+                <add>Ajouter une propriété autre</add>
+            </other>            
         </multi-values>
         <add>
             <icon>icon-plus</icon>
