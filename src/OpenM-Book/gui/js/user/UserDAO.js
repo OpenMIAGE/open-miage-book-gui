@@ -214,6 +214,7 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
             }
 
             function defineParent(d, c) {
+                c.ancestorsLoaded = true;
                 if (c === undefined)
                     return;
                 if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)

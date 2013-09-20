@@ -105,6 +105,10 @@ OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
                 block.fields[value.id] = field;
                 block.gui.fields[value.id] = field.gui;
             }
+            else if (field.value.value !== value.value) {
+                field.value = value;
+                field.gui.value = value.value;
+            }
             values[value.id] = value;
         }
         for (var i in block.fields) {
