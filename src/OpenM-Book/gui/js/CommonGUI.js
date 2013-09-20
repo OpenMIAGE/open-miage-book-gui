@@ -1,6 +1,8 @@
-var OpenM_BookGUI = {};
+if (OpenM_BookGUI === undefined)
+    var OpenM_BookGUI = {};
 
-OpenM_BookGUI.commons = {};
+if (OpenM_BookGUI.commons === undefined)
+    OpenM_BookGUI.commons = {};
 
 OpenM_BookGUI.commons.initConst = function(stub, url) {
     $.ajax({

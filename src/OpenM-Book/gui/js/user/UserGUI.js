@@ -1,4 +1,8 @@
-OpenM_BookGUI.user = {};
+if (OpenM_BookGUI === undefined)
+    var OpenM_BookGUI;
+
+if (OpenM_BookGUI.user === undefined)
+    OpenM_BookGUI.user = {};
 
 OpenM_BookGUI.user.const = undefined;
 
@@ -119,7 +123,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
     this.c.append(content);
     content.css("margin", 0).css("margin-left", 20);
     if (this.isInModificationMode === false) {
-        content.css("height", 30);
+        content.css("min-height", 30);
         content.addClass("user-field");
         var labelVal = $(document.createElement("div")).css("padding-top", 7);
         labelVal.append($(document.createElement("i")).addClass($("properties multi-values " + this.name + " icon", OpenM_BookGUI.user.const).text()));

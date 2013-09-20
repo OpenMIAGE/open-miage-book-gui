@@ -1,4 +1,8 @@
-OpenM_BookGUI.community = {};
+if (OpenM_BookGUI === undefined)
+    var OpenM_BookGUI = {};
+
+if (OpenM_BookGUI.community === undefined)
+    OpenM_BookGUI.community = {};
 
 OpenM_BookGUI.community.const = undefined;
 
@@ -155,7 +159,7 @@ OpenM_BookGUI.community.Users.prototype.content = function() {
     if (this.users.length !== 0) {
         this.c.css("margin-top", 10);
         this.c.css("overflow", "hidden");
-        this.c.append("<p>"+$("users label", OpenM_BookGUI.community.const).text()+" :</p>");
+        this.c.append("<p>" + $("users label", OpenM_BookGUI.community.const).text() + " :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
         for (var i in this.users) {
@@ -205,7 +209,7 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     if (this.users.length !== 0) {
         this.c.css("margin-top", 10);
         this.c.css("overflow", "hidden");
-        this.c.append("<p>"+$("usersNotValid label", OpenM_BookGUI.community.const).text()+" :</p>");
+        this.c.append("<p>" + $("usersNotValid label", OpenM_BookGUI.community.const).text() + " :</p>");
         var div = $(document.createElement('div'));
         this.c.append(div);
         for (var i in this.users) {
@@ -410,7 +414,7 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.append(" "+$("buttons register label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons register label", OpenM_BookGUI.community.const).text());
     return this.a;
 };
 
@@ -444,7 +448,7 @@ OpenM_BookGUI.community.button.UnRegister.prototype.content = function() {
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.append(" "+$("buttons unRegister label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons unRegister label", OpenM_BookGUI.community.const).text());
     return this.a;
 };
 
@@ -502,10 +506,10 @@ OpenM_BookGUI.community.button.Refresh.prototype.content = function() {
     this.a.attr("rel", "tooltip")
             .attr("data-placement", "top")
             .attr("data-toggle", "tooltip")
-            .attr("data-original-title", $("buttons refresh tooltip", OpenM_BookGUI.community.const).text()+" " + this.name);
+            .attr("data-original-title", $("buttons refresh tooltip", OpenM_BookGUI.community.const).text() + " " + this.name);
     this.a.tooltip();
     this.a.click(this.click);
-    this.a.append(" "+$("buttons refresh label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons refresh label", OpenM_BookGUI.community.const).text());
     return this.a;
 };
 
@@ -563,7 +567,7 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
             .attr("data-toggle", "tooltip")
             .attr("data-original-title", $("buttons delete tooltip", OpenM_BookGUI.community.const).text());
     this.a.tooltip();
-    this.a.append(" "+$("buttons delete label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons delete label", OpenM_BookGUI.community.const).text());
     this.a.click(this.click);
     return this.a;
 };

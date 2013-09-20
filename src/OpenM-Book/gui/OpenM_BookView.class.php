@@ -112,7 +112,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             "api_selected" => $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX)
         ));
         $this->smarty->assign("root", OpenM_URLViewController::getRoot());
-        $this->smarty->assign("config_path", OpenM_URLViewController::getRoot()."Config/");
+        $this->smarty->assign("config_path", OpenM_URLViewController::getRoot() . "Config/");
     }
 
     protected function addLinks() {
@@ -123,7 +123,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addClientsJS() {
         $clientRoot = OpenM_URLViewController::getRoot() . "client/";
-        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin;OpenM_Groups.js");
+        $this->smarty->assign("clients_js", $clientRoot . "OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin;OpenM_Groups"
+                . (($this->bookProperties->get(self::BOOK_HMI_DEBUG_MODE) == self::BOOK_HMI_DEBUG_MODE_ON_VALUE) ? "" : "-min") . ".js");
     }
 
     protected function addNavBarItems() {

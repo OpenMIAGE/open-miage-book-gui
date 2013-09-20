@@ -1,4 +1,8 @@
-OpenM_BookController.user = {};
+if (OpenM_BookController === undefined)
+    var OpenM_BookController = {};
+
+if (OpenM_BookController.user === undefined)
+    OpenM_BookController.user = {};
 
 OpenM_BookController.user.Pages = {
     AllUserPagesControlers: new Array(),
@@ -178,6 +182,10 @@ OpenM_BookController.user.FieldAdd = function(user, field) {
 
     var controller = this;
     this.gui.click = function(event) {
+        if (controller.f !== undefined) {
+            event.stopPropagation();
+            return;
+        }
         controller.f = new OpenM_BookController.user.Field(controller.user, controller.field, {name: ""}, true, true);
         controller.f.gui.isInModificationMode = true;
         controller.gui.added = controller.f.gui;
