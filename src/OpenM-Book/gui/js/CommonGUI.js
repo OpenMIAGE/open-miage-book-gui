@@ -4,8 +4,11 @@ if (OpenM_BookGUI === undefined)
 if (OpenM_BookGUI.commons === undefined)
     OpenM_BookGUI.commons = {};
 
-OpenM_BookGUI.commons.initConst = function(stub, url) {
+OpenM_BookGUI.commons.initConst = function(stub, url, async) {
+    if(async===undefined)
+        async = true;
     $.ajax({
+        async: async,
         url: url,
         success: function(data) {
             stub.const = $(data.documentElement);

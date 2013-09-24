@@ -46,6 +46,10 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const BOOK_HMI_DEBUG_MODE_ON_VALUE = "ON";
     const BOOK_HMI_DEBUG_MODE = "OpenM_Book.debug.mode";
 
+    /**
+     *
+     * @var OpenM_SSOClientSession 
+     */
     protected $sso_book;
     protected $bookClient;
     protected $userClient;
@@ -117,7 +121,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function addLinks() {
         $this->smarty->assign("links", array(
-            "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
+            "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL(),
+            "login" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
         ));
     }
 
@@ -135,20 +140,24 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
+                    ),
+                    array(
+                        "label" => "login",
+                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
                     )
                 )),
             array(
                 "label" => "?",
                 "items" => array(
                     array(
-                        "label" => "Open-MIAGE",
+                        "label" => "Open-MIAGE.org",
                         "link" => "http://www.open-miage.org",
-                        "blank" => true
+                        "target" => "_blank"
                     ),
                     array(
-                        "label" => "Team Open-MIAGE",
+                        "label" => "La Team Open-MIAGE",
                         "link" => "http://www.open-miage.org/team.html",
-                        "blank" => true
+                        "target" => "_blank"
                     )
                 ))
         ));

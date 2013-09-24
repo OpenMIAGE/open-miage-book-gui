@@ -46,6 +46,17 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $this->login();
     }
 
+    public function login() {
+        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), true);
+
+        if ($this->isConnected()) {
+            OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+        } else {
+            $errorView = new OpenM_ErrorView();
+            $errorView->error("You're not connected");
+        }
+    }
+
     public function register() {
 
         $this->isConnected();
