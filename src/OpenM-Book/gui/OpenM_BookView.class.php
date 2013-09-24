@@ -119,6 +119,10 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->smarty->assign("config_path", OpenM_URLViewController::getRoot() . "Config/");
     }
 
+    protected function setLang() {
+        $this->smarty->assign("lang", OpenM_URLViewController::getLang());
+    }
+    
     protected function addLinks() {
         $this->smarty->assign("links", array(
             "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL(),

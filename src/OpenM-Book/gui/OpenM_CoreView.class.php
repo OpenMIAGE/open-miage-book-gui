@@ -37,6 +37,7 @@ class OpenM_CoreView extends OpenM_BookView {
             $this->addClientsJS();
             $this->showAlert();
             $this->setDebugMode();
+            $this->setLang();
             $this->smarty->assign("btn_navbar_left",false);
             $this->smarty->display('home.tpl');
         }
@@ -49,6 +50,7 @@ class OpenM_CoreView extends OpenM_BookView {
         $this->addClientsJS();
         $this->showAlert();
         $this->setDebugMode();
+        $this->setLang();
         $this->smarty->assign("core_js", array(
             "OpenM-Book/gui/js/CommonGUI.js",
             "OpenM-Book/gui/js/menuGUI.js",
