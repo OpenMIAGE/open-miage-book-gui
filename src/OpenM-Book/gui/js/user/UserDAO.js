@@ -1,7 +1,8 @@
-if (typeof(OpenM_BookDAO) === 'undefined')
+if (OpenM_BookDAO === undefined)
     var OpenM_BookDAO = {};
 
-OpenM_BookDAO.user = {};
+if (OpenM_BookDAO.user === undefined)
+    OpenM_BookDAO.user = {};
 
 OpenM_BookDAO.user.ExchangeObject = function() {
     this.id = '';
@@ -203,9 +204,11 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
     if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Groups.RETURN_STATUS_OK_VALUE) {
         if (data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER] !== undefined) {
             user.communities = new Array();
+            var defaultCommunity = undefined;
             for (var i in data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER]) {
                 var json = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
                 var community = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_GROUP_ID_PARAMETER], false, false);
+                defaultCommunity = community;
                 if (community.name !== json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER]) {
                     community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
                     community.update();
@@ -214,6 +217,7 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
             }
 
             function defineParent(d, c) {
+                c.ancestorsLoaded = true;
                 if (c === undefined)
                     return;
                 if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)
@@ -221,6 +225,7 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
                 if (c.parent === undefined) {
                     var json = d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id];
                     c.parent = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_COMMUNITY_ID_PARAMETER], false, false);
+                    c.parent.childs[c.id] = c;
                     if (c.parent.name !== json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER]) {
                         c.parent.name = json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER];
                         c.parent.update();
@@ -234,6 +239,15 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
                     defineParent(data, user.communities[i]);
                 }
             }
+            if (defaultCommunity !== undefined) {
+                function getRoot(c) {
+                    if (c.parent !== undefined)
+                        return getRoot(c.parent);
+                    return c;
+                }
+                OpenM_BookDAO.community.DAO.root = getRoot(defaultCommunity);
+            }
+
             user.updateCommunities();
         }
     } else {

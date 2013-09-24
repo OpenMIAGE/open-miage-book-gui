@@ -24,15 +24,28 @@ Import::php("util.JSON.OpenM_MapConvertor");
 class OpenM_CoreView extends OpenM_BookView {
 
     public function _default() {
-        $this->view();
+        $this->home();
     }
 
-    public function view() {
-        $this->sso_book->login(array(OpenM_ID::EMAIL_PARAMETER), true);
+    public function home() {
+        $this->sso_book->checkAuth(array(OpenM_ID::EMAIL_PARAMETER));
+        if ($this->sso_book->isConnected()) {
+            $this->core();
+        } else {
+            $this->addLinks();
+            $this->addNavBarItems();
+            $this->addClientsJS();
+            $this->showAlert();
+            $this->setDebugMode();
+            $this->smarty->assign("btn_navbar_left",false);
+            $this->smarty->display('home.tpl');
+        }
+    }
+
+    public function core() {
         $me = $this->isRegistered();
         $this->smarty->assign("me", OpenM_MapConvertor::mapToJSON($me));
         $this->addLinks();
-        $this->addNavBarItems();
         $this->addClientsJS();
         $this->showAlert();
         $this->setDebugMode();
