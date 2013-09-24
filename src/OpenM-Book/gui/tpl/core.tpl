@@ -15,7 +15,6 @@
         <div class="container-fluid container-withmenunavigation">
             {include file='include/alert.tpl'}
             <div id="divParent"></div>
-            <div id="divJSON"></div>
         </div>
         {include file='include/coreJS.tpl'}
         {include file='include/coreJS-initializing.tpl'}

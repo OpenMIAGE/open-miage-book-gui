@@ -1,8 +1,11 @@
-OpenM_BookController.community = {};
+if (OpenM_BookController === undefined)
+    var OpenM_BookController = {};
+
+if (OpenM_BookController.community === undefined)
+    OpenM_BookController.community = {};
 
 OpenM_BookController.community.Pages = {
     AllCommunitiesPagesControlers: new Array(),
-    defaultCommunityId: '',
     userActivated: true,
     userNotValidActivated: true,
     communityPage: function(communityId, reload) {
@@ -10,12 +13,12 @@ OpenM_BookController.community.Pages = {
         if (reload === false)
             return this.AllCommunitiesPagesControlers[communityId];
 
-        if (!communityId && this.defaultCommunityId === '') {
+        if (!communityId && OpenM_BookDAO.community.DAO.root === undefined) {
             community = OpenM_BookDAO.community.DAO.get(communityId, true);
-            this.defaultCommunityId = community.id;
+            OpenM_BookDAO.community.DAO.root = community;
         }
         else if (!communityId)
-            community = OpenM_BookDAO.community.DAO.get(this.defaultCommunityId);
+            community = OpenM_BookDAO.community.DAO.get(OpenM_BookDAO.community.DAO.root.id);
         else
             community = OpenM_BookDAO.community.DAO.get(communityId);
 

@@ -1,7 +1,8 @@
-if (typeof(OpenM_BookDAO) === 'undefined')
+if (OpenM_BookDAO === undefined)
     var OpenM_BookDAO = {};
 
-OpenM_BookDAO.community = {};
+if (OpenM_BookDAO.community === undefined)
+    OpenM_BookDAO.community = {};
 
 /**
  * La classe Community, gere data de la commu
@@ -189,6 +190,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.updateUsersNotValid = function(
 
 
 OpenM_BookDAO.community.DAO = {
+    root: undefined,
     allCommunities: new Array(),
     get: function(communityId, synchro, reload) {
         var community;

@@ -10,6 +10,8 @@
             OpenM_BookController.commons.URL.loader = "loader";
             var ressource = "{/literal}{$resources_dir}{literal}";
             OpenM_BookController.commons.URL.jsLoadFinished = function() {
+                OpenM_BookController.commons.URL.jsLoadFinished = function() {
+                };
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.community, "{/literal}{$config_path}{literal}gui.community.xml");
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{literal}gui.user.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
@@ -37,7 +39,7 @@
                         location.reload();
                     }
                 });
-            }
+            };
 {/literal}{if !$debug}
             OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
     {foreach from=$core_js item=js}

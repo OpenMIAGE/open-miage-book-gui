@@ -1,4 +1,8 @@
-OpenM_BookController.user = {};
+if (OpenM_BookController === undefined)
+    var OpenM_BookController = {};
+
+if (OpenM_BookController.user === undefined)
+    OpenM_BookController.user = {};
 
 OpenM_BookController.user.Pages = {
     AllUserPagesControlers: new Array(),
@@ -105,6 +109,10 @@ OpenM_BookController.user.Fields.prototype.updateFieldBlocks = function() {
                 block.fields[value.id] = field;
                 block.gui.fields[value.id] = field.gui;
             }
+            else if (field.value.value !== value.value) {
+                field.value = value;
+                field.gui.value = value.value;
+            }
             values[value.id] = value;
         }
         for (var i in block.fields) {
@@ -174,6 +182,10 @@ OpenM_BookController.user.FieldAdd = function(user, field) {
 
     var controller = this;
     this.gui.click = function(event) {
+        if (controller.f !== undefined) {
+            event.stopPropagation();
+            return;
+        }
         controller.f = new OpenM_BookController.user.Field(controller.user, controller.field, {name: ""}, true, true);
         controller.f.gui.isInModificationMode = true;
         controller.gui.added = controller.f.gui;
@@ -200,7 +212,9 @@ OpenM_BookController.user.FieldModificationController.close = function(withSave)
         OpenM_BookController.user.FieldModificationController.opened.gui.isInModificationMode = false;
         OpenM_BookController.user.FieldModificationController.opened.gui
                 .value = OpenM_BookController.user.FieldModificationController.opened.gui.val();
-        if (withSave)
+        if (withSave &&
+                OpenM_BookController.user.FieldModificationController.opened.value.value !==
+                OpenM_BookController.user.FieldModificationController.opened.gui.val())
             OpenM_BookController.user.FieldModificationController.opened.user
                     .setPropertyValue(OpenM_BookController.user.FieldModificationController.opened.field.id,
                     OpenM_BookController.user.FieldModificationController.opened.value.id,

@@ -1,6 +1,8 @@
-var OpenM_BookController = {};
+if (OpenM_BookController === undefined)
+    var OpenM_BookController = {};
 
-OpenM_BookController.commons = {};
+if (OpenM_BookController.commons === undefined)
+    OpenM_BookController.commons = {};
 
 OpenM_BookController.commons.URL = {
     homeSelector: '/home',
@@ -89,14 +91,24 @@ OpenM_BookController.commons.URL = {
     },
     storedHash: window.location.hash,
     loader: '',
-    jsLoadedNumber: 0,
-    jsLoadedTarget: 0,
+    jsLoaderPipe: new Array(),
     jsLoad: function(jsPath) {
-        this.jsLoadedTarget++;
-        $.post(jsPath, function() {
-            OpenM_BookController.commons.URL.jsLoadedNumber++;
-            if (OpenM_BookController.commons.URL.jsLoadedTarget === OpenM_BookController.commons.URL.jsLoadedNumber)
-                OpenM_BookController.commons.URL.jsLoadFinished();
+        var jsLoadedTarget = this.jsLoaderPipe.length;
+        this.jsLoaderPipe[jsLoadedTarget] = jsPath;
+        var controller = this;
+         $.get(jsPath, function() {
+            controller.jsLoaderPipe[jsLoadedTarget] = true;
+            setTimeout(function() {
+                var finished = true;
+                for (var i in controller.jsLoaderPipe) {
+                    if (controller.jsLoaderPipe[i] !== true) {
+                        finished = false;
+                        break;
+                    }
+                }
+                if (finished)
+                    OpenM_BookController.commons.URL.jsLoadFinished();
+            }, 10);
         }, 'script');
     },
     jsLoadFinished: function() {

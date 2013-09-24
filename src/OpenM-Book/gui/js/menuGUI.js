@@ -1,4 +1,8 @@
-OpenM_BookGUI.menu = {};
+if (OpenM_BookGUI === undefined)
+    var OpenM_BookGUI = {};
+
+if (OpenM_BookGUI.menu === undefined)
+    OpenM_BookGUI.menu = {};
 
 OpenM_BookGUI.menu.Left = {
     menuId: '',
