@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+GUI Label definition
+-->
+<gui>
+    <register>
+        <form>
+            <title>Inscription sur OpenM-Book.</title>
+            <first_name>
+                <label>Prénom</label>
+            </first_name>
+            <last_name>
+                <label>Nom</label>
+            </last_name>
+            <year>
+                
+            </year>
+            <months>
+                <jenuary>Janvier</jenuary>
+                <february>Février</february>
+                <march>Mars</march>
+                <april>Avril</april>
+                <may>Mai</may>
+                <june>Juin</june>
+                <july>Juillet</july>
+                <august>Août</august>
+                <september>Septembre</september>
+                <october>Octobre</october>
+                <november>Novembre</november>
+                <december>Décembre</december>
+            </months>
+            <day>
+                
+            </day>
+            <mail>
+                <label>Mail</label>
+            </mail>
+            <birthday>
+                <label>Date de naissance</label>
+            </birthday>
+            <cgu>
+                <label>J'accepte les <a  target="_blank">Conditions d'utilisation</a> ainsi que les <a href="#">Règles de confidentialité</a> d'Open-MIAGE</label>
+            </cgu>
+            <submit>
+                <label>Enregistrer</label>
+            </submit>
+        </form>
+        <links>
+            <explication>
+                <text>(Voir ci-dessous les explications)</text>
+            </explication>
+        </links>
+    </register>
+</gui>

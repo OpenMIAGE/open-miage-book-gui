@@ -28,8 +28,8 @@ class OpenM_CoreView extends OpenM_BookView {
     }
 
     public function home() {
-        $this->sso_book->checkAuth(array(OpenM_ID::EMAIL_PARAMETER));
-        if ($this->sso_book->isConnected()) {
+        $this->sso->checkAuth(array(OpenM_ID::EMAIL_PARAMETER));
+        if ($this->sso->isConnected()) {
             $this->core();
         } else {
             $this->addLinks();

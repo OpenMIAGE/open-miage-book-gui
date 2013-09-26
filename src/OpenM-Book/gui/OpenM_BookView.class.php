@@ -50,7 +50,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      *
      * @var OpenM_SSOClientSession 
      */
-    protected $sso_book;
+    protected $sso;
     protected $bookClient;
     protected $userClient;
     protected $groupClient;
@@ -64,12 +64,12 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
         $this->bookProperties = Properties::fromFile($this->properties->get(self::BOOK_CONFIG_FILE));
         $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
-        $this->sso_book = $this->manager->get($api_name, FALSE);
-        $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book");
-        $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_User");
-        $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Groups");
-        $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Moderator");
-        $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso_book, "OpenM_Book_Admin");
+        $this->sso = $this->manager->get($api_name, FALSE);
+        $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book");
+        $this->userClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_User");
+        $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Groups");
+        $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Moderator");
+        $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Admin");
         $this->setDirs();
     }
 
@@ -79,7 +79,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
      * @return Boolean
      */
     protected function isConnected() {
-        return $this->sso_book->isConnected();
+        return $this->sso->isConnected();
     }
 
     /**
@@ -101,9 +101,15 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         }
     }
 
+    protected function isDebugMode() {
+        return $this->bookProperties->get(self::BOOK_HMI_DEBUG_MODE) == self::BOOK_HMI_DEBUG_MODE_ON_VALUE;
+    }
+
     protected function setDebugMode() {
-        if ($this->bookProperties->get(self::BOOK_HMI_DEBUG_MODE) == self::BOOK_HMI_DEBUG_MODE_ON_VALUE)
+        if ($this->isDebugMode()) {
             $this->smarty->assign("debug", true);
+            $this->smarty->debugging = true;
+        }
     }
 
     protected function setDirs() {
@@ -122,7 +128,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected function setLang() {
         $this->smarty->assign("lang", OpenM_URLViewController::getLang());
     }
-    
+
     protected function addLinks() {
         $this->smarty->assign("links", array(
             "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL(),
@@ -144,10 +150,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
-                    ),
-                    array(
-                        "label" => "login",
-                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
                     )
                 )),
             array(

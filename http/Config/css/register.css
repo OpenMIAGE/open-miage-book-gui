@@ -1,0 +1,50 @@
+/* 
+    Document   : home
+    Created on : 24 sept. 2013, 09:23:18
+    Author     : gsaunier
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+@media (min-width: 480px) {
+    .form-custom {
+        margin: 0 auto 20px;        
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        -webkit-box-shadow: 5px 5px 5px #888;
+        -moz-box-shadow: 5px 5px 5px #888;
+        box-shadow: 5px 5px 5px #888;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .container-fluid {
+        padding: 0px;
+    }
+
+    .body {
+        padding: 0px;
+    }
+}
+
+@media (min-width: 767px){
+    .register { 
+        margin-top: 60px;
+    }
+}
+
+/**
+* css pour affichage mobile
+*/
+@media (max-width: 767px){
+    .form-custom {
+        margin: 0px;
+    }
+
+    .register { 
+        margin-top: 50px;
+    }
+}
