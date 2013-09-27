@@ -52,30 +52,30 @@ class OpenM_RegistrationView extends OpenM_BookView {
         OpenM_Header::redirect(OpenM_URLViewController::getRoot());
     }
 
-    private function checkForm($param, $error, $error_message) {
+    private function checkForm($param, &$mail, &$error, &$error_message) {
         $mail = "";
         if ($param->containsKey("submit")) {
             if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME) == "") {
                 $error = true;
                 $error_message = self::LAST_NAME . self::ERROR_SUFFIX;
-                return;
+                return false;
             }
             if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME) == "") {
                 $error = true;
                 $error_message = self::FIRST_NAME . self::ERROR_SUFFIX;
-                return;
+                return false;
             }
             $birthday = $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::BIRTHDAY);
             if ($birthday == "") {
                 $error = true;
                 $error_message = self::BIRTHDAY . self::ERROR_SUFFIX;
-                return;
+                return false;
             } else {
-                $time = mktime(0, 0, $birthday);
+                $time = date_parse($birthday);
                 if ($time === false) {
                     $error = true;
                     $error_message = self::BIRTHDAY . self::ERROR_SUFFIX;
-                    return;
+                    return false;
                 }
             }
             $mail = $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::EMAIL);
@@ -84,31 +84,21 @@ class OpenM_RegistrationView extends OpenM_BookView {
                 if ($mail == null) {
                     $error = true;
                     $error_message = self::EMAIL . self::ERROR_SUFFIX;
-                    return;
+                    return false;
                 }
             }
 
             if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::CGU) == "") {
                 $error = true;
                 $error_message = self::CGU . self::ERROR_SUFFIX;
-                return;
+                return false;
             }
-
-            if (!$error) {
-                try {
-                    $this->userClient->registerMe($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME), $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME), $time);
-                    OpenM_Header::redirect(OpenM_URLViewController::getRoot());
-                } catch (Exception $e) {
-                    $error = true;
-                    $error_message = $e->getMessage();
-                    return;
-                }
-            }
-        }
-        else
+        } else {
             $mail = $this->sso->getProperties()->get(OpenM_ID::EMAIL_PARAMETER);
+            return false;
+        }
 
-        return $mail;
+        return true;
     }
 
     public function register() {
@@ -118,7 +108,25 @@ class OpenM_RegistrationView extends OpenM_BookView {
         $error = false;
         $error_message = "";
         $param = HashtableString::from($_POST);
-        $mail = $this->checkForm($param, &$error, &$error_message);
+        $mail = "";
+        if ($this->checkForm($param, $mail, $error, $error_message)) {
+            try {
+                $date = date_parse_from_format("Y-m-d", $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::BIRTHDAY));
+                $time = mktime(0, 0, 0, $date["month"], $date["day"], $date["year"]);
+                if ($time === false) {
+                    $error = true;
+                    $error_message = "bad date format";
+                }
+                $this->userClient->registerMe(
+                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME), 
+                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME), 
+                        $time);
+                OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+            } catch (Exception $e) {
+                $error = true;
+                $error_message = $e->getMessage();
+            }
+        }
 
         $this->smarty->assign(self::SMARTY_REGISTER_KEYS_ARRAY, array(
             self::LAST_NAME => $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME) . "",
@@ -136,10 +144,8 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
         $this->addLinks();
         $this->addNavBarItems();
-        $this->addClientsJS();
         $this->showAlert();
         $this->setDebugMode();
-        $this->setLang();
         $this->smarty->assign("btn_navbar_left", false);
         $this->smarty->display('register.tpl');
     }
@@ -147,6 +153,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function condition() {
         $this->addLinks();
         $this->addNavBarItems();
+        $this->setLang();
         $this->smarty->display('condition.tpl');
     }
 
