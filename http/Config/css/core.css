@@ -1,4 +1,4 @@
-.book-user-photo {
+.book-user-photo, .book-community-user-photo {
     background-color:#fafbfc; 
     padding:5px; 
     width: 100px;
@@ -44,4 +44,21 @@ input.book-user-field-modification-input {
 
 .book-user-community-block {
     padding: 5px;
+}
+
+.book-community-childs {
+    margin-top: 10px;
+}
+
+.book-community-users, .book-community-users-not-valid {
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.book-community-user, .book-community-user-not-valid {
+    float: left;
+    padding: 10px;
+    margin: 5px;
+    background: white;
+    border-radius: 10px;
 }
