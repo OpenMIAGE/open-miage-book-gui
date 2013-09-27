@@ -21,6 +21,7 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         cadre.empty();
         var c = $(document.createElement('div'));
         c.addClass("row10 well");
+        c.addClass("book-community-page");
         cadre.append(c);
 
         //la navigation
@@ -62,6 +63,7 @@ OpenM_BookGUI.community.Tree = function(communityId) {
 
 OpenM_BookGUI.community.Tree.prototype.content = function() {
     var div = $(document.createElement('div'));
+    div.addClass("book-community-tree");
     var first = true;
     $.each(this.communities, function(key, value) {
         if (first === true)
@@ -115,7 +117,7 @@ OpenM_BookGUI.community.Childs = function(communityId) {
 OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
     if (this.communities.length > 0)
-        this.c.css("margin-top", 10);
+        this.c.addClass("book-community-childs");
     for (var i in this.communities) {
         this.c.append(this.communities[i].content());
     }
@@ -131,6 +133,7 @@ OpenM_BookGUI.community.Child = function(communityId, name) {
 
 OpenM_BookGUI.community.Child.prototype.content = function() {
     this.a.empty();
+    this.a.addClass("book-community-child");
     this.a.addClass($("child > class", OpenM_BookGUI.community.const).text());
     this.a.text(this.name);
     this.a.attr("rel", "tooltip");
@@ -157,8 +160,7 @@ OpenM_BookGUI.community.Users = function(communityId) {
 OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
-        this.c.css("margin-top", 10);
-        this.c.css("overflow", "hidden");
+        this.c.addClass("book-community-users");
         this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.const).text() + " :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
@@ -182,11 +184,7 @@ OpenM_BookGUI.community.User = function(id, name) {
 
 OpenM_BookGUI.community.User.prototype.content = function() {
     this.c.empty();
-    this.c.css("float", "left")
-            .css("padding", 10)
-            .css("margin", 5)
-            .css("background", "white")
-            .css("border-radius", 10);
+    this.c.addClass("book-community-user");
     this.c.append(this.imageProfile.content());
     this.c.append("<br />");
     this.c.append(this.buttonDisplayProfil.content());
@@ -207,8 +205,7 @@ OpenM_BookGUI.community.UsersNotValid = function(communityId) {
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
-        this.c.css("margin-top", 10);
-        this.c.css("overflow", "hidden");
+        this.c.addClass("book-community-users-not-valid");
         this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.const).text() + " :</p>");
         var div = $(document.createElement('div'));
         this.c.append(div);
@@ -234,11 +231,7 @@ OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
 
 OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
-    this.c.css("float", "left")
-            .css("padding", 10)
-            .css("margin", 5)
-            .css("background", "white")
-            .css("border-radius", 10);
+    this.c.addClass("book-community-user-not-valid");
     this.c.append(this.imageProfile.content());
     this.c.append(this.buttonValidate.content())
             .append("<br />")
@@ -257,8 +250,9 @@ OpenM_BookGUI.community.Banned = function(name) {
 
 OpenM_BookGUI.community.Banned.prototype.content = function() {
     this.c.empty();
+    this.c.addClass("book-community-banned");
     if (this.banned)
-        this.c.append("Vous êtes banni de la communauté '" + this.name + "'");
+        this.c.append($("banned > label", OpenM_BookGUI.community.const).text()+" '" + this.name + "'");
     return this.c;
 };
 
@@ -362,7 +356,7 @@ OpenM_BookGUI.community.image.Profile.prototype.content = function() {
         alt: "Photo du Profil",
         title: "Photo du profil",
         src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
-    }).addClass("photoCSS");
+    }).addClass("book-community-user-photo");
     this.img.click(this.click);
     return this.img;
 };
@@ -375,6 +369,7 @@ OpenM_BookGUI.community.Actions = function(communityId) {
 
 OpenM_BookGUI.community.Actions.prototype.content = function() {
     this.c.empty();
+    this.c.addClass("book-community-actions");
     if (this.buttons.length !== 0) {
         this.c.css("margin-top", 10);
         for (var i in this.buttons) {
