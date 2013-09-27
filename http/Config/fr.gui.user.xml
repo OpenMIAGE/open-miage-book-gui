@@ -59,5 +59,6 @@ GUI Label definition
     </properties>
     <communities>
         <label>Communauté(s)</label>
+        <class>btn</class>
     </communities>
 </gui>
