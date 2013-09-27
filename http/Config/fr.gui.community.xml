@@ -76,4 +76,7 @@ GUI Label definition
     <usersNotValid>
         <label>Membre(s) Non Validé(s)</label>
     </usersNotValid>
+    <banned>
+        <label>Vous êtes banni de la communauté :</label>
+    </banned>
 </gui>

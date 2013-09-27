@@ -88,7 +88,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
                 }
             }
 
-            if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::CGU) == "") {
+            if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::CGU) != "on") {
                 $error = true;
                 $error_message = self::CGU . self::ERROR_SUFFIX;
                 return false;
