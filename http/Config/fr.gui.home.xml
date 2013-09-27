@@ -4,7 +4,7 @@ GUI Label definition
 -->
 <gui>
     <not-connected>
-        <desc>Vous n'êtes pas connecté, connectez-vous avec OpenM-ID</desc>
+        <desc>Vous n'êtes pas connecté, connectez-vous avec OpenM-ID.</desc>
         <button>
             <label>Se connecter avec OpenM-ID</label>
             <class>btn btn-large</class>

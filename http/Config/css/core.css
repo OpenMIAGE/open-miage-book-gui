@@ -1,59 +1,47 @@
-.photoCSS {
-  background-color:#fafbfc; 
-  padding:5px; 
-  width: 100px;
-  height: 100px;
-  position: relative;
-  z-index: 2;
+.book-user-photo {
+    background-color:#fafbfc; 
+    padding:5px; 
+    width: 100px;
+    height: 100px;
+    position: relative;
+    z-index: 2;
 }
 
-.nameCSS {
-  display: inline-block;
-  margin: 0 0 0 -50px;
-  padding: 10px 10px 10px 100px;
-  font-size: x-large;
-  font-weight: bold;
-  border: 1px solid black;
-  
-  text-align: right;
-  border-radius: 5px 10px 0 5px;
+.book-user-field {
+    margin: 0px;
+    margin-left: 20px;
 }
 
-.blocInfosGenerales, .blocMiageAndSociete, .blocCommunities {
-}
-.buttonUpdateProfil {
-    float:right;
+.book-user-field-block {
+    margin-bottom: 10px;
 }
 
-.titleBlocInfosGenerales, .titleMiageAndSociete, .titleCommunities {
-    text-align: center;
-    height: 25px;
-    width: 50%;
-    margin: 10px auto 10px auto;
-    color:#343434;
-    -moz-box-shadow: 4px 4px 10px #343434;
-    -webkit-box-shadow: 4px 4px 10px #343434;
-    -o-box-shadow: 4px 4px 10px #343434;
-    box-shadow: 4px 4px 10px #343434;
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    border-radius: 20px;
-    border: 1px solid #656565;
-    background:#cfcfcf;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff", endColorstr="#9b9b9b"); /* Pour IE seulement et mode gradient à linear */
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#9b9b9b));
-    background: -webkit-linear-gradient(#ffffff, #9b9b9b);
-    background: -moz-linear-gradient(#ffffff, #9b9b9b);
-    background: -o-linear-gradient(#ffffff, #9b9b9b); 
-    background: -ms-linear-gradient(#ffffff, #9b9b9b); 
-    background: linear-gradient(#ffffff, #9b9b9b); 
+.book-user-field-read {
+    min-height: 30px;
 }
 
-.profilHR {
-    display:block;
-    border:none;
-    color:white;
-    height:2px;
-    background:grey;
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(#000), to(#fff));
+.book-user-field-read-label {
+    padding-top: 7px;
+}
+
+.book-user-field-read-span {
+    cursor: pointer;
+}
+
+input.book-user-field-modification-input {
+    margin-bottom: 0px;
+}
+
+.book-user-fieldadd {
+    margin-left: 20px;
+    height: 30px;
+}
+
+.book-user-fieldadd-label {
+    padding-top: 7px;
+    cursor: pointer;
+}
+
+.book-user-community-block {
+    padding: 5px;
 }
