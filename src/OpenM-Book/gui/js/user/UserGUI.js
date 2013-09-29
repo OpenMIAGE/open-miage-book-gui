@@ -131,8 +131,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
         labelVal.append($(document.createElement("i"))
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.const).text()));
         var span = $(document.createElement("span"))
-                .append(this.value)
-                .addClass("book-user-field-read-span");
+                .append(this.value);
         labelVal.append(" ").append(span);
         content.append(labelVal);
         if (this.isModifiable) {
@@ -192,7 +191,7 @@ OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
     var i = $(document.createElement("i"))
             .addClass($("properties > add > icon", OpenM_BookGUI.user.const).text());
     labelVal.append(i);
-    var j = $(document.createElement("i"))
+    var j = $(document.createElement("span"))
             .append(" " + $("properties > multi-values > " + this.name + " > add", OpenM_BookGUI.user.const).text());
     j.click(this.click);
     labelVal.append(j);
