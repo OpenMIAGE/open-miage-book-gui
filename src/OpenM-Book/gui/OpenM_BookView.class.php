@@ -132,7 +132,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected function addLinks() {
         $this->smarty->assign("links", array(
             "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL(),
-            "login" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL()
+            "login" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL(),
+            "logout" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGOUT_FORM)->getURL()
         ));
     }
 
@@ -150,6 +151,10 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                     array(
                         "label" => "register",
                         "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
+                    ),
+                    array(
+                        "label" => "logout",
+                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGOUT_FORM)->getURL()
                     )
                 )),
             array(

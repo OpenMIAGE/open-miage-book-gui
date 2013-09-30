@@ -38,6 +38,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
     const REGISTER_FORM = "register";
     const CONDITION_FORM = "condition";
     const LOGIN_FORM = "login";
+    const LOGOUT_FORM = "logout";
     const SMARTY_REGISTER_KEYS_ARRAY = "form";
     const ERROR_SUFFIX = ".error";
 
@@ -49,6 +50,11 @@ class OpenM_RegistrationView extends OpenM_BookView {
         if ($_POST["login"] == "new")
             $this->sso->init();
         $this->sso->login(array(OpenM_ID::EMAIL_PARAMETER), true);
+        OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+    }
+
+    public function logout() {
+        $this->sso->logout(false);
         OpenM_Header::redirect(OpenM_URLViewController::getRoot());
     }
 
@@ -118,9 +124,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
                     $error_message = "bad date format";
                 }
                 $this->userClient->registerMe(
-                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME), 
-                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME), 
-                        $time);
+                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME), $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME), $time, $mail);
                 OpenM_Header::redirect(OpenM_URLViewController::getRoot());
             } catch (Exception $e) {
                 $error = true;
