@@ -15,24 +15,21 @@ OpenM_BookGUI.menu.Left = {
     communityEntryMobile: $(document.createElement('li')),
     init: function() {
         var menu = $("#" + this.menuId);
-        menu.css("position", "fixed");
-        menu.css("top", 40).css("bottom", 0);
-        menu.addClass("visible-desktop");
-        menu.css("background-color", "white");
+        menu.addClass("visible-desktop book-commons-menu-left");
         var div3 = $(document.createElement('div')).addClass("tabbable tabs-left");
         menu.append(div3);
         var ul2 = $(document.createElement('ul')).addClass("nav nav-tabs nav-tabs-menunavigation");
         div3.append(ul2);
-        var li = $(document.createElement('li')).addClass("cadre-nom");
+        var li = $(document.createElement('li')).addClass("book-commons-menu-left-cadre-nom");
         ul2.append(li);
         var firstName = $(document.createElement("h3"));
-        firstName.css("cursor", "pointer")
+        firstName.addClass("book-commons-menu-left-first-name")
                 .append(OpenM_BookDAO.user.DAO.me.firstName)
                 .click(function() {
             OpenM_BookController.commons.URL.clickToUser();
         });
         var LastName = $(document.createElement("h3"));
-        LastName.css("cursor", "pointer")
+        LastName.addClass("book-commons-menu-left-last-name")
                 .append(OpenM_BookDAO.user.DAO.me.lastName)
                 .click(function() {
             OpenM_BookController.commons.URL.clickToUser();
@@ -42,32 +39,28 @@ OpenM_BookGUI.menu.Left = {
         ul2.append("<hr>");
         ul2.append(this.userEntry.append('<a href="' + OpenM_BookController.commons.URL.user() + '">Profil</a>'));
         ul2.append(this.communityEntry.append('<a href="' + OpenM_BookController.commons.URL.community() + '">Communauté</a>'));
+        div3.append("<a href></a>");
         var controller = this;
         $("#button-navbar-left").click(function() {
             var menu = $("#" + controller.menuMobileId);
             if (controller.menuMobileId !== '' && !controller.menuMobileInitialized) {
                 controller.menuMobileInitialized = true;
-                menu.css("z-index", 10000);
-                menu.css("position", "fixed");
-                menu.css("top", 50).css("bottom", 0);
-                menu.css("left", -200);
-                menu.addClass("hidden-desktop");
-                menu.css("background-color", "white");
+                menu.addClass("hidden-desktop book-commons-menu-left-mobile");
                 var div3 = $(document.createElement('div')).addClass("tabbable tabs-left");
                 menu.append(div3);
                 var ul2 = $(document.createElement('ul')).addClass("nav nav-tabs nav-tabs-menunavigation");
                 div3.append(ul2);
-                var li = $(document.createElement('li')).addClass("cadre-nom");
+                var li = $(document.createElement('li')).addClass("book-commons-menu-left-cadre-nom");
                 ul2.append(li);
                 var firstName = $(document.createElement("h3"));
-                firstName.css("cursor", "pointer")
+                firstName.addClass("book-commons-menu-left-first-name")
                         .append(OpenM_BookDAO.user.DAO.me.firstName)
                         .click(function() {
                     OpenM_BookController.commons.URL.clickToUser();
                     $("#button-navbar-left").click();
                 });
                 var LastName = $(document.createElement("h3"));
-                LastName.css("cursor", "pointer")
+                LastName.addClass("book-commons-menu-left-last-name")
                         .append(OpenM_BookDAO.user.DAO.me.lastName)
                         .click(function() {
                     OpenM_BookController.commons.URL.clickToUser();

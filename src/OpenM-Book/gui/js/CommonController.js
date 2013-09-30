@@ -96,7 +96,7 @@ OpenM_BookController.commons.URL = {
         var jsLoadedTarget = this.jsLoaderPipe.length;
         this.jsLoaderPipe[jsLoadedTarget] = jsPath;
         var controller = this;
-         $.get(jsPath, function() {
+        $.get(jsPath, function() {
             controller.jsLoaderPipe[jsLoadedTarget] = true;
             setTimeout(function() {
                 var finished = true;
