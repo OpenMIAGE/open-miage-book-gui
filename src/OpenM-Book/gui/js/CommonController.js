@@ -6,6 +6,8 @@ if (OpenM_BookController.commons === undefined)
 
 OpenM_BookController.commons.URL = {
     homeSelector: '/home',
+    login: "",
+    logout: "",
     home: function() {
         return "#" + this.homeSelector;
     },
@@ -96,7 +98,7 @@ OpenM_BookController.commons.URL = {
         var jsLoadedTarget = this.jsLoaderPipe.length;
         this.jsLoaderPipe[jsLoadedTarget] = jsPath;
         var controller = this;
-         $.get(jsPath, function() {
+        $.get(jsPath, function() {
             controller.jsLoaderPipe[jsLoadedTarget] = true;
             setTimeout(function() {
                 var finished = true;

@@ -11,7 +11,7 @@ OpenM_BookGUI.commons.initConst = function(stub, url, async) {
         async: async,
         url: url,
         success: function(data) {
-            stub.const = $(data.documentElement);
+            stub.cst = $(data.documentElement);
         },
         dataType: "xml"
     });
@@ -31,24 +31,25 @@ OpenM_BookGUI.Pages = {
         $("#" + this.div_id).empty().append("<img src='" + this.ressource_dir + this.ressource_loader + "' >");
     },
     divJSONfloatingWindow: undefined,
+    floatingWindow: undefined,
     showJSON: function(data) {
         if (!this.divJSONactivated)
             return;
         if (this.divJSONfloatingWindow === undefined) {
-            var f = window.open("", "popup", "toolbar=0, location=0, directories=0, status=0, resizable=0, copyhistory=0, height=400, width=500");
-            var body = f.document.body;
+            this.floatingWindow = window.open("", "popup", "toolbar=0, location=0, directories=0, status=0, resizable=0, copyhistory=0, height=400, width=500");
+            var body = this.floatingWindow.document.body;
             body.innerHTML = "<div id='JSON'></div>";
-            this.divJSONfloatingWindow = $("#JSON", f.document.body);
+            this.divJSONfloatingWindow = $("#JSON", this.floatingWindow.document.body);
         }
         if (!this.divJSONInitialized) {
             this.divJSONInitialized = true;
-            var div2 = $(document.createElement('div'));
+            var div2 = $(this.floatingWindow.document.createElement('div'));
             this.divJSONfloatingWindow.append(div2);
             div2.text("Le retour JSON : ");
             div2.append('<br>');
-            var pre = $(document.createElement('pre'));
+            var pre = $(this.floatingWindow.document.createElement('pre'));
             this.divJSONfloatingWindow.append(pre);
-            this.divJSONContent = $(document.createElement('code'));
+            this.divJSONContent = $(this.floatingWindow.document.createElement('code'));
             pre.append(this.divJSONContent);
         }
 

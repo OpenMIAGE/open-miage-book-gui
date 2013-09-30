@@ -4,7 +4,7 @@ if (OpenM_BookGUI === undefined)
 if (OpenM_BookGUI.community === undefined)
     OpenM_BookGUI.community = {};
 
-OpenM_BookGUI.community.const = undefined;
+OpenM_BookGUI.community.cst = undefined;
 
 OpenM_BookGUI.community.Page = function() {
     this.tree = null;
@@ -69,7 +69,7 @@ OpenM_BookGUI.community.Tree.prototype.content = function() {
         if (first === true)
             first = false;
         else
-            div.append(" <i class='" + $("tree > separator", OpenM_BookGUI.community.const).text() + "'></i> ");
+            div.append(" <i class='" + $("tree > separator", OpenM_BookGUI.community.cst).text() + "'></i> ");
 
         div.append(value.content());
     });
@@ -87,16 +87,16 @@ OpenM_BookGUI.community.InTree = function(communityId, name, active) {
 OpenM_BookGUI.community.InTree.prototype.content = function() {
     this.a.empty();
     if (this.active) {
-        this.a.addClass($("inTree > class", OpenM_BookGUI.community.const).text());
+        this.a.addClass($("inTree > class", OpenM_BookGUI.community.cst).text());
         this.a.click(this.click);
         this.a.attr("rel", "tooltip");
         this.a.attr("data-placement", "top");
         this.a.attr("data-toggle", "tooltip");
-        this.a.attr("data-original-title", $("inTree > tooltip", OpenM_BookGUI.community.const).text() + " " + this.name);
+        this.a.attr("data-original-title", $("inTree > tooltip", OpenM_BookGUI.community.cst).text() + " " + this.name);
         this.a.tooltip();
     }
     else {
-        this.a.addClass($("inTree > classDisabled", OpenM_BookGUI.community.const).text());
+        this.a.addClass($("inTree > classDisabled", OpenM_BookGUI.community.cst).text());
     }
     this.a.text(this.name);
     return this.a;
@@ -134,12 +134,12 @@ OpenM_BookGUI.community.Child = function(communityId, name) {
 OpenM_BookGUI.community.Child.prototype.content = function() {
     this.a.empty();
     this.a.addClass("book-community-child");
-    this.a.addClass($("child > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("child > class", OpenM_BookGUI.community.cst).text());
     this.a.text(this.name);
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "bottom");
     this.a.attr("data-toggle", "tooltip");
-    this.a.attr("data-original-title", $("child > tooltip", OpenM_BookGUI.community.const).text() + " " + this.name);
+    this.a.attr("data-original-title", $("child > tooltip", OpenM_BookGUI.community.cst).text() + " " + this.name);
     this.a.tooltip();
     this.a.click(this.click);
     return this.a;
@@ -161,7 +161,7 @@ OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("book-community-users");
-        this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.const).text() + " :</p>");
+        this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.cst).text() + " :</p>");
         var div = $(document.createElement('div')).css("display", "inline");
         this.c.append(div);
         for (var i in this.users) {
@@ -206,7 +206,7 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
     if (this.users.length !== 0) {
         this.c.addClass("book-community-users-not-valid");
-        this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.const).text() + " :</p>");
+        this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
         var div = $(document.createElement('div'));
         this.c.append(div);
         for (var i in this.users) {
@@ -252,7 +252,7 @@ OpenM_BookGUI.community.Banned.prototype.content = function() {
     this.c.empty();
     this.c.addClass("book-community-banned");
     if (this.banned)
-        this.c.append($("banned > label", OpenM_BookGUI.community.const).text()+" '" + this.name + "'");
+        this.c.append($("banned > label", OpenM_BookGUI.community.cst).text()+" '" + this.name + "'");
     return this.c;
 };
 
@@ -267,18 +267,18 @@ OpenM_BookGUI.community.button.Validate = function() {
 
 OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons validate class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons validate class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons validate icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons validate icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
-    this.a.attr("data-original-title", $("buttons > validate > tooltip", OpenM_BookGUI.community.const).text());
+    this.a.attr("data-original-title", $("buttons > validate > tooltip", OpenM_BookGUI.community.cst).text());
     this.a.tooltip();
     if (this.isAlreadyAcceptedByUser === false) {
         var option = {
-            title: $("buttons > validate > title", OpenM_BookGUI.community.const).text(),
+            title: $("buttons > validate > title", OpenM_BookGUI.community.cst).text(),
             html: true,
             placement: 'bottom',
             content: this.popover.content().context
@@ -306,9 +306,9 @@ OpenM_BookGUI.community.button.DisplayProfile = function(name) {
 
 OpenM_BookGUI.community.button.DisplayProfile.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
     this.a.css("margin-bottom", 5)
             .append(icon)
             .text(this.name)
@@ -329,9 +329,9 @@ OpenM_BookGUI.community.button.DisplayCommunity = function(name) {
 
 OpenM_BookGUI.community.button.DisplayCommunity.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > displayCommunity > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > displayCommunity > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons displayCommunity icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons displayCommunity icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.text(this.name);
     this.a.click(this.click);
@@ -388,9 +388,9 @@ OpenM_BookGUI.community.button.Register = function(communityId) {
 
 OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > register > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > register > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > register > icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > register > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
     if (this.active) {
@@ -399,17 +399,17 @@ OpenM_BookGUI.community.button.Register.prototype.content = function() {
             gui.click();
             $(gui.a).addClass('disabled');
         });
-        this.toolTipText = $("buttons > register > tooltip", OpenM_BookGUI.community.const).text();
+        this.toolTipText = $("buttons > register > tooltip", OpenM_BookGUI.community.cst).text();
     } else {
         this.a.addClass("disabled");
-        this.toolTipText = $("buttons > register > tooltipAlreadyRegistered", OpenM_BookGUI.community.const).text();
+        this.toolTipText = $("buttons > register > tooltipAlreadyRegistered", OpenM_BookGUI.community.cst).text();
     }
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.append(" " + $("buttons > register > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > register > label", OpenM_BookGUI.community.cst).text());
     return this.a;
 };
 
@@ -422,9 +422,9 @@ OpenM_BookGUI.community.button.UnRegister = function(communityId) {
 
 OpenM_BookGUI.community.button.UnRegister.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > unRegister > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > unRegister > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > unRegister > icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > unRegister > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
     if (this.active) {
@@ -433,17 +433,17 @@ OpenM_BookGUI.community.button.UnRegister.prototype.content = function() {
             gui.click();
             $(gui.a).addClass('disabled');
         });
-        this.toolTipText = $("buttons > unRegister > tooltip", OpenM_BookGUI.community.const).text();
+        this.toolTipText = $("buttons > unRegister > tooltip", OpenM_BookGUI.community.cst).text();
     } else {
         this.a.addClass("disabled");
-        this.toolTipText = $("buttons > unRegister > tooltipAlreadyUnRegistered", OpenM_BookGUI.community.const).text();
+        this.toolTipText = $("buttons > unRegister > tooltipAlreadyUnRegistered", OpenM_BookGUI.community.cst).text();
     }
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
     this.a.attr("data-original-title", this.toolTipText);
     this.a.tooltip();
-    this.a.append(" " + $("buttons > unRegister > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > unRegister > label", OpenM_BookGUI.community.cst).text());
     return this.a;
 };
 
@@ -455,13 +455,13 @@ OpenM_BookGUI.community.button.AddCommunity = function(communityName) {
 
 OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > add > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > add > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > add > icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > add > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
     var option = {
-        title: $("buttons > add > title", OpenM_BookGUI.community.const).text(),
+        title: $("buttons > add > title", OpenM_BookGUI.community.cst).text(),
         html: true,
         placement: 'bottom',
         content: this.popover.content().context
@@ -471,7 +471,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
-    this.a.attr("data-original-title", $("buttons > add > tooltip", OpenM_BookGUI.community.const).text() + " '" + this.communityName + "'");
+    this.a.attr("data-original-title", $("buttons > add > tooltip", OpenM_BookGUI.community.cst).text() + " '" + this.communityName + "'");
     var gui = this;
     this.a.click(function() {
         gui.popover.input.focus();
@@ -481,7 +481,7 @@ OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
         });
     });
     this.a.tooltip();
-    this.a.append(" " + $("buttons > add > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > add > label", OpenM_BookGUI.community.cst).text());
     return this.a;
 };
 
@@ -494,17 +494,17 @@ OpenM_BookGUI.community.button.Refresh = function(communityName) {
 
 OpenM_BookGUI.community.button.Refresh.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > refresh > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > refresh > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > refresh > icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > refresh > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip")
             .attr("data-placement", "top")
             .attr("data-toggle", "tooltip")
-            .attr("data-original-title", $("buttons > refresh > tooltip", OpenM_BookGUI.community.const).text() + " " + this.name);
+            .attr("data-original-title", $("buttons > refresh > tooltip", OpenM_BookGUI.community.cst).text() + " " + this.name);
     this.a.tooltip();
     this.a.click(this.click);
-    this.a.append(" " + $("buttons > refresh > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > refresh > label", OpenM_BookGUI.community.cst).text());
     return this.a;
 };
 
@@ -516,14 +516,14 @@ OpenM_BookGUI.community.button.Rename = function(communityId) {
 
 OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > rename > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > rename > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > rename > icon", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > rename > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip");
     this.a.attr("data-placement", "top");
     this.a.attr("data-toggle", "tooltip");
-    this.a.attr("data-original-title", $("buttons > rename > tooltip", OpenM_BookGUI.community.const).text());
+    this.a.attr("data-original-title", $("buttons > rename > tooltip", OpenM_BookGUI.community.cst).text());
     this.a.tooltip();
 
     var option = {
@@ -542,7 +542,7 @@ OpenM_BookGUI.community.button.Rename.prototype.content = function() {
         });
     });
 
-    this.a.append(" " + $("buttons > rename > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > rename > label", OpenM_BookGUI.community.cst).text());
     return this.a;
 };
 
@@ -553,16 +553,16 @@ OpenM_BookGUI.community.button.Delete = function() {
 
 OpenM_BookGUI.community.button.Delete.prototype.content = function() {
     this.a.empty();
-    this.a.addClass($("buttons > delete > class", OpenM_BookGUI.community.const).text());
+    this.a.addClass($("buttons > delete > class", OpenM_BookGUI.community.cst).text());
     var icon = $(document.createElement("i"));
-    icon.addClass($("buttons > delete > tooltip", OpenM_BookGUI.community.const).text());
+    icon.addClass($("buttons > delete > tooltip", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip")
             .attr("data-placement", "top")
             .attr("data-toggle", "tooltip")
-            .attr("data-original-title", $("buttons > delete > tooltip", OpenM_BookGUI.community.const).text());
+            .attr("data-original-title", $("buttons > delete > tooltip", OpenM_BookGUI.community.cst).text());
     this.a.tooltip();
-    this.a.append(" " + $("buttons > delete > label", OpenM_BookGUI.community.const).text());
+    this.a.append(" " + $("buttons > delete > label", OpenM_BookGUI.community.cst).text());
     this.a.click(this.click);
     return this.a;
 };

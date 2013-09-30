@@ -9,6 +9,7 @@
         $(function() {
             OpenM_BookController.commons.URL.loader = "loader";
             var ressource = "{/literal}{$resources_dir}{literal}";
+    {/literal}{include file='include/commonJS-initializing.tpl'}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 };
@@ -29,7 +30,7 @@
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
                         OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
-                        OpenM_BookDAO.user.DAO.parseAndLoad(JSON.parse('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
+                        OpenM_BookDAO.user.DAO.parseAndLoad($.parseJSON('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
                         if (!OpenM_BookDAO.user.DAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
                         OpenM_BookGUI.menu.Left.init();

@@ -18,14 +18,11 @@
 
 .book-user-field-read {
     min-height: 30px;
+    cursor: pointer;
 }
 
 .book-user-field-read-label {
     padding-top: 7px;
-}
-
-.book-user-field-read-span {
-    cursor: pointer;
 }
 
 input.book-user-field-modification-input {

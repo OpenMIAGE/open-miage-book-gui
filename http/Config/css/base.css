@@ -27,7 +27,8 @@ body {
     background-repeat: repeat-x;
     word-break: break-all;
 }
-.cadre-nom{
+
+.book-commons-menu-left-cadre-nom {
     padding-right: 20px;
     color: #777777;
 }
@@ -65,4 +66,32 @@ Pour affichage seulement Ordinateur
         margin-left: 162px;
         margin-top: 50px;
     }
+}
+
+.book-commons-menu-left {
+    position: fixed;
+    top: 40px;
+    bottom: 0px;
+    background-color: white;
+}
+
+.book-commons-menu-left-first-name, .book-commons-menu-left-last-name {
+    cursor: pointer;
+}
+
+.book-commons-menu-left-mobile {
+    z-index: 10000;
+    position: fixed;
+    top: 50px;
+    bottom: 0px;
+    left: -200px;
+    background-color: white;
+}
+
+.book-commons-menu-left-logout {
+    z-index: 10001;
+    position: fixed;
+    left: 15px;
+    bottom: 10px;
+    
 }
