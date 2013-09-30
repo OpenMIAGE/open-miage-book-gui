@@ -87,3 +87,11 @@ Pour affichage seulement Ordinateur
     left: -200px;
     background-color: white;
 }
+
+.book-commons-menu-left-logout {
+    z-index: 10001;
+    position: fixed;
+    left: 15px;
+    bottom: 10px;
+    
+}

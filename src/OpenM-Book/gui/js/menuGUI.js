@@ -39,7 +39,7 @@ OpenM_BookGUI.menu.Left = {
         ul2.append("<hr>");
         ul2.append(this.userEntry.append('<a href="' + OpenM_BookController.commons.URL.user() + '">Profil</a>'));
         ul2.append(this.communityEntry.append('<a href="' + OpenM_BookController.commons.URL.community() + '">Communauté</a>'));
-        div3.append("<a href></a>");
+        div3.append("<a href='" + OpenM_BookController.commons.URL.logout + "' class='btn book-commons-menu-left-logout'><i class='icon-off'></i> Logout</a>");
         var controller = this;
         $("#button-navbar-left").click(function() {
             var menu = $("#" + controller.menuMobileId);
@@ -81,13 +81,21 @@ OpenM_BookGUI.menu.Left = {
                 });
                 ul2.append(controller.userEntryMobile.append(a));
                 ul2.append(controller.communityEntryMobile.append(a2));
+                var a3 = $(document.createElement("a"))
+                        .attr("href", OpenM_BookController.commons.URL.logout)
+                        .addClass('btn book-commons-menu-left-mobile-logout')
+                        .append("<i class='icon-off'></i> Logout</a>")
+                        .attr("id", "book-commons-menu-left-mobile-logout");
+                div3.append(a3);
             }
             if (controller.menuMobileOpened) {
                 menu.hide().animate({left: "-200px"}, 200);
+                $("#book-commons-menu-left-mobile-logout").hide().animate({left: "-185px"}, 200);
                 controller.menuMobileOpened = false;
             }
             else {
                 menu.show().animate({left: "0px"}, 200);
+                $("#book-commons-menu-left-mobile-logout").show().animate({left: "15px"}, 200);
                 controller.menuMobileOpened = true;
             }
         });

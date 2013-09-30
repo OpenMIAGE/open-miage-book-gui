@@ -6,6 +6,8 @@ if (OpenM_BookController.commons === undefined)
 
 OpenM_BookController.commons.URL = {
     homeSelector: '/home',
+    login: "",
+    logout: "",
     home: function() {
         return "#" + this.homeSelector;
     },
