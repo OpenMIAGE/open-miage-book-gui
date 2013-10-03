@@ -7,12 +7,15 @@ GUI Label definition
         <one-value>
             <firstName>
                 <label>Prénom</label>
+                <type>text</type>
             </firstName>
             <lastName>
                 <label>Nom de famille</label>
+                <type>text</type>
             </lastName>
             <birthday>
                 <label>Date de naissance</label>
+                <type>date</type>
             </birthday>
         </one-value>
         <multi-values>
@@ -20,30 +23,36 @@ GUI Label definition
                 <label>Email(s)</label>
                 <add>Ajouter un email</add>
                 <icon>icon-envelope</icon>
+                <type>email</type>
             </mail>
             <phone_number>
                 <label>Numéro(s) de téléphone</label>
                 <add>Ajouter un numéro de téléphone</add>
                 <icon>icon-user</icon>
+                <type>tel</type>
             </phone_number>
             <adress>
                 <label>Adresse(s)</label>
                 <add>Ajouter une adresse</add>
                 <icon>icon-map-marker</icon>
+                <type>text</type>
             </adress>
             <url>
                 <label>Site(s)</label>
                 <add>Ajouter un site</add>
                 <icon>icon-globe</icon>
+                <type>url</type>
             </url>
             <note>
                 <label>Note(s)</label>
                 <add>Ajouter une note</add>
                 <icon>icon-pencil</icon>
+                <type>text</type>
             </note>
             <other>
                 <label>Autre(s)</label>
                 <add>Ajouter une propriété autre</add>
+                <type>text</type>
             </other>            
         </multi-values>
         <add>

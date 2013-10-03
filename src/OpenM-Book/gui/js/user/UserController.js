@@ -52,9 +52,7 @@ OpenM_BookController.user.Page = function(user) {
 
     var controller = this;
     this.update = function() {
-        controller.gui.name = controller.user.name;
-        controller.gui.firstName = controller.user.firstName;
-        controller.gui.lastName = controller.user.lastName;
+        controller.gui.update(controller.user.name, controller.user.firstName, controller.user.lastName, controller.user.birthday);
     };
 
     this.fields = new OpenM_BookController.user.Fields(this.user);

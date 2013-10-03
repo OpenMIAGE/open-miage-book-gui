@@ -11,4 +11,18 @@ GUI Label definition
             <icon></icon>
         </button>
     </not-connected>
+    <connected>
+        <menu>
+            <left>
+                <profile>
+                    <label>Profil</label>
+                    <class>book-commons-menu-left-profile</class>
+                </profile>
+                <community>
+                    <label>Communauté</label>
+                    <class>book-commons-menu-left-community</class>
+                </community>
+            </left>
+        </menu>
+    </connected>
 </gui>

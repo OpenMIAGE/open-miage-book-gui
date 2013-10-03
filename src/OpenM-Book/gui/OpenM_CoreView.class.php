@@ -53,7 +53,8 @@ class OpenM_CoreView extends OpenM_BookView {
         $this->setLang();
         $this->smarty->assign("core_js", array(
             "OpenM-Book/gui/js/CommonGUI.js",
-            "OpenM-Book/gui/js/menuGUI.js",
+            "OpenM-Book/gui/js/menu/menuGUI.js",
+            "OpenM-Book/gui/js/menu/menuController.js",
             "OpenM-Book/gui/js/community/CommunityController.js",
             "OpenM-Book/gui/js/community/CommunityDAO.js",
             "OpenM-Book/gui/js/community/CommunityGUI.js",

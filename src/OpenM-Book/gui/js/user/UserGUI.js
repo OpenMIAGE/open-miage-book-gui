@@ -13,12 +13,14 @@ OpenM_BookGUI.user.Page = function() {
     this.name = '';
     this.firstName = '';
     this.lastName = '';
+    this.birthday = '';
     this.page = $(document.createElement("div"));
     this.click = undefined;
 };
 
-OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
+OpenM_BookGUI.user.Page.prototype.update = function(name, firstName, lastName, birthday) {
     this.name = name;
+    this.birthday = birthday;
     this.firstName = firstName;
     this.lastName = lastName;
     this.content();
@@ -27,16 +29,17 @@ OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
 OpenM_BookGUI.user.Page.prototype.content = function() {
     this.page.empty();
     this.page.addClass("row-fluid book-user-page");
-    var bandeauProfil = $(document.createElement('div'));
-
-    // Photo de profil
-    var photoUser = $(document.createElement("img")).attr({
+    var bandeauProfil = OpenM_BookGUI.gen.div();
+    var photoUser = OpenM_BookGUI.gen.div().append($(document.createElement("img")).attr({
         alt: "Photo du Profil",
         title: "Photo du profil",
         src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
-    }).addClass("book-user-photo");
-    bandeauProfil.append(photoUser)
-            .append(this.name);
+    }).addClass("book-user-photo"));
+    bandeauProfil.append(photoUser);
+    var userProperties = "<blockquote><p>" + this.name + "</p>";
+    if (this.birthday !== undefined)
+        userProperties += "<p><i class='icon-gift'></i> " + this.birthday + "<p>";
+    bandeauProfil.append(userProperties + "</blockquote>");
 
     this.page.append(bandeauProfil);
 
@@ -146,7 +149,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .addClass("hidden-phone"))
                 .append(" ");
         this.input.empty()
-                .attr("type", "text")
+                .attr("type", $("properties > multi-values > " + this.name + " > type", OpenM_BookGUI.user.cst).text())
                 .attr("placeholder", $("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text())
                 .val(this.value)
                 .addClass("input-large")

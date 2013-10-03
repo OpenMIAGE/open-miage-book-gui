@@ -388,7 +388,7 @@ OpenM_BookController.community.Actions = function(community) {
     this.unRegister = null;
     this.add = null;
     this.rename = null;
-    this.delete = null;
+    this.del = null;
     this.refresh = null;
     this.gui = new OpenM_BookGUI.community.Actions(this.community.id);
 
@@ -424,8 +424,8 @@ OpenM_BookController.community.Actions.prototype.updateActions = function() {
         this.gui.buttons.push(this.rename.gui);
 
         if (!this.community.cantBeRemoved && this.community.parent !== undefined) {
-            this.delete = new OpenM_BookController.community.button.Delete(this.community);
-            this.gui.buttons.push(this.delete.gui);
+            this.del = new OpenM_BookController.community.button.Delete(this.community);
+            this.gui.buttons.push(this.del.gui);
         }
     }
 

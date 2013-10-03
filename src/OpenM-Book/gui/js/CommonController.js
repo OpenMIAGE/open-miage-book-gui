@@ -8,6 +8,12 @@ OpenM_BookController.commons.URL = {
     homeSelector: '/home',
     login: "",
     logout: "",
+    menu: {left: {selectCommunity: function() {
+            }, selectUser: function() {
+            }}},
+    clickToLogout: function() {
+        window.location.href = this.logout;
+    },
     home: function() {
         return "#" + this.homeSelector;
     },
@@ -76,15 +82,15 @@ OpenM_BookController.commons.URL = {
     },
     load: function() {
         if (this.isCommunityHash()) {
-            OpenM_BookGUI.menu.Left.selectCommunity();
+            this.menu.left.selectCommunity();
             OpenM_BookController.community.Pages.communityPage(this.getCommunityId()).display();
         }
         else if (this.isUserHash()) {
-            OpenM_BookGUI.menu.Left.selectUser();
+            this.menu.left.selectUser();
             OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
 
         } else {
-            OpenM_BookGUI.menu.Left.selectCommunity();
+            this.menu.left.selectCommunity();
             OpenM_BookController.community.Pages.communityPage().display();
         }
         if (this.loader !== '')

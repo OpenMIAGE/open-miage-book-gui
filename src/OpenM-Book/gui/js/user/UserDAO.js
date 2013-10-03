@@ -9,6 +9,8 @@ OpenM_BookDAO.user.ExchangeObject = function() {
     this.name = '';
     this.firstName = '';
     this.lastName = '';
+    this.birthday = undefined;
+    this.birthdayDisplayYear = false;
     this.isAdmin = false;
     this.loaded = false;
     this.validIn = new Array();
@@ -167,6 +169,12 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
         user.name = user.firstName + " " + user.lastName;
         user.isAdmin = (data[OpenM_Book_User.RETURN_USER_IS_ADMIN_PARAMETER] === OpenM_Book_User.TRUE_PARAMETER_VALUE) ? true : false;
         user.loaded = true;
+
+        if (typeof data[OpenM_Book_User.RETURN_USER_BIRTHDAY_PARAMETER] !== 'undefined') {
+            user.birthday = data[OpenM_Book_User.RETURN_USER_BIRTHDAY_PARAMETER];
+            if (typeof data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] !== 'undefined')
+                user.birthdayDisplayYear = (data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] === OpenM_Book_User.TRUE_PARAMETER_VALUE) ? true : false;
+        }
 
         if (typeof data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER] !== 'undefined') {
             user.otherProperties = new Array();
