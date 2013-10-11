@@ -38,3 +38,8 @@ OpenM_BookController.menu.Left.prototype.selectCommunity = function() {
     this.left.selectCommunity();
     this.leftMobile.selectCommunity();
 };
+
+OpenM_BookController.menu.Left.prototype.selectSearch = function() {
+    this.left.selectSearch();
+    this.leftMobile.selectSearch();
+};

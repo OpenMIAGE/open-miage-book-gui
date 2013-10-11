@@ -22,6 +22,10 @@ GUI Label definition
                     <label>Communauté</label>
                     <class>book-commons-menu-left-community</class>
                 </community>
+                <search>
+                    <label>Recherche</label>
+                    <class>book-commons-menu-left-search</class>
+                </search>
             </left>
         </menu>
     </connected>

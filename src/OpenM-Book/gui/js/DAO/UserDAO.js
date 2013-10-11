@@ -131,7 +131,7 @@ OpenM_BookDAO.user.DAO.get = function(userId, basicOnly, synchro, reload) {
         user.id = userId;
 
     if (reload === true || reload === undefined) {
-        if (!synchro)
+        if (synchro === false || synchro === undefined)
             OpenM_Book_User.getUserProperties(userId, basicOnly, function(data) {
                 OpenM_BookDAO.user.DAO.parseAndLoad(data, user);
             });

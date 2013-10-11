@@ -8,15 +8,17 @@ OpenM_BookGUI.menu.Left = function(firstName, lastName, buttonMobile) {
     this.isMobile = (buttonMobile === undefined) ? false : true;
     this.buttonMobile = buttonMobile;
     this.menuMobileOpened = false;
-    this.menu = $(document.createElement('div'));
+    this.menu = OpenM_BookGUI.gen.div();
     $("body").append(this.menu);
     this.firstName = firstName;
     this.lastName = lastName;
-    this.userEntry = $(document.createElement('li'));
-    this.communityEntry = $(document.createElement('li'));
+    this.userEntry = OpenM_BookGUI.gen.li();
+    this.communityEntry = OpenM_BookGUI.gen.li();
+    this.searchEntry = OpenM_BookGUI.gen.li();
     this.clickUser = undefined;
     this.clickCommunity = undefined;
     this.clickLogout = undefined;
+    this.clickSearch = undefined;
     this.logout = undefined;
 };
 
@@ -49,6 +51,10 @@ OpenM_BookGUI.menu.Left.prototype.content = function() {
             .append($("connected > menu > left > community > label", OpenM_BookGUI.commons.cst).text())
             .click(this.clickCommunity))
             .addClass($("connected > menu > left > community > class", OpenM_BookGUI.commons.cst).text()));
+    ul2.append(this.searchEntry.append(OpenM_BookGUI.gen.a()
+            .append($("connected > menu > left > search > label", OpenM_BookGUI.commons.cst).text())
+            .click(this.clickSearch))
+            .addClass($("connected > menu > left > search > class", OpenM_BookGUI.commons.cst).text()));
     this.logout = OpenM_BookGUI.gen.a()
             .append("<i class='icon-off'></i> Logout")
             .addClass("btn book-commons-menu-left-logout")
@@ -76,9 +82,17 @@ OpenM_BookGUI.menu.Left.prototype.content = function() {
 OpenM_BookGUI.menu.Left.prototype.selectUser = function() {
     this.userEntry.addClass("active");
     this.communityEntry.removeClass("active");
+    this.searchEntry.removeClass("active");
 };
 
 OpenM_BookGUI.menu.Left.prototype.selectCommunity = function() {
     this.communityEntry.addClass("active");
+    this.userEntry.removeClass("active");
+    this.searchEntry.removeClass("active");
+};
+
+OpenM_BookGUI.menu.Left.prototype.selectSearch = function() {
+    this.searchEntry.addClass("active");
+    this.communityEntry.removeClass("active");
     this.userEntry.removeClass("active");
 };

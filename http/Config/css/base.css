@@ -77,7 +77,7 @@ Pour affichage seulement Ordinateur
 
 .book-commons-menu-left-first-name, .book-commons-menu-left-last-name,
 .book-commons-menu-left-profile, .book-commons-menu-left-community,
-.book-commons-menu-left-logout {
+.book-commons-menu-left-logout, .book-commons-menu-left-search {
     cursor: pointer;
 }
 
