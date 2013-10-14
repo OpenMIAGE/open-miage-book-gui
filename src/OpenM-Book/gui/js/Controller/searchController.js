@@ -9,14 +9,15 @@ OpenM_BookController.search.Pages = {
     searchPage: function(search) {
 
 
-        userControler = new OpenM_BookController.search.Page(search);
-        this.AllSearchPagesControlers[search.id] = userControler;
+        var searchController = new OpenM_BookController.search.Page(search);
+        this.AllSearchPagesControlers[search] = searchController;
 
+        return searchController;
     }
 };
 
 OpenM_BookController.search.Page = function(search) {
-
+    this.gui = new OpenM_BookGUI.search.Page();
 };
 
 OpenM_BookController.search.Page.prototype.display = function(enabled) {

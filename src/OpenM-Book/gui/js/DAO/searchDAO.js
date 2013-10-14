@@ -39,10 +39,20 @@ OpenM_BookDAO.search.DAO.get = function(search, nbResultsMax, isUserOnly, synchr
 
     var result = this.allSearch[search];
 
-    if (!synchro)
+    if (!synchro) {
+        var searchTemp = search.substring(0, search.length - 1);
+        while (searchTemp.length > 0 && this.allSearch[searchTemp] === undefined) {
+            searchTemp = searchTemp.substring(0, searchTemp.length - 1);
+        }
+        if (searchTemp.length > 0) {
+            result.users = this.allSearch[searchTemp].users;
+            result.communities = this.allSearch[searchTemp].communities;
+            result.groups = this.allSearch[searchTemp].groups;
+        }
         OpenM_Groups.search(search, nbResultsMax, function(data) {
             OpenM_BookDAO.search.DAO.parseAndLoadSearch(data, result);
         });
+    }
     else
         this.parseAndLoadSearch(OpenM_Groups.search(search, nbResultsMax), result);
 

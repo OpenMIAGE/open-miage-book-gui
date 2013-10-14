@@ -16,6 +16,9 @@ OpenM_BookController.menu.Left = function(buttonMobile) {
     this.left.clickLogout = function() {
         OpenM_BookController.commons.URL.clickToLogout();
     };
+    this.left.clickSearch = function() {
+        OpenM_BookController.commons.URL.clickToSearch();
+    };
     this.leftMobile.clickUser = function() {
         OpenM_BookController.commons.URL.clickToUser();
     };
@@ -24,6 +27,9 @@ OpenM_BookController.menu.Left = function(buttonMobile) {
     };
     this.leftMobile.clickLogout = function() {
         OpenM_BookController.commons.URL.clickToLogout();
+    };
+    this.leftMobile.clickSearch = function() {
+        OpenM_BookController.commons.URL.clickToSearch();
     };
     this.left.content();
     this.leftMobile.content();
