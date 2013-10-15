@@ -7,8 +7,6 @@
     </head>
     <body>
         {include file='include/navBar.tpl'}
-        <nav id="menuMobile"></nav>
-        <nav id="menuDesktop"></nav>
         <div id="loader" style="z-index: -1; position: absolute;left: 50%; top: 50%; margin-left: -16px; margin-top: -16px; ">
             <img src="{$resources_dir}OpenM-Book/gui/img/loader.gif"/>
         </div>

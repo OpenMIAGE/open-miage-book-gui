@@ -8,6 +8,13 @@ OpenM_BookController.commons.URL = {
     homeSelector: '/home',
     login: "",
     logout: "",
+    menu: {left: {selectCommunity: function() {
+            }, selectUser: function() {
+            }, selectSearch: function() {
+            }}},
+    clickToLogout: function() {
+        window.location.href = this.logout;
+    },
     home: function() {
         return "#" + this.homeSelector;
     },
@@ -68,6 +75,32 @@ OpenM_BookController.commons.URL = {
     isUserHash: function() {
         return (window.location.hash.slice(1, this.userSelector.length + 1) === this.userSelector);
     },
+    clickToSearch: function(search) {
+        window.location.href = this.search(search);
+    },
+    searchSelector: '/search',
+    search: function(search) {
+        var url = "#" + this.searchSelector;
+        if (search)
+            return url + "/" + search.replace(/^\s+/g, '').replace(/\s+$/g, '').replace(/ /g, "+");
+        else
+            return url;
+    },
+    isSearchHash: function() {
+        return (window.location.hash.slice(1, this.searchSelector.length + 1) === this.searchSelector);
+    },
+    getSearch: function() {
+        var hash = window.location.hash;
+        if (this.isSearchHash()) {
+            var search = hash.slice(this.searchSelector.length + 2);
+            if (search.indexOf("/") !== -1)
+                return search.slice(0, search.indexOf("/"));
+            else
+                return undefined;
+        }
+        else
+            return undefined;
+    },
     onhashchange: function() {
         this.load();
     },
@@ -76,15 +109,16 @@ OpenM_BookController.commons.URL = {
     },
     load: function() {
         if (this.isCommunityHash()) {
-            OpenM_BookGUI.menu.Left.selectCommunity();
+            this.menu.left.selectCommunity();
             OpenM_BookController.community.Pages.communityPage(this.getCommunityId()).display();
-        }
-        else if (this.isUserHash()) {
-            OpenM_BookGUI.menu.Left.selectUser();
+        } else if (this.isUserHash()) {
+            this.menu.left.selectUser();
             OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
-
+        } else if (this.isSearchHash()) {
+            this.menu.left.selectSearch();
+            OpenM_BookController.search.Pages.searchPage(this.getSearch()).display();
         } else {
-            OpenM_BookGUI.menu.Left.selectCommunity();
+            this.menu.left.selectCommunity();
             OpenM_BookController.community.Pages.communityPage().display();
         }
         if (this.loader !== '')

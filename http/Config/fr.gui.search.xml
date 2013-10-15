@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+GUI Label definition
+-->
+<gui>
+    <search>
+        <label>Recherche :</label>
+        <icon>icon-search</icon>
+        <class>btn btn-large</class>
+    </search>
+    <results>
+        
+    </results>
+</gui>

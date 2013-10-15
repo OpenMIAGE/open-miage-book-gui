@@ -6,12 +6,13 @@
         <script src="/open-miage-book-gui/http/resources/jquery.min.js"></script>
         <script src="/open-miage-book-gui/http/resources/js/bootstrap.min.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/CommonController.js"></script>
-        <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/menuGUI.js"></script>
+        <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/CommonGUI.js"></script>
+        <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/menu/menuGUI.js"></script>
+        <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/menu/menuController.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/community/CommunityDAO.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/user/UserDAO.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/user/UserController.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/user/UserGUI.js"></script>
-        <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/CommonGUI.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/community/CommunityController.js"></script>
         <script src="/open-miage-book-gui/http/resources/OpenM-Book/gui/js/community/CommunityGUI.js"></script>
         <script src="/open-miage-book-gui/http/client/OpenM_Book;OpenM_Book_User;OpenM_Book_Moderator;OpenM_Book_Admin;OpenM_Groups.js"></script>
@@ -22,7 +23,8 @@
             $(function() {
                 $("body").append("jquery OK<br>");
                 $("body").append("<br>CommonController: " + typeof(OpenM_BookController));
-                $("body").append("<br>menuGUI " + OpenM_BookGUI.menu.Left.menuMobileInitialized);
+                $("body").append("<br>menuGUI " + typeof(OpenM_BookGUI.menu.Left));
+                $("body").append("<br>menuController " + typeof(OpenM_BookController.menu.Left));
                 $("body").append("<br>CommunityDAO " + typeof(OpenM_BookDAO.community.DAO));
                 $("body").append("<br>UserDAO " + typeof(OpenM_BookDAO.user.DAO));
                 $("body").append("<br>UserController " + typeof(OpenM_BookController.user.Page));
