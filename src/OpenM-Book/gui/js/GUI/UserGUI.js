@@ -13,12 +13,14 @@ OpenM_BookGUI.user.Page = function() {
     this.name = '';
     this.firstName = '';
     this.lastName = '';
-    this.page = $(document.createElement("div"));
+    this.birthday = '';
+    this.page = OpenM_BookGUI.gen.div();
     this.click = undefined;
 };
 
-OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
+OpenM_BookGUI.user.Page.prototype.update = function(name, firstName, lastName, birthday) {
     this.name = name;
+    this.birthday = birthday;
     this.firstName = firstName;
     this.lastName = lastName;
     this.content();
@@ -27,20 +29,21 @@ OpenM_BookGUI.user.Page.prototype.udpate = function(name, firstName, lastName) {
 OpenM_BookGUI.user.Page.prototype.content = function() {
     this.page.empty();
     this.page.addClass("row-fluid book-user-page");
-    var bandeauProfil = $(document.createElement('div'));
-
-    // Photo de profil
-    var photoUser = $(document.createElement("img")).attr({
+    var bandeauProfil = OpenM_BookGUI.gen.div();
+    var photoUser = OpenM_BookGUI.gen.div().append(OpenM_BookGUI.gen.img().attr({
         alt: "Photo du Profil",
         title: "Photo du profil",
         src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
-    }).addClass("book-user-photo");
-    bandeauProfil.append(photoUser)
-            .append(this.name);
+    }).addClass("book-user-photo"));
+    bandeauProfil.append(photoUser);
+    var userProperties = "<blockquote><p>" + this.name + "</p>";
+    if (this.birthday !== undefined)
+        userProperties += "<p><i class='icon-gift'></i> " + this.birthday + "<p>";
+    bandeauProfil.append(userProperties + "</blockquote>");
 
     this.page.append(bandeauProfil);
 
-    var div = $(document.createElement('div')).addClass("row10 well book-user-fields-communities");
+    var div = OpenM_BookGUI.gen.div().addClass("row10 well book-user-fields-communities");
     this.page.append(div);
     div.append(this.fields.content());
     div.append(this.communities.content());
@@ -61,7 +64,7 @@ OpenM_BookGUI.user.button = {};
 
 OpenM_BookGUI.user.Fields = function() {
     this.fieldBlocks = new Array();
-    this.c = $(document.createElement("div"));
+    this.c = OpenM_BookGUI.gen.div();
 };
 
 OpenM_BookGUI.user.Fields.prototype.content = function() {
@@ -90,9 +93,9 @@ OpenM_BookGUI.user.FieldBlock = function(name) {
 };
 
 OpenM_BookGUI.user.FieldBlock.prototype.content = function() {
-    var div = $(document.createElement("div"))
+    var div = OpenM_BookGUI.gen.div()
             .addClass("book-user-field-block");
-    var c = $(document.createElement("div"));
+    var c = OpenM_BookGUI.gen.div();
     div.append(c);
     c.append($("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text() + " :");
     for (var i in this.fields) {
@@ -109,9 +112,9 @@ OpenM_BookGUI.user.Field = function(name, value, isModifiable) {
     this.value = value;
     this.click = undefined;
     this.isModifiable = (isModifiable !== undefined) ? isModifiable : false;
-    this.c = $(document.createElement("div"));
+    this.c =OpenM_BookGUI.gen.div();
     this.remove = undefined;
-    this.input = $(document.createElement("input"));
+    this.input = OpenM_BookGUI.gen.input();
     this.enter = undefined;
 };
 
@@ -121,16 +124,16 @@ OpenM_BookGUI.user.Field.prototype.val = function() {
 
 OpenM_BookGUI.user.Field.prototype.content = function() {
     this.c.empty();
-    var content = $(document.createElement("div"))
+    var content = OpenM_BookGUI.gen.div()
             .addClass("book-user-field");
     this.c.append(content);
     if (this.isInModificationMode === false) {
         content.addClass("book-user-field-read");
-        var labelVal = $(document.createElement("div"))
+        var labelVal = OpenM_BookGUI.gen.div()
                 .addClass("book-user-field-read-label");
-        labelVal.append($(document.createElement("i"))
+        labelVal.append(OpenM_BookGUI.gen.i()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text()));
-        var span = $(document.createElement("span"))
+        var span = OpenM_BookGUI.gen.span()
                 .append(this.value);
         labelVal.append(" ").append(span);
         content.append(labelVal);
@@ -139,14 +142,14 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
         }
     } else {
         content.addClass("control-group book-user-field-modification");
-        var div = $(document.createElement("div"))
+        var div = OpenM_BookGUI.gen.div()
                 .addClass("controls");
-        div.append($(document.createElement("i"))
+        div.append(OpenM_BookGUI.gen.i()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text())
                 .addClass("hidden-phone"))
                 .append(" ");
         this.input.empty()
-                .attr("type", "text")
+                .attr("type", $("properties > multi-values > " + this.name + " > type", OpenM_BookGUI.user.cst).text())
                 .attr("placeholder", $("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text())
                 .val(this.value)
                 .addClass("input-large")
@@ -160,9 +163,9 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 gui.enter(e);
         });
         div.append(this.input);
-        var remove = $(document.createElement("a"))
+        var remove = OpenM_BookGUI.gen.a()
                 .addClass($("properties > buttons > cancel > class", OpenM_BookGUI.user.cst).text())
-                .append($(document.createElement("i")).addClass($("properties > buttons > cancel > icon", OpenM_BookGUI.user.cst).text()))
+                .append(OpenM_BookGUI.gen.div().addClass($("properties > buttons > cancel > icon", OpenM_BookGUI.user.cst).text()))
                 .append(" " + $("properties > buttons > cancel > label", OpenM_BookGUI.user.cst).text());
         remove.click(this.remove);
         div.append(remove);
@@ -179,19 +182,19 @@ OpenM_BookGUI.user.FieldAdd = function(name) {
     this.name = name;
     this.click = undefined;
     this.added = undefined;
-    this.c = $(document.createElement("div"));
+    this.c = OpenM_BookGUI.gen.div();
 };
 
 OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
     this.c.empty();
-    var content = $(document.createElement("div"))
+    var content = OpenM_BookGUI.gen.div()
             .addClass("book-user-fieldadd");
-    var labelVal = $(document.createElement("span"))
+    var labelVal = OpenM_BookGUI.gen.span()
             .addClass("book-user-fieldadd-label");
-    var i = $(document.createElement("i"))
+    var i = OpenM_BookGUI.gen.i()
             .addClass($("properties > add > icon", OpenM_BookGUI.user.cst).text());
     labelVal.append(i);
-    var j = $(document.createElement("span"))
+    var j = OpenM_BookGUI.gen.span()
             .append(" " + $("properties > multi-values > " + this.name + " > add", OpenM_BookGUI.user.cst).text());
     j.click(this.click);
     labelVal.append(j);
@@ -205,12 +208,12 @@ OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
 
 OpenM_BookGUI.user.Communities = function() {
     this.communityBlocks = new Array();
-    this.c = $(document.createElement("div"));
+    this.c = OpenM_BookGUI.gen.div();
 };
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
-    var div = $(document.createElement("div"));
+    var div = OpenM_BookGUI.gen.div();
     div.addClass("book-user-communities");
     div.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
     this.c.append(div);
@@ -229,8 +232,8 @@ OpenM_BookGUI.user.CommunityBlock = function() {
 };
 
 OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
-    var div = $(document.createElement("div"));
-    var c = $(document.createElement("div"))
+    var div = OpenM_BookGUI.gen.div();
+    var c = OpenM_BookGUI.gen.div()
             .addClass("book-user-community-block");
     div.append(c);
     var first = true;
@@ -247,7 +250,7 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
 OpenM_BookGUI.user.Community = function(name) {
     this.name = name;
     this.click = undefined;
-    this.c = $(document.createElement("a"));
+    this.c = OpenM_BookGUI.gen.a();
 };
 
 OpenM_BookGUI.user.Community.prototype.content = function() {

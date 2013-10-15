@@ -13,8 +13,10 @@
             OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 };
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.commons, "{/literal}{$config_path}{$lang}{literal}.gui.home.xml", true);
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.community, "{/literal}{$config_path}{$lang}{literal}.gui.community.xml");
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{$lang}{literal}.gui.user.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}{$lang}{literal}.gui.search.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
                 OpenM_BookGUI.Pages.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
                 OpenM_BookGUI.Pages.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';
@@ -33,8 +35,8 @@
                         OpenM_BookDAO.user.DAO.parseAndLoad($.parseJSON('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
                         if (!OpenM_BookDAO.user.DAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
-                        OpenM_BookGUI.menu.Left.init();
-                        OpenM_BookController.commons.URL.load();
+                        OpenM_BookController.commons.URL.menu.left = new OpenM_BookController.menu.Left($("#button-navbar-left"));
+                        OpenM_BookController.commons.URL.load();                   
                     }
                     else {
                         location.reload();

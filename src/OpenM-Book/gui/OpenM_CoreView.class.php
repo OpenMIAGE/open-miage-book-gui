@@ -38,7 +38,7 @@ class OpenM_CoreView extends OpenM_BookView {
             $this->showAlert();
             $this->setDebugMode();
             $this->setLang();
-            $this->smarty->assign("btn_navbar_left",false);
+            $this->smarty->assign("btn_navbar_left", false);
             $this->smarty->display('home.tpl');
         }
     }
@@ -52,14 +52,18 @@ class OpenM_CoreView extends OpenM_BookView {
         $this->setDebugMode();
         $this->setLang();
         $this->smarty->assign("core_js", array(
-            "OpenM-Book/gui/js/CommonGUI.js",
-            "OpenM-Book/gui/js/menuGUI.js",
-            "OpenM-Book/gui/js/community/CommunityController.js",
-            "OpenM-Book/gui/js/community/CommunityDAO.js",
-            "OpenM-Book/gui/js/community/CommunityGUI.js",
-            "OpenM-Book/gui/js/user/UserDAO.js",
-            "OpenM-Book/gui/js/user/UserController.js",
-            "OpenM-Book/gui/js/user/UserGUI.js"
+            "OpenM-Book/gui/js/GUI/CommonGUI.js",
+            "OpenM-Book/gui/js/Controller/menuController.js",
+            "OpenM-Book/gui/js/GUI/menuGUI.js",
+            "OpenM-Book/gui/js/Controller/CommunityController.js",
+            "OpenM-Book/gui/js/DAO/CommunityDAO.js",
+            "OpenM-Book/gui/js/GUI/CommunityGUI.js",
+            "OpenM-Book/gui/js/DAO/UserDAO.js",
+            "OpenM-Book/gui/js/Controller/UserController.js",
+            "OpenM-Book/gui/js/GUI/UserGUI.js",
+            "OpenM-Book/gui/js/DAO/searchDAO.js",
+            "OpenM-Book/gui/js/Controller/searchController.js",
+            "OpenM-Book/gui/js/GUI/searchGUI.js"
         ));
         $this->smarty->display('core.tpl');
     }
