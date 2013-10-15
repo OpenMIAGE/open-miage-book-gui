@@ -16,6 +16,7 @@
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.commons, "{/literal}{$config_path}{$lang}{literal}.gui.home.xml", true);
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.community, "{/literal}{$config_path}{$lang}{literal}.gui.community.xml");
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{$lang}{literal}.gui.user.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}{$lang}{literal}.gui.search.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
                 OpenM_BookGUI.Pages.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
                 OpenM_BookGUI.Pages.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';

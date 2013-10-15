@@ -21,9 +21,13 @@ OpenM_BookDAO.search.ExchangeObject.prototype.update = function() {
         this.allUpdateCallBack[i]();
 };
 
+OpenM_BookDAO.search.ExchangeObject.prototype.reload = function() {
+    OpenM_BookDAO.search.DAO.get(this.seach);
+};
+
 OpenM_BookDAO.search.DAO = {
     allSearch: {},
-    nbResultsMax: 15
+    nbMaxResults: 15
 };
 
 OpenM_BookDAO.search.DAO.get = function(search, nbResultsMax, isUserOnly, synchro) {
@@ -32,7 +36,7 @@ OpenM_BookDAO.search.DAO.get = function(search, nbResultsMax, isUserOnly, synchr
     if (synchro === undefined)
         synchro = false;
     if (nbResultsMax === undefined)
-        nbResultsMax = this.nbResultsMax;
+        nbMaxResults = this.nbMaxResults;
 
     if (this.allSearch[search] === undefined)
         this.allSearch[search] = new OpenM_BookDAO.search.ExchangeObject(search);

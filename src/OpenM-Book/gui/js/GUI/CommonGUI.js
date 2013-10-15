@@ -119,3 +119,11 @@ OpenM_BookGUI.gen.li = function() {
 OpenM_BookGUI.gen.h3 = function() {
     return OpenM_BookGUI.gen.create("h3");
 };
+
+OpenM_BookGUI.gen.img = function() {
+    return OpenM_BookGUI.gen.create("img");
+};
+
+OpenM_BookGUI.gen.input = function() {
+    return OpenM_BookGUI.gen.create("input");
+};

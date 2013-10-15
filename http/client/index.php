@@ -11,6 +11,7 @@ OpenM_Log::init(OpenM_SERVICE_CONFIG_DIRECTORY . "/" . $property->get(OpenM_Serv
 
 Import::addClassPath();
 Import::php("OpenM-Services.gui.OpenM_APIProxy_JSGeneratorServer");
+Import::php("OpenM-Controller.gui.OpenM_ViewDefaultServer");
 $server = new OpenM_APIProxy_JSGeneratorServer($property->get(OpenM_ViewDefaultServer::ROOT) . "api/", OpenM_SERVICE_CONFIG_DIRECTORY . "/" . $property->get("Smarty.template_c.dir"), OpenM_SERVICE_CONFIG_DIRECTORY . "/" . $property->get("Smarty.cache.dir"));
 $server->handle();
 ?>

@@ -7,14 +7,19 @@ if (OpenM_BookGUI.search === undefined)
 OpenM_BookGUI.search.cst = undefined;
 
 OpenM_BookGUI.search.Page = function() {
-    this.page = $(document.createElement("div"));
+    this.page = OpenM_BookGUI.gen.div();
     this.click = undefined;
+    this.input = OpenM_BookGUI.gen.input();    
 };
 
 OpenM_BookGUI.search.Page.prototype.content = function() {
     this.page.empty();
-    this.page.addClass("row-fluid book-user-page");
-    
+    this.page.addClass("row-fluid book-search-page");
+    var div = OpenM_BookGUI.gen.div().addClass("row10 well book-search-page-content");
+    var divSearch = OpenM_BookGUI.gen.div().addClass("book-search-input-block");
+    divSearch.append(this.input);
+    div.append(divSearch);
+    this.page.append(div);
     return this.page;
 };
 
