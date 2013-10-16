@@ -43,7 +43,7 @@ input.book-user-field-modification-input {
     padding: 5px;
 }
 
-.book-community-page {
+.book-community-page, .book-user-page, .book-search-page {
     margin-bottom: 5px;
 }
 .book-community-childs {

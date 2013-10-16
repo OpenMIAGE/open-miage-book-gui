@@ -112,7 +112,7 @@ OpenM_BookGUI.user.Field = function(name, value, isModifiable) {
     this.value = value;
     this.click = undefined;
     this.isModifiable = (isModifiable !== undefined) ? isModifiable : false;
-    this.c =OpenM_BookGUI.gen.div();
+    this.c = OpenM_BookGUI.gen.div();
     this.remove = undefined;
     this.input = OpenM_BookGUI.gen.input();
     this.enter = undefined;
@@ -213,6 +213,8 @@ OpenM_BookGUI.user.Communities = function() {
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
+    if (this.communityBlocks.length === 0)
+        return this.c;
     var div = OpenM_BookGUI.gen.div();
     div.addClass("book-user-communities");
     div.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
