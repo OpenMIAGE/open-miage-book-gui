@@ -91,13 +91,8 @@ OpenM_BookController.commons.URL = {
     },
     getSearch: function() {
         var hash = window.location.hash;
-        if (this.isSearchHash()) {
-            var search = hash.slice(this.searchSelector.length + 2);
-            if (search.indexOf("/") !== -1)
-                return search.slice(0, search.indexOf("/"));
-            else
-                return undefined;
-        }
+        if (this.isSearchHash())
+            return hash.slice(this.searchSelector.length + 2).replace(/\+/g, " ");
         else
             return undefined;
     },
