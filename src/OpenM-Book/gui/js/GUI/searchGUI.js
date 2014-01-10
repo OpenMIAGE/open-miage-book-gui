@@ -36,12 +36,19 @@ OpenM_BookGUI.search.Page.prototype.content = function() {
             .click(this.click));
     div.append(divSearch);
     this.page.append(div);
-    this.page.append(this.results.content());
+    if (this.results !== undefined)
+        this.page.append(this.results.content());
     return this.page;
 };
 
 OpenM_BookGUI.search.Page.prototype.getSearsh = function() {
     return this.input.val();
+};
+
+OpenM_BookGUI.search.Page.prototype.display = function(enabled) {
+    $("#" + OpenM_BookGUI.Pages.divParentId).empty();
+    if (enabled === true || enabled === undefined)
+        $("#" + OpenM_BookGUI.Pages.divParentId).append(this.content());
 };
 
 OpenM_BookGUI.search.Results = function() {
@@ -54,13 +61,6 @@ OpenM_BookGUI.search.Results = function() {
 OpenM_BookGUI.search.Results.prototype.content = function() {
     this.c.empty();
     return this.c;
-};
-
-OpenM_BookGUI.search.Page.prototype.display = function(enabled) {
-    $("#" + OpenM_BookGUI.Pages.divParentId).empty();
-    if (enabled === true || enabled === undefined)
-        $("#" + OpenM_BookGUI.Pages.divParentId).append(this.content());
-
 };
 
 OpenM_BookGUI.search.ResultUsers = function() {

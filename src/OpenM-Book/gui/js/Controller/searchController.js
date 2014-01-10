@@ -25,11 +25,12 @@ OpenM_BookController.search.Pages = {
 };
 
 OpenM_BookController.search.Page = function(search) {
-    if (search !== undefined && search.length > 0)
-        this.search = OpenM_BookDAO.search.DAO.get(search, undefined, undefined, undefined, false);
     this.gui = new OpenM_BookGUI.search.Page(search);
-    this.results = new OpenM_BookController.search.Results(this.search);
-    this.gui.results = this.results.gui;
+    if (search !== undefined && search.length > 0) {
+        this.search = OpenM_BookDAO.search.DAO.get(search, undefined, undefined, undefined, false);
+        this.results = new OpenM_BookController.search.Results(this.search);
+        this.gui.results = this.results.gui;
+    }
     var controller = this;
     this.gui.click = function(event) {
         OpenM_BookController.commons.URL.clickToSearch(controller.gui.getSearsh());
