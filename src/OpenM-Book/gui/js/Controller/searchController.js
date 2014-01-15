@@ -33,8 +33,15 @@ OpenM_BookController.search.Page = function(search) {
     }
     var controller = this;
     this.gui.click = function(event) {
-        OpenM_BookController.commons.URL.clickToSearch(controller.gui.getSearsh());
         event.stopPropagation();
+        if ((controller.search !== undefined
+                && controller.search.search !== controller.gui.getSearsh())
+                ||
+                controller.search === undefined
+                && controller.gui.getSearsh() !== "")
+            OpenM_BookController.commons.URL.clickToSearch(controller.gui.getSearsh());
+        else if (controller.search !== undefined)
+            controller.search.reload();
     };
 };
 
