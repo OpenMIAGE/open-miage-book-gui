@@ -69,7 +69,7 @@ OpenM_BookController.search.Results = function(search) {
         controller.gui.users.users = new Array();
         if (controller.search.users !== undefined) {
             for (var n in controller.search.users) {
-                var u = OpenM_BookController.search.ResultUser.from(controller.search.users[n]);
+                var u = OpenM_BookController.community.User.from(controller.search.users[n]);
                 controller.gui.users.users.push(u.gui);
                 controller.users.users.push(u);
             }
@@ -78,7 +78,7 @@ OpenM_BookController.search.Results = function(search) {
         controller.gui.communities.communities = new Array();
         if (controller.search.communities !== undefined) {
             for (var n in controller.search.communities) {
-                var c = OpenM_BookController.search.ResultCommunity.from(controller.search.communities[n]);
+                var c = OpenM_BookController.community.Child.from(controller.search.communities[n]);
                 controller.gui.communities.communities.push(c.gui);
                 controller.communities.communities.push(c);
             }
@@ -103,88 +103,9 @@ OpenM_BookController.search.ResultUsers = function(search) {
     this.gui = new OpenM_BookGUI.search.ResultUsers();
 };
 
-OpenM_BookController.search.ResultUser = function(user) {
-    this.user = user;
-    this.gui = new OpenM_BookGUI.search.ResultUser(this.user.id, this.user.name);
-    this.imageProfile = OpenM_BookController.search.image.Profile.from(this.user);
-    this.gui.imageProfile = this.imageProfile.gui;
-    this.buttonDisplayProfil = new OpenM_BookController.search.button.DisplayProfile(this.user);
-    this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
-};
-
-OpenM_BookController.search.button = {};
-
-OpenM_BookController.search.button.DisplayProfile = function(user) {
-    this.user = user;
-    this.gui = new OpenM_BookGUI.search.button.DisplayProfile(this.user.name);
-    var controller = this;
-    this.gui.click = function() {
-        OpenM_BookController.commons.URL.clickToUser(controller.user);
-    };
-    this.update = function() {
-        controller.gui.updateName(controller.user.name);
-    };
-    this.user.addUpdateCallBack(this.update);
-};
-
-OpenM_BookController.search.image = {};
-
-OpenM_BookController.search.image.Profile = function(user) {
-    this.user = user;
-    this.gui = new OpenM_BookGUI.search.image.Profile();
-    var controller = this;
-    this.gui.click = function() {
-        OpenM_BookController.commons.URL.clickToUser(controller.user);
-    };
-    this.update = function() {
-        controller.gui.content();
-    };
-    this.user.addUpdateCallBack(this.update);
-};
-
-OpenM_BookController.search.image.Profile.all = new Array();
-OpenM_BookController.search.image.Profile.from = function(user) {
-    if (OpenM_BookController.search.image.Profile.all[user.id] !== undefined)
-        return OpenM_BookController.search.image.Profile.all[user.id];
-
-    var u = new OpenM_BookController.search.image.Profile(user);
-    OpenM_BookController.search.image.Profile.all[user.id] = u;
-    return u;
-};
-
-OpenM_BookController.search.ResultUser.all = new Array();
-OpenM_BookController.search.ResultUser.from = function(user) {
-    if (OpenM_BookController.search.ResultUser.all[user.id] !== undefined)
-        return OpenM_BookController.search.ResultUser.all[user.id];
-
-    var u = new OpenM_BookController.search.ResultUser(user);
-    OpenM_BookController.search.ResultUser.all[user.id] = u;
-    return u;
-};
-
 OpenM_BookController.search.ResultCommunities = function(search) {
     this.search = search;
     this.gui = new OpenM_BookGUI.search.ResultCommunities();
-};
-
-OpenM_BookController.search.ResultCommunity = function(community) {
-    this.community = community;
-    this.gui = new OpenM_BookGUI.search.ResultCommunity(this.community.name);
-    var controller = this;
-    this.gui.click = function(e){
-        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
-        e.stopPropagation();
-    };
-};
-
-OpenM_BookController.search.ResultCommunity.all = new Array();
-OpenM_BookController.search.ResultCommunity.from = function(community) {
-    if (OpenM_BookController.search.ResultCommunity.all[community.id] !== undefined)
-        return OpenM_BookController.search.ResultCommunity.all[community.id];
-
-    var c = new OpenM_BookController.search.ResultCommunity(community);
-    OpenM_BookController.search.ResultCommunity.all[community.id] = c;
-    return c;
 };
 
 OpenM_BookController.search.ResultGroups = function(search) {
