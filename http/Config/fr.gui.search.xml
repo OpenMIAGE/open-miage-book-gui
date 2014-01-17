@@ -4,11 +4,27 @@ GUI Label definition
 -->
 <gui>
     <search>
-        <label>Recherche :</label>
-        <icon>icon-search</icon>
-        <class>btn btn-large</class>
+        <input>
+            <class>input-medium search-query</class>
+        </input>
+        <btn>
+            <label> Rechercher</label>
+            <icon>icon-search</icon>
+            <class>btn</class>
+        </btn>
     </search>
     <results>
-        
+        <commons>
+            
+        </commons>
+        <users>
+            <title>les utilisateurs trouvés :</title>
+        </users>
+        <communities>
+            
+        </communities>
+        <groups>
+            
+        </groups>
     </results>
 </gui>

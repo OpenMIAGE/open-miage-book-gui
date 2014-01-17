@@ -22,7 +22,7 @@ OpenM_BookDAO.search.ExchangeObject.prototype.update = function() {
 };
 
 OpenM_BookDAO.search.ExchangeObject.prototype.reload = function() {
-    OpenM_BookDAO.search.DAO.get(this.seach);
+    OpenM_BookDAO.search.DAO.get(this.search);
 };
 
 OpenM_BookDAO.search.DAO = {
@@ -30,36 +30,39 @@ OpenM_BookDAO.search.DAO = {
     nbMaxResults: 15
 };
 
-OpenM_BookDAO.search.DAO.get = function(search, nbResultsMax, isUserOnly, synchro) {
+OpenM_BookDAO.search.DAO.get = function(search, nbResultsMax, isUserOnly, synchro, reload) {
     if (isUserOnly === undefined)
         isUserOnly = false;
     if (synchro === undefined)
         synchro = false;
     if (nbResultsMax === undefined)
         nbMaxResults = this.nbMaxResults;
+    if (reload === undefined || reload !== false)
+        reload = true;
 
     if (this.allSearch[search] === undefined)
         this.allSearch[search] = new OpenM_BookDAO.search.ExchangeObject(search);
 
     var result = this.allSearch[search];
 
-    if (!synchro) {
-        var searchTemp = search.substring(0, search.length - 1);
-        while (searchTemp.length > 0 && this.allSearch[searchTemp] === undefined) {
-            searchTemp = searchTemp.substring(0, searchTemp.length - 1);
+    if (reload) {
+        if (!synchro) {
+            var searchTemp = search.substring(0, search.length - 1);
+            while (searchTemp.length > 0 && this.allSearch[searchTemp] === undefined) {
+                searchTemp = searchTemp.substring(0, searchTemp.length - 1);
+            }
+            if (searchTemp.length > 0) {
+                result.users = this.allSearch[searchTemp].users;
+                result.communities = this.allSearch[searchTemp].communities;
+                result.groups = this.allSearch[searchTemp].groups;
+            }
+            OpenM_Groups.search(search, nbResultsMax, function(data) {
+                OpenM_BookDAO.search.DAO.parseAndLoadSearch(data, result);
+            });
         }
-        if (searchTemp.length > 0) {
-            result.users = this.allSearch[searchTemp].users;
-            result.communities = this.allSearch[searchTemp].communities;
-            result.groups = this.allSearch[searchTemp].groups;
-        }
-        OpenM_Groups.search(search, nbResultsMax, function(data) {
-            OpenM_BookDAO.search.DAO.parseAndLoadSearch(data, result);
-        });
+        else
+            this.parseAndLoadSearch(OpenM_Groups.search(search, nbResultsMax), result);
     }
-    else
-        this.parseAndLoadSearch(OpenM_Groups.search(search, nbResultsMax), result);
-
     return result;
 };
 

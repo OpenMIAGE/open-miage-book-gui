@@ -1,4 +1,4 @@
-.book-user-photo, .book-community-user-photo {
+.book-user-photo, .book-community-user-photo, book-search-user-photo {
     background-color:#fafbfc; 
     padding:5px; 
     width: 100px;
@@ -43,19 +43,19 @@ input.book-user-field-modification-input {
     padding: 5px;
 }
 
-.book-community-page {
+.book-community-page, .book-user-page, .book-search-page {
     margin-bottom: 5px;
 }
 .book-community-childs {
     margin-top: 10px;
 }
 
-.book-community-users, .book-community-users-not-valid {
+.book-community-users, .book-community-users-not-valid, .book-search-results-users {
     margin-top: 10px;
     overflow: hidden;
 }
 
-.book-community-user, .book-community-user-not-valid {
+.book-community-user, .book-community-user-not-valid, .book-search-results-user {
     float: left;
     padding: 10px;
     margin: 5px;

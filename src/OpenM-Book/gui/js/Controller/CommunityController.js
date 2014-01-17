@@ -206,7 +206,7 @@ OpenM_BookController.community.User = function(user) {
     this.gui = new OpenM_BookGUI.community.User(this.user.id, this.user.name);
     this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
     this.gui.buttonDisplayProfil = this.buttonDisplayProfil.gui;
-    this.imageProfile = new OpenM_BookController.community.image.Profile(this.user);
+    this.imageProfile = OpenM_BookController.community.image.Profile.from(this.user);
     this.gui.imageProfile = this.imageProfile.gui;
 };
 
