@@ -104,23 +104,42 @@ OpenM_BookGUI.search.ResultUser.prototype.content = function() {
 };
 
 OpenM_BookGUI.search.ResultCommunities = function() {
+    this.communities = new Array();
     this.c = OpenM_BookGUI.gen.div();
 };
 
 OpenM_BookGUI.search.ResultCommunities.prototype.content = function() {
     this.c.empty();
-
+    if (this.communities.length > 0) {
+        var div = OpenM_BookGUI.gen.div().addClass("book-search-results-communities");
+        div.append($("results > communities > title", OpenM_BookGUI.search.cst).text())
+                .append("</br>");
+        this.c.append(div);
+        for (var i in this.communities) {
+            div.append(this.communities[i].content());
+        }
+    }
     return this.c;
 };
 
-OpenM_BookGUI.search.ResultCommunity = function() {
-    this.c = OpenM_BookGUI.gen.div();
+OpenM_BookGUI.search.ResultCommunity = function(name) {
+    this.name = name;
+    this.a = OpenM_BookGUI.gen.a();
+    this.click = undefined;
 };
 
 OpenM_BookGUI.search.ResultCommunity.prototype.content = function() {
-    this.c.empty();
-
-    return this.c;
+    this.a.empty();
+    this.a.addClass("book-community-child");
+    this.a.addClass($("child > class", OpenM_BookGUI.community.cst).text());
+    this.a.text(this.name);
+    this.a.attr("rel", "tooltip");
+    this.a.attr("data-placement", "bottom");
+    this.a.attr("data-toggle", "tooltip");
+    this.a.attr("data-original-title", $("child > tooltip", OpenM_BookGUI.community.cst).text() + " " + this.name);
+    this.a.tooltip();
+    this.a.click(this.click);
+    return this.a;
 };
 
 OpenM_BookGUI.search.ResultGroups = function() {

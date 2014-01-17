@@ -68,10 +68,28 @@ OpenM_BookController.search.Results = function(search) {
         controller.users.users = new Array();
         controller.gui.users.users = new Array();
         if (controller.search.users !== undefined) {
-            for (var user in controller.search.users) {
-                var u = OpenM_BookController.search.ResultUser.from(controller.search.users[user]);
+            for (var n in controller.search.users) {
+                var u = OpenM_BookController.search.ResultUser.from(controller.search.users[n]);
                 controller.gui.users.users.push(u.gui);
                 controller.users.users.push(u);
+            }
+        }
+        controller.communities.communities = new Array();
+        controller.gui.communities.communities = new Array();
+        if (controller.search.communities !== undefined) {
+            for (var n in controller.search.communities) {
+                var c = OpenM_BookController.search.ResultCommunity.from(controller.search.communities[n]);
+                controller.gui.communities.communities.push(c.gui);
+                controller.communities.communities.push(c);
+            }
+        }
+        controller.groups.groups = new Array();
+        controller.gui.groups.groups = new Array();
+        if (controller.search.groups !== undefined) {
+            for (var n in controller.search.groups) {
+                var c = OpenM_BookController.search.ResultGroup.from(controller.search.groups[n]);
+                controller.gui.groups.groups.push(c.gui);
+                controller.groups.groups.push(c);
             }
         }
         controller.gui.content();
@@ -151,7 +169,12 @@ OpenM_BookController.search.ResultCommunities = function(search) {
 
 OpenM_BookController.search.ResultCommunity = function(community) {
     this.community = community;
-    this.gui = new OpenM_BookGUI.search.ResultCommunity();
+    this.gui = new OpenM_BookGUI.search.ResultCommunity(this.community.name);
+    var controller = this;
+    this.gui.click = function(e){
+        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
+        e.stopPropagation();
+    };
 };
 
 OpenM_BookController.search.ResultCommunity.all = new Array();
