@@ -14,6 +14,17 @@ GUI Label definition
         </btn>
     </search>
     <results>
-        
+        <commons>
+            
+        </commons>
+        <users>
+            <title>les utilisateurs trouvés :</title>
+        </users>
+        <communities>
+            
+        </communities>
+        <groups>
+            
+        </groups>
     </results>
 </gui>

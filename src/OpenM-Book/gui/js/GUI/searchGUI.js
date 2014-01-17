@@ -16,8 +16,8 @@ OpenM_BookGUI.search.Page = function(search) {
 
 OpenM_BookGUI.search.Page.prototype.content = function() {
     this.page.empty();
-    this.page.addClass("row-fluid book-search-page");
-    var div = OpenM_BookGUI.gen.div().addClass("row10 well book-search-page-content");
+    this.page.addClass("row-fluid");
+    var div = OpenM_BookGUI.gen.div().addClass("row10 well book-search-page");
     var divSearch = OpenM_BookGUI.gen.div().addClass("book-search-input-block");
     var gui = this;
     divSearch
@@ -37,7 +37,7 @@ OpenM_BookGUI.search.Page.prototype.content = function() {
     div.append(divSearch);
     this.page.append(div);
     if (this.results !== undefined)
-        this.page.append(this.results.content());
+        div.append("</br>").append(this.results.content());
     return this.page;
 };
 
@@ -60,17 +60,128 @@ OpenM_BookGUI.search.Results = function() {
 
 OpenM_BookGUI.search.Results.prototype.content = function() {
     this.c.empty();
+    this.c.append(this.users.content());
+    this.c.append(this.communities.content());
+    this.c.append(this.groups.content());
     return this.c;
 };
 
 OpenM_BookGUI.search.ResultUsers = function() {
+    this.users = new Array();
     this.c = OpenM_BookGUI.gen.div();
+};
+
+OpenM_BookGUI.search.ResultUsers.prototype.content = function() {
+    this.c.empty();
+    if (this.users.length > 0) {
+        var div = OpenM_BookGUI.gen.div().addClass("book-search-results-users");
+        div.append($("results > users > title", OpenM_BookGUI.search.cst).text())
+                .append("</br>");
+        this.c.append(div);
+        for (var u in this.users) {
+            div.append(this.users[u].content());
+        }
+    }
+    return this.c;
+};
+
+OpenM_BookGUI.search.ResultUser = function(id, name) {
+    this.id = id;
+    this.name = name;
+    this.click = undefined;
+    this.c = OpenM_BookGUI.gen.div();
+    this.buttonDisplayProfil = undefined;
+    this.imageProfile = undefined;
+};
+
+OpenM_BookGUI.search.ResultUser.prototype.content = function() {
+    this.c.empty();
+    this.c.addClass("book-search-results-user");
+    this.c.append(this.imageProfile.content());
+    this.c.append("<br />");
+    this.c.append(this.buttonDisplayProfil.content());
+    return this.c;
 };
 
 OpenM_BookGUI.search.ResultCommunities = function() {
     this.c = OpenM_BookGUI.gen.div();
 };
 
+OpenM_BookGUI.search.ResultCommunities.prototype.content = function() {
+    this.c.empty();
+
+    return this.c;
+};
+
+OpenM_BookGUI.search.ResultCommunity = function() {
+    this.c = OpenM_BookGUI.gen.div();
+};
+
+OpenM_BookGUI.search.ResultCommunity.prototype.content = function() {
+    this.c.empty();
+
+    return this.c;
+};
+
 OpenM_BookGUI.search.ResultGroups = function() {
     this.c = OpenM_BookGUI.gen.div();
+};
+
+OpenM_BookGUI.search.ResultGroups.prototype.content = function() {
+    this.c.empty();
+
+    return this.c;
+};
+
+OpenM_BookGUI.search.ResultGroup = function() {
+    this.c = OpenM_BookGUI.gen.div();
+};
+
+OpenM_BookGUI.search.ResultGroup.prototype.content = function() {
+    this.c.empty();
+
+    return this.c;
+};
+
+OpenM_BookGUI.search.image = {};
+
+OpenM_BookGUI.search.image.Profile = function() {
+    this.img = OpenM_BookGUI.gen.img();
+    this.click = undefined;
+};
+
+OpenM_BookGUI.search.image.Profile.prototype.content = function() {
+    this.img.empty();
+    this.img.css("cursor", "pointer").attr({
+        alt: "Photo du Profil",
+        title: "Photo du profil",
+        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+    }).addClass("book-search-user-photo");
+    this.img.click(this.click);
+    return this.img;
+};
+
+OpenM_BookGUI.search.button = {};
+
+OpenM_BookGUI.search.button.DisplayProfile = function(name) {
+    this.name = name;
+    this.a = OpenM_BookGUI.gen.a();
+    this.click = undefined;
+};
+
+OpenM_BookGUI.search.button.DisplayProfile.prototype.content = function() {
+    this.a.empty();
+    this.a.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
+    var icon = OpenM_BookGUI.gen.i();
+    icon.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
+    this.a.css("margin-bottom", 5)
+            .append(icon)
+            .text(this.name)
+            .click(this.click);
+    return this.a;
+};
+
+OpenM_BookGUI.search.button.DisplayProfile.prototype.updateName = function(newName) {
+    this.name = newName;
+    this.a.text(this.name);
 };
