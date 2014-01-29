@@ -1,8 +1,6 @@
 {if $debug}
     <script src="{$clients_js}"></script>
-    {foreach from=$core_js item=js}
-        <script src="{$resources_dir}{$js}"></script> 
-    {/foreach}
+    <script src="{$root}/js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min"></script>
 {/if}
 <script type="text/javascript">
     {literal}
@@ -36,7 +34,7 @@
                         if (!OpenM_BookDAO.user.DAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
                         OpenM_BookController.commons.URL.menu.left = new OpenM_BookController.menu.Left($("#button-navbar-left"));
-                        OpenM_BookController.commons.URL.load();                   
+                        OpenM_BookController.commons.URL.load();
                     }
                     else {
                         location.reload();
@@ -44,10 +42,8 @@
                 });
             };
 {/literal}{if !$debug}
-            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
-    {foreach from=$core_js item=js}
-            OpenM_BookController.commons.URL.jsLoad(ressource + "{$js}");
-    {/foreach}
+            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");    
+            OpenM_BookController.commons.URL.jsLoad("{$root}/js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");    
 {else}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished();
 {/literal}{/if}{literal}
