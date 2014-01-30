@@ -316,7 +316,6 @@ OpenM_BookController.community.button.Validate = function(user, community, isAlr
     this.popover.gui.text = 'Pourquoi ?';
     this.gui.popover = this.popover.gui;
 
-    //le click
     var controller = this;
     this.popover.gui.submit = function(e) {
         var name = controller.popover.gui.getName();
@@ -507,7 +506,6 @@ OpenM_BookController.community.button.Rename = function(community) {
     this.popover.gui.text = 'Nouveau nom';
     this.gui.popover = this.popover.gui;
 
-    //le click
     var controller = this;
     this.popover.gui.submit = function(e) {
         var name = controller.popover.gui.getName();

@@ -37,9 +37,9 @@ class OpenM_Book_JSGeneratorServer {
     private static function min($string) {
         $string = str_replace("= ", "=", $string);
         $string = str_replace(" =", "=", $string);
-        $string = preg_replace('/\s+/', ' ', $string);
+        $string = preg_replace('/\/\*(.*)\*\//', ' ', $string);
+        $string = preg_replace('/(\s)+/', ' ', $string);
         $string = str_replace("  ", " ", $string);
-        $string = str_replace("\r\n", "", $string);
         $string = str_replace("\n", "", $string);
         $string = str_replace(' (', "(", $string);
         $string = str_replace('( ', "(", $string);
@@ -83,15 +83,13 @@ class OpenM_Book_JSGeneratorServer {
         if ($this->smarty->isCached($tpl, $id))
             $this->smarty->display($tpl, $id);
         else {
+            $string = "";
             OpenM_Log::debug("build cache", __CLASS__, __METHOD__, __LINE__);
             foreach ($files as $value) {
-                if (is_file(Import::getAbsolutePath($value)))
-                    $string .= file_get_contents(Import::getAbsolutePath($value));
+                if (is_file(Import::getAbsolutePath($value))) {
+                    $string .= "\r\n/*\r\n $value\r\n */\r\n\r\n" . (($min) ? self::min(file_get_contents(Import::getAbsolutePath($value))) : file_get_contents(Import::getAbsolutePath($value)) ) . "\r\n";
+                }
             }
-
-            if ($min)
-                $string = self::min($string);
-
             OpenM_Log::debug("assign id", __CLASS__, __METHOD__, __LINE__);
             $this->smarty->assign("js", $string);
             $this->smarty->cache_id = $id;
@@ -115,7 +113,7 @@ class OpenM_Book_JSGeneratorServer {
         if ($compile_dir !== null)
             $this->smarty->setCompileDir($compile_dir);
         $this->smarty->setTemplateDir(__DIR__ . "/tpl");
-        $this->smarty->caching = true;
+        $this->smarty->caching = false;
         $this->smarty->compile_check = false;
     }
 

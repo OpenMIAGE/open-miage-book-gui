@@ -24,13 +24,11 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         c.addClass("book-community-page");
         cadre.append(c);
 
-        //la navigation
         var communities = OpenM_BookGUI.gen.div();
         c.append(communities);
         var community = this.tree.content();
         communities.append(community);
 
-        //Les actions
         var actions = OpenM_BookGUI.gen.div()
                 .append(this.actions.content());
         communities.append(actions);
@@ -39,12 +37,10 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         div.addClass("inline");
         communities.append(div);
 
-        //les users
         var users = OpenM_BookGUI.gen.div().addClass("row-fluid");
         c.append(users);
         users.append(this.users.content());
 
-        //les users not valid
         var usersNotValid = OpenM_BookGUI.gen.div().addClass("row-fluid");
         c.append(usersNotValid);
         usersNotValid.append(this.usersNotValid.content());
@@ -569,7 +565,6 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
 
 OpenM_BookGUI.community.popover = {};
 
-//A continuer
 OpenM_BookGUI.community.popover.Name = function(name) {
     this.name = name;
     this.input = OpenM_BookGUI.gen.input();

@@ -18,7 +18,6 @@ OpenM_BookDAO.user.ExchangeObject = function() {
     this.otherProperties = new Array();
     this.communities = new Array();
 
-    //update listener
     this.AllCallBack = new Array();
     this.AllCommunitiesCallBack = new Array();
 };

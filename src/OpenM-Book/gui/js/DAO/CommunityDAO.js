@@ -31,7 +31,6 @@ OpenM_BookDAO.community.ExchangeObject = function() {
     this.usersNotValidTree = new Array();
     this.loaded = false;
 
-    //update listener
     this.AllCallBack = new Array();
     this.AllUsersCallBack = new Array();
     this.AllUsersNotValidCallBack = new Array();
@@ -52,7 +51,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.removeChild = function(communit
     }
 };
 
-//permet de savoir si il y a des actions a effectuer sur la communauté
+/* permet de savoir si il y a des actions a effectuer sur la communauté */
 OpenM_BookDAO.community.ExchangeObject.prototype.userCanMakeAction = function() {
     var retour = false;
     if (this.userCanAddSubCommunity)
@@ -62,7 +61,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.userCanMakeAction = function() 
     return retour;
 };
 
-//par récurcivité, récupérent les ancetres, si on n'a pas d'ancetre, on fait une requete au srv'
+/* par récurcivité, récupérent les ancetres, si on n'a pas d'ancetre, on fait une requete au srv' */
 OpenM_BookDAO.community.ExchangeObject.prototype.getAncestors = function(ancestorsArray) {
     if (ancestorsArray === undefined)
         ancestorsArray = new Array();
@@ -150,7 +149,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.validateUser = function(user, r
     OpenM_Book.voteForUser(u.id, this.id, r, function(data) {
         OpenM_BookGUI.Pages.showJSON(data);
         if (data[OpenM_Book.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
-            //TODO
+            /* TODO */
         }
     });
 };
@@ -382,7 +381,7 @@ OpenM_BookDAO.community.DAO = {
                             Idparent = data[Idparent][OpenM_Book.RETURN_COMMUNITY_PARENT_PARAMETER];
                             communityTmp = parentCommunity;
                         } else {
-                            // la commu parent est introuvable ds le tableau on sort
+                            /* la commu parent est introuvable ds le tableau on sort */
                             break;
                         }
                     }

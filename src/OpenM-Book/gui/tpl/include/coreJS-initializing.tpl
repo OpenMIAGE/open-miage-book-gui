@@ -1,6 +1,6 @@
 {if $debug}
     <script src="{$clients_js}"></script>
-    <script src="{$root}/js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min"></script>
+    <script src="{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}"></script>
 {/if}
 <script type="text/javascript">
     {literal}
@@ -43,7 +43,7 @@
             };
 {/literal}{if !$debug}
             OpenM_BookController.commons.URL.jsLoad("{$clients_js}");    
-            OpenM_BookController.commons.URL.jsLoad("{$root}/js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");    
+            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");    
 {else}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished();
 {/literal}{/if}{literal}
