@@ -62,3 +62,7 @@ input.book-user-field-modification-input {
     background: white;
     border-radius: 10px;
 }
+
+.book-community-users-any-user-message, .book-community-users-not-valid-any-user-message {
+    margin-left: 20px;
+}

@@ -72,11 +72,13 @@ GUI Label definition
     </inTree>
     <users>
         <label>Membre(s)</label>
+        <any-user-message>Soit il n'y a aucun utilisateur validé dans cette communauté, soit vous n'avez l'autorisation d'en voir aucun. A minima, les utilisateurs validés d'une communauté peuvent voir les utilisateurs de cette même communauté (validés ou non).</any-user-message>
     </users>
     <usersNotValid>
         <label>Membre(s) Non Validé(s)</label>
     </usersNotValid>
     <banned>
         <label>Vous êtes banni de la communauté :</label>
+        <any-user-message>Soit il n'y a aucun utilisateur non-validé dans cette communauté, soit vous n'avez l'autorisation d'en voir aucun. A minima, les utilisateurs validés d'une communauté peuvent voir les utilisateurs de cette même communauté (validés ou non).</any-user-message>
     </banned>
 </gui>

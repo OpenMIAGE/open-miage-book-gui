@@ -155,18 +155,18 @@ OpenM_BookGUI.community.Users = function(communityId) {
 
 OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
-    if (this.users.length !== 0) {
-        this.c.addClass("book-community-users");
-        this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.cst).text() + " :</p>");
-        var div = OpenM_BookGUI.gen.div().css("display", "inline");
-        this.c.append(div);
-        for (var i in this.users) {
-            div.append(this.users[i].content());
-        }
-        return this.c;
-    } else {
-        return this.c;
+    this.c.addClass("book-community-users");
+    this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.cst).text() + " :</p>");
+    var div = OpenM_BookGUI.gen.div();
+    this.c.append(div);
+    if (this.users.length === 0) {
+        div.append($("users > any-user-message", OpenM_BookGUI.community.cst).text());
+        div.addClass("book-community-users-any-user-message");
     }
+    for (var i in this.users) {
+        div.append(this.users[i].content());
+    }
+    return this.c;
 };
 
 OpenM_BookGUI.community.User = function(id, name) {
@@ -200,18 +200,18 @@ OpenM_BookGUI.community.UsersNotValid = function(communityId) {
 
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
-    if (this.users.length !== 0) {
-        this.c.addClass("book-community-users-not-valid");
-        this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
-        var div = OpenM_BookGUI.gen.div();
-        this.c.append(div);
-        for (var i in this.users) {
-            div.append(this.users[i].content());
-        }
-        return this.c;
-    } else {
-        return this.c;
+    this.c.addClass("book-community-users-not-valid");
+    this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
+    var div = OpenM_BookGUI.gen.div();
+    this.c.append(div);
+    if (this.users.length === 0) {
+        div.append($("users > any-user-message", OpenM_BookGUI.community.cst).text());
+        div.addClass("book-community-users-not-valid-any-user-message");
     }
+    for (var i in this.users) {
+        div.append(this.users[i].content());
+    }
+    return this.c;
 };
 
 OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
@@ -248,7 +248,7 @@ OpenM_BookGUI.community.Banned.prototype.content = function() {
     this.c.empty();
     this.c.addClass("book-community-banned");
     if (this.banned)
-        this.c.append($("banned > label", OpenM_BookGUI.community.cst).text()+" '" + this.name + "'");
+        this.c.append($("banned > label", OpenM_BookGUI.community.cst).text() + " '" + this.name + "'");
     return this.c;
 };
 
