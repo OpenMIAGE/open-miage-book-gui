@@ -309,7 +309,7 @@ OpenM_BookController.community.button = {};
 OpenM_BookController.community.button.Validate = function(user, community, isAlreadyAcceptedByUser) {
     this.user = user;
     this.community = community;
-    this.isAlreadyAcceptedByUser = isAlreadyAcceptedByUser;
+    this.isAlreadyAcceptedByUser = (this.user === OpenM_BookDAO.user.DAO.me) ? true : isAlreadyAcceptedByUser;
     this.gui = new OpenM_BookGUI.community.button.Validate();
     this.gui.isAlreadyAcceptedByUser = this.isAlreadyAcceptedByUser;
     this.popover = new OpenM_BookController.community.popover.Name(this.community);
