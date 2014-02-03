@@ -200,18 +200,18 @@ OpenM_BookGUI.community.UsersNotValid = function(communityId) {
 
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
-    this.c.addClass("book-community-users-not-valid");
-    this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
-    var div = OpenM_BookGUI.gen.div();
-    this.c.append(div);
-    if (this.users.length === 0) {
-        div.append($("users > any-user-message", OpenM_BookGUI.community.cst).text());
-        div.addClass("book-community-users-not-valid-any-user-message");
+    if (this.users.length > 0) {
+        this.c.addClass("book-community-users-not-valid");
+        this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
+        var div = OpenM_BookGUI.gen.div();
+        this.c.append(div);
+        for (var i in this.users) {
+            div.append(this.users[i].content());
+        }
+        return this.c;
     }
-    for (var i in this.users) {
-        div.append(this.users[i].content());
-    }
-    return this.c;
+    else
+        return this.c;
 };
 
 OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
