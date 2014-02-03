@@ -1,5 +1,4 @@
-COPYING
+COPYING*
 README.md
-http/*
-Config/*
-log/*
+http
+Config
