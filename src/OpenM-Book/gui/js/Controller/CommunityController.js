@@ -309,14 +309,13 @@ OpenM_BookController.community.button = {};
 OpenM_BookController.community.button.Validate = function(user, community, isAlreadyAcceptedByUser) {
     this.user = user;
     this.community = community;
-    this.isAlreadyAcceptedByUser = isAlreadyAcceptedByUser;
+    this.isAlreadyAcceptedByUser = (this.user === OpenM_BookDAO.user.DAO.me) ? true : isAlreadyAcceptedByUser;
     this.gui = new OpenM_BookGUI.community.button.Validate();
     this.gui.isAlreadyAcceptedByUser = this.isAlreadyAcceptedByUser;
     this.popover = new OpenM_BookController.community.popover.Name(this.community);
     this.popover.gui.text = 'Pourquoi ?';
     this.gui.popover = this.popover.gui;
 
-    //le click
     var controller = this;
     this.popover.gui.submit = function(e) {
         var name = controller.popover.gui.getName();
@@ -507,7 +506,6 @@ OpenM_BookController.community.button.Rename = function(community) {
     this.popover.gui.text = 'Nouveau nom';
     this.gui.popover = this.popover.gui;
 
-    //le click
     var controller = this;
     this.popover.gui.submit = function(e) {
         var name = controller.popover.gui.getName();

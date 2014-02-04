@@ -24,13 +24,11 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         c.addClass("book-community-page");
         cadre.append(c);
 
-        //la navigation
         var communities = OpenM_BookGUI.gen.div();
         c.append(communities);
         var community = this.tree.content();
         communities.append(community);
 
-        //Les actions
         var actions = OpenM_BookGUI.gen.div()
                 .append(this.actions.content());
         communities.append(actions);
@@ -39,12 +37,10 @@ OpenM_BookGUI.community.Page.prototype.display = function(enabled) {
         div.addClass("inline");
         communities.append(div);
 
-        //les users
         var users = OpenM_BookGUI.gen.div().addClass("row-fluid");
         c.append(users);
         users.append(this.users.content());
 
-        //les users not valid
         var usersNotValid = OpenM_BookGUI.gen.div().addClass("row-fluid");
         c.append(usersNotValid);
         usersNotValid.append(this.usersNotValid.content());
@@ -159,18 +155,18 @@ OpenM_BookGUI.community.Users = function(communityId) {
 
 OpenM_BookGUI.community.Users.prototype.content = function() {
     this.c.empty();
-    if (this.users.length !== 0) {
-        this.c.addClass("book-community-users");
-        this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.cst).text() + " :</p>");
-        var div = OpenM_BookGUI.gen.div().css("display", "inline");
-        this.c.append(div);
-        for (var i in this.users) {
-            div.append(this.users[i].content());
-        }
-        return this.c;
-    } else {
-        return this.c;
+    this.c.addClass("book-community-users");
+    this.c.append("<p>" + $("users > label", OpenM_BookGUI.community.cst).text() + " :</p>");
+    var div = OpenM_BookGUI.gen.div();
+    this.c.append(div);
+    if (this.users.length === 0) {
+        div.append($("users > any-user-message", OpenM_BookGUI.community.cst).text());
+        div.addClass("book-community-users-any-user-message");
     }
+    for (var i in this.users) {
+        div.append(this.users[i].content());
+    }
+    return this.c;
 };
 
 OpenM_BookGUI.community.User = function(id, name) {
@@ -204,7 +200,7 @@ OpenM_BookGUI.community.UsersNotValid = function(communityId) {
 
 OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
     this.c.empty();
-    if (this.users.length !== 0) {
+    if (this.users.length > 0) {
         this.c.addClass("book-community-users-not-valid");
         this.c.append("<p>" + $("usersNotValid > label", OpenM_BookGUI.community.cst).text() + " :</p>");
         var div = OpenM_BookGUI.gen.div();
@@ -213,9 +209,9 @@ OpenM_BookGUI.community.UsersNotValid.prototype.content = function() {
             div.append(this.users[i].content());
         }
         return this.c;
-    } else {
-        return this.c;
     }
+    else
+        return this.c;
 };
 
 OpenM_BookGUI.community.UserNotValid = function(id, name, communityName) {
@@ -252,7 +248,7 @@ OpenM_BookGUI.community.Banned.prototype.content = function() {
     this.c.empty();
     this.c.addClass("book-community-banned");
     if (this.banned)
-        this.c.append($("banned > label", OpenM_BookGUI.community.cst).text()+" '" + this.name + "'");
+        this.c.append($("banned > label", OpenM_BookGUI.community.cst).text() + " '" + this.name + "'");
     return this.c;
 };
 
@@ -569,7 +565,6 @@ OpenM_BookGUI.community.button.Delete.prototype.content = function() {
 
 OpenM_BookGUI.community.popover = {};
 
-//A continuer
 OpenM_BookGUI.community.popover.Name = function(name) {
     this.name = name;
     this.input = OpenM_BookGUI.gen.input();
