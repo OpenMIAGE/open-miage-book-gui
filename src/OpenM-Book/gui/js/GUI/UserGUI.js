@@ -208,19 +208,31 @@ OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
 
 OpenM_BookGUI.user.Communities = function() {
     this.communityBlocks = new Array();
+    this.communityNotValidatedBlocks = new Array();
     this.c = OpenM_BookGUI.gen.div();
 };
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
-    if (this.communityBlocks.length === 0)
-        return this.c;
-    var div = OpenM_BookGUI.gen.div();
-    div.addClass("book-user-communities");
-    div.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
-    this.c.append(div);
-    for (var i in this.communityBlocks) {
-        div.append(this.communityBlocks[i].content());
+    if (this.communityBlocks.length > 0) {
+        var divCommunities = OpenM_BookGUI.gen.div();
+        divCommunities.addClass("book-user-communities");
+        divCommunities.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
+        this.c.append(divCommunities);
+        for (var i in this.communityBlocks) {
+            divCommunities.append(this.communityBlocks[i].content());
+        }
+    }
+    if (this.communityNotValidatedBlocks.length > 0) {
+        if (this.communityBlocks.length > 0)
+            this.c.append("<br/>");
+        var divCommunitiesNotValidated = OpenM_BookGUI.gen.div();
+        divCommunitiesNotValidated.addClass("book-user-communities-not-validated");
+        divCommunitiesNotValidated.append($("communities > label-not-validated", OpenM_BookGUI.user.cst).text() + " :");
+        this.c.append(divCommunitiesNotValidated);
+        for (var i in this.communityNotValidatedBlocks) {
+            divCommunitiesNotValidated.append(this.communityNotValidatedBlocks[i].content());
+        }
     }
     return this.c;
 };

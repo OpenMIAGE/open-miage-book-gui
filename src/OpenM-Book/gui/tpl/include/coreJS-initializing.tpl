@@ -26,7 +26,7 @@
                 OpenM_SSOConnectionProxy.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";
                 OpenM_SSOConnectionProxy.session_mode = OpenM_SSOConnectionProxy.MODE_API_SELECTION;
                 OpenM_SSOConnectionProxy.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
-                OpenM_SSOConnectionProxy.timer_interval_reconnection = 2000;
+                OpenM_SSOConnectionProxy.waitingReConnectionTimeOut = 10;
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
                         OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
