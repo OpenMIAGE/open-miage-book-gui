@@ -107,6 +107,7 @@ OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
 OpenM_BookGUI.community.Childs = function(communityId) {
     this.communityId = communityId;
     this.communities = new Array();
+    this.communitiesSorted;
     this.c = OpenM_BookGUI.gen.div();
 };
 
@@ -114,9 +115,18 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
     if (this.communities.length > 0)
         this.c.addClass("book-community-childs");
+    this.communitiesSorted = new Array();
     for (var i in this.communities) {
-        this.c.append(this.communities[i].content());
+        this.communitiesSorted.push(this.communities[i]);
     }
+    this.communitiesSorted = $(this.communitiesSorted).sort(function(a, b) {
+        if (a.name !== undefined)
+            return (a.name > b.name) ? 1 : -1;
+    });
+    var c = this.c;
+    this.communitiesSorted.each(function(k, v) {
+        c.append(v.content());
+    });
     return this.c;
 };
 
@@ -229,9 +239,10 @@ OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
     this.c.addClass("book-community-user-not-valid");
     this.c.append(this.imageProfile.content());
-    this.c.append(this.buttonValidate.content())
-            .append("<br />")
-            .append(this.buttonDisplayProfil.content())
+    if (this.buttonValidate !== undefined)
+        this.c.append(this.buttonValidate.content())
+                .append("<br />");
+    this.c.append(this.buttonDisplayProfil.content())
             .append("<br />")
             .append("<i class='icon-play'></i> ")
             .append(this.buttonDisplayCommunity.content());

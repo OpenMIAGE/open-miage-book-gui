@@ -16,8 +16,12 @@
     margin-bottom: 10px;
 }
 
-.book-user-field-read {
+.book-user-field-read, .book-user-field-modifiable {
     min-height: 30px;
+}
+
+.book-user-field-modifiable {
+    cursor: pointer;
 }
 
 .book-user-field-read-label {

@@ -128,7 +128,10 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
             .addClass("book-user-field");
     this.c.append(content);
     if (this.isInModificationMode === false) {
-        content.addClass("book-user-field-read");
+        if (this.isModifiable)
+            content.addClass("book-user-field-modifiable");
+        else
+            content.addClass("book-user-field-read");
         var labelVal = OpenM_BookGUI.gen.div()
                 .addClass("book-user-field-read-label");
         labelVal.append(OpenM_BookGUI.gen.i()
