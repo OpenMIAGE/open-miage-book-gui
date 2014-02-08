@@ -1,6 +1,7 @@
 {if $debug}
     <script src="{$clients_js}"></script>
     <script src="{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}"></script>
+    <script src="{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}"></script>
 {/if}
 <script type="text/javascript">
     {literal}
@@ -35,6 +36,9 @@
                             location.reload("{/literal}{$links.registration}{literal}");
                         OpenM_BookController.commons.URL.menu.left = new OpenM_BookController.menu.Left($("#button-navbar-left"));
                         OpenM_BookController.commons.URL.load();
+{/literal}{if !$debug}
+                        OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
+{/if}{literal}
                     }
                     else {
                         location.reload();
@@ -42,8 +46,8 @@
                 });
             };
 {/literal}{if !$debug}
-            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");    
-            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");    
+            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
+            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");
 {else}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished();
 {/literal}{/if}{literal}

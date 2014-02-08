@@ -60,13 +60,7 @@ OpenM_BookGUI.community.Tree = function(communityId) {
 OpenM_BookGUI.community.Tree.prototype.content = function() {
     var div = OpenM_BookGUI.gen.div();
     div.addClass("book-community-tree");
-    var first = true;
     $.each(this.communities, function(key, value) {
-        if (first === true)
-            first = false;
-        else
-            div.append(" <i class='" + $("tree > separator", OpenM_BookGUI.community.cst).text() + "'></i> ");
-
         div.append(value.content());
     });
     return div;
