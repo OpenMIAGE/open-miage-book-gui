@@ -255,10 +255,6 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
     div.append(c);
     var first = true;
     for (var i in this.communities) {
-        if (first)
-            first = false;
-        else
-            c.append(" <i class='icon-play'></i> ");
         c.append(this.communities[i].content());
     }
     return div;
