@@ -276,7 +276,7 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
         communities[c.id] = c;
         var b = this.communityBlocks[c.id];
         if (b === undefined) {
-            b = new OpenM_BookController.user.CommunityBlock();
+            b = new OpenM_BookController.user.CommunityBlock(c);
             this.communityBlocks[c.id] = b;
             this.gui.communityBlocks[c.id] = b.gui;
             ancestors(c, b);
@@ -288,7 +288,7 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
         communitiesNotValidated[c.id] = c;
         var b = this.communityNotValidatedBlocks[c.id];
         if (b === undefined) {
-            b = new OpenM_BookController.user.CommunityBlock();
+            b = new OpenM_BookController.user.CommunityBlock(c);
             this.communityNotValidatedBlocks[c.id] = b;
             this.gui.communityNotValidatedBlocks[c.id] = b.gui;
             ancestors(c, b);
@@ -296,23 +296,26 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
     }
 
     for (var j in this.communityBlocks) {
-        if (communities[j] === undefined) {
-            this.communityBlocks.splice(j, 1);
-            this.gui.communityBlocks.splice(j, 1);
+        var c = this.communityBlocks[j].community;
+        if (communities[c.id] === undefined) {
+            this.communityBlocks.splice(c.id, 1);
+            this.gui.communityBlocks.splice(c.id, 1);
         }
     }
 
     for (var j in this.communityNotValidatedBlocks) {
-        if (communitiesNotValidated[j] === undefined) {
-            this.communityNotValidatedBlocks.splice(j, 1);
-            this.gui.communityNotValidatedBlocks.splice(j, 1);
+        var c = this.communityNotValidatedBlocks[j].community;
+        if (communitiesNotValidated[c.id] === undefined) {
+            this.communityNotValidatedBlocks.splice(c.id, 1);
+            this.gui.communityNotValidatedBlocks.splice(c.id, 1);
         }
     }
 
     this.gui.update();
 };
 
-OpenM_BookController.user.CommunityBlock = function() {
+OpenM_BookController.user.CommunityBlock = function(community) {
+    this.community = community;
     this.communities = new Array();
     this.gui = new OpenM_BookGUI.user.CommunityBlock();
 };

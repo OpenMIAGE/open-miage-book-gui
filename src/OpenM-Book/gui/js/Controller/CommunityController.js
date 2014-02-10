@@ -528,3 +528,8 @@ OpenM_BookController.community.button.Delete = function(community) {
         }
     };
 };
+
+OpenM_BookController.community.button.Visibility = function(community){
+    this.community = community;
+    
+};

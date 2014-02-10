@@ -215,6 +215,18 @@ OpenM_BookGUI.user.Communities = function() {
     this.c = OpenM_BookGUI.gen.div();
 };
 
+OpenM_BookGUI.user.Communities.prototype.sort = function(block) {
+    var communitiesSorted = new Array();
+    for (var i in block) {
+        communitiesSorted.push(block[i]);
+    }
+    communitiesSorted = $(communitiesSorted).sort(function(a, b) {
+        if (a.category !== undefined)
+            return (a.category.name > b.category.name) ? 1 : -1;
+    });
+    return communitiesSorted;
+};
+
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
     if (this.communityBlocks.length > 0) {
@@ -223,16 +235,18 @@ OpenM_BookGUI.user.Communities.prototype.content = function() {
         divCommunities.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
         this.c.append(divCommunities);
         var community = {name: ""};
-        for (var i in this.communityBlocks) {
-            if (this.communityBlocks[i].category !== undefined && community.name !== this.communityBlocks[i].category.name) {
-                divCommunities.append("<br/>");
-                community = this.communityBlocks[i].category;
-                divCommunities.append(OpenM_BookGUI.gen.div()
-                        .addClass("book-user-community-categorie")
-                        .append(this.communityBlocks[i].category.content()));
+        this.sort(this.communityBlocks).each(function(k, v) {
+            if (v.category !== undefined) {
+                if (community.name !== v.category.name) {
+                    divCommunities.append("<br/>");
+                    community = v.category;
+                    divCommunities.append(OpenM_BookGUI.gen.div()
+                            .addClass("book-user-community-categorie")
+                            .append(v.category.content()));
+                }
+                divCommunities.append(v.content());
             }
-            divCommunities.append(this.communityBlocks[i].content());
-        }
+        });
     }
     if (this.communityNotValidatedBlocks.length > 0) {
         if (this.communityBlocks.length > 0)
@@ -242,16 +256,18 @@ OpenM_BookGUI.user.Communities.prototype.content = function() {
         divCommunitiesNotValidated.append($("communities > label-not-validated", OpenM_BookGUI.user.cst).text() + " :");
         this.c.append(divCommunitiesNotValidated);
         var community = {name: ""};
-        for (var i in this.communityNotValidatedBlocks) {
-            if (this.communityNotValidatedBlocks[i].category !== undefined && community.name !== this.communityNotValidatedBlocks[i].category.name) {
-                divCommunitiesNotValidated.append("<br/>");
-                community = this.communityNotValidatedBlocks[i].category;
-                divCommunitiesNotValidated.append(OpenM_BookGUI.gen.div()
-                        .addClass("book-user-community-categorie")
-                        .append(this.communityNotValidatedBlocks[i].category.content()));
+        this.sort(this.communityNotValidatedBlocks).each(function(k, v) {
+            if (v.category !== undefined) {
+                if (community.name !== v.category.name) {
+                    divCommunitiesNotValidated.append("<br/>");
+                    community = v.category;
+                    divCommunitiesNotValidated.append(OpenM_BookGUI.gen.div()
+                            .addClass("book-user-community-categorie")
+                            .append(v.category.content()));
+                }
+                divCommunitiesNotValidated.append(v.content());
             }
-            divCommunitiesNotValidated.append(this.communityNotValidatedBlocks[i].content());
-        }
+        });
     }
     return this.c;
 };
