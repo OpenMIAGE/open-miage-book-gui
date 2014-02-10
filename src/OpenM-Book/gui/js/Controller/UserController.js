@@ -250,7 +250,15 @@ OpenM_BookController.user.Communities = function(user) {
 
 OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function() {
     function ancestors(community, block) {
+        if (community === OpenM_BookDAO.community.DAO.root)
+            return;
         var communityController = block.communities[community.id];
+        if (community.parent !== undefined && community.parent === OpenM_BookDAO.community.DAO.root) {
+            communityController = new OpenM_BookController.user.Community(community);
+            block.category = communityController;
+            block.gui.category = block.category.gui;
+            return;
+        }
         if (communityController === undefined) {
             communityController = new OpenM_BookController.user.Community(community);
             block.communities[community.id] = communityController;
@@ -274,7 +282,7 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
             ancestors(c, b);
         }
     }
-    
+
     for (var i in this.user.communitiesNotValidated) {
         var c = this.user.communitiesNotValidated[i];
         communitiesNotValidated[c.id] = c;
@@ -293,7 +301,7 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
             this.gui.communityBlocks.splice(j, 1);
         }
     }
-    
+
     for (var j in this.communityNotValidatedBlocks) {
         if (communitiesNotValidated[j] === undefined) {
             this.communityNotValidatedBlocks.splice(j, 1);

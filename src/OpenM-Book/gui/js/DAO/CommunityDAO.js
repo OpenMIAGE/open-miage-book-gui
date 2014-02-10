@@ -386,6 +386,13 @@ OpenM_BookDAO.community.DAO = {
                         }
                     }
                 }
+
+                if (OpenM_BookDAO.community.DAO.root === undefined) {
+                    var c = community;
+                    while (c.parent !== undefined)
+                        c = c.parent;
+                    OpenM_BookDAO.community.DAO.root = c;
+                }
             }
             community.ancestorsLoaded = true;
             for (var k in community.childs) {

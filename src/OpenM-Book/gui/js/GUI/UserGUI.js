@@ -222,7 +222,15 @@ OpenM_BookGUI.user.Communities.prototype.content = function() {
         divCommunities.addClass("book-user-communities");
         divCommunities.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
         this.c.append(divCommunities);
+        var community = {name: ""};
         for (var i in this.communityBlocks) {
+            if (this.communityBlocks[i].category !== undefined && community.name !== this.communityBlocks[i].category.name) {
+                divCommunities.append("<br/>");
+                community = this.communityBlocks[i].category;
+                divCommunities.append(OpenM_BookGUI.gen.div()
+                        .addClass("book-user-community-categorie")
+                        .append(this.communityBlocks[i].category.content()));
+            }
             divCommunities.append(this.communityBlocks[i].content());
         }
     }
@@ -233,7 +241,15 @@ OpenM_BookGUI.user.Communities.prototype.content = function() {
         divCommunitiesNotValidated.addClass("book-user-communities-not-validated");
         divCommunitiesNotValidated.append($("communities > label-not-validated", OpenM_BookGUI.user.cst).text() + " :");
         this.c.append(divCommunitiesNotValidated);
+        var community = {name: ""};
         for (var i in this.communityNotValidatedBlocks) {
+            if (this.communityNotValidatedBlocks[i].category !== undefined && community.name !== this.communityNotValidatedBlocks[i].category.name) {
+                divCommunitiesNotValidated.append("<br/>");
+                community = this.communityNotValidatedBlocks[i].category;
+                divCommunitiesNotValidated.append(OpenM_BookGUI.gen.div()
+                        .addClass("book-user-community-categorie")
+                        .append(this.communityNotValidatedBlocks[i].category.content()));
+            }
             divCommunitiesNotValidated.append(this.communityNotValidatedBlocks[i].content());
         }
     }
@@ -244,8 +260,9 @@ OpenM_BookGUI.user.Communities.prototype.update = function() {
     this.content();
 };
 
-OpenM_BookGUI.user.CommunityBlock = function() {
+OpenM_BookGUI.user.CommunityBlock = function(community) {
     this.communities = new Array();
+    this.category = community;
 };
 
 OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {

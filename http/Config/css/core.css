@@ -44,6 +44,11 @@ input.book-user-field-modification-input {
 
 .book-user-community-block {
     padding: 5px;
+    margin-left: 20px;
+}
+
+.book-user-community-categorie {
+    margin-top: 10px;
 }
 
 .book-community-page, .book-user-page, .book-search-page {
@@ -68,4 +73,10 @@ input.book-user-field-modification-input {
 
 .book-community-users-any-user-message {
     margin-left: 20px;
+}
+
+@media (max-width: 767px){
+    .book-community-childs {
+        text-align: center;
+    }
 }
