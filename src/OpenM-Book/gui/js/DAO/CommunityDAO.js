@@ -46,7 +46,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.addChild = function(community) 
 
 OpenM_BookDAO.community.ExchangeObject.prototype.removeChild = function(community) {
     if (this.childs[community.id]) {
-        this.childs.splice(community.id, 1);
+        delete this.childs[community.id];
         this.nbChild--;
     }
 };
@@ -122,14 +122,14 @@ OpenM_BookDAO.community.ExchangeObject.prototype.unRegisterMe = function() {
             community.userAlreadyRegistred = false;
             var remove = function(c) {
                 if (c.users[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
-                    c.users.splice(OpenM_BookDAO.user.DAO.me.id, 1);
-                    OpenM_BookDAO.user.DAO.me.communities.splice(c.id, 1);
+                    delete c.users[OpenM_BookDAO.user.DAO.me.id];
+                    delete OpenM_BookDAO.user.DAO.me.communities[c.id];
                     OpenM_BookDAO.user.DAO.me.updateCommunities();
                     c.updateUsers();
                 }
                 if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
                     if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][c.id] !== undefined) {
-                        c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id].splice(c.id, 1);
+                        delete c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][c.id];
                         c.updateUsersNotValid();
                     }
                 }
@@ -277,7 +277,7 @@ OpenM_BookDAO.community.DAO = {
                 if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
                     var parent = community.parent;
                     parent.removeChild(community);
-                    OpenM_BookDAO.community.DAO.allCommunities.splice(community.id, 1);
+                    delete OpenM_BookDAO.community.DAO.allCommunities[community.id];
                     OpenM_BookController.commons.URL.clickToCommunity(parent);
                 } else {
                     if (data.hasOwnProperty(OpenM_Book_Moderator.RETURN_ERROR_PARAMETER)) {

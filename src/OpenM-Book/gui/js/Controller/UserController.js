@@ -298,16 +298,16 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
     for (var j in this.communityBlocks) {
         var c = this.communityBlocks[j].community;
         if (communities[c.id] === undefined) {
-            this.communityBlocks.splice(c.id, 1);
-            this.gui.communityBlocks.splice(c.id, 1);
+            delete this.communityBlocks[c.id];
+            delete this.gui.communityBlocks[c.id];
         }
     }
 
     for (var j in this.communityNotValidatedBlocks) {
         var c = this.communityNotValidatedBlocks[j].community;
         if (communitiesNotValidated[c.id] === undefined) {
-            this.communityNotValidatedBlocks.splice(c.id, 1);
-            this.gui.communityNotValidatedBlocks.splice(c.id, 1);
+            delete this.communityNotValidatedBlocks[c.id];
+            delete this.gui.communityNotValidatedBlocks[c.id];
         }
     }
 

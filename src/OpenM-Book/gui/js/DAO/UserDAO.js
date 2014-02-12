@@ -27,7 +27,7 @@ OpenM_BookDAO.user.ExchangeObject.prototype.removePropertyValue = function(field
     OpenM_Book_User.removePropertyValue(value.id, function(data) {
         OpenM_BookGUI.Pages.showJSON(data);
         if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
-            controller.otherProperties[field.id].values.splice(value.id, 1);
+            delete controller.otherProperties[field.id].values[value.id];
             controller.update();
         }
     });
