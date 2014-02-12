@@ -76,7 +76,7 @@ input.book-user-field-modification-input {
 }
 
 @media (max-width: 767px){
-    .book-community-childs {
+    .book-community-childs, .book-search-results-users , .book-search-results-communities, .book-search-results-groups {
         text-align: center;
-    }
+    }     
 }

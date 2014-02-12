@@ -5,7 +5,7 @@ GUI Label definition
 <gui>
     <search>
         <input>
-            <class>input-medium search-query</class>
+            <class>input-large search-query</class>
         </input>
         <btn>
             <label> Rechercher</label>
