@@ -11,7 +11,7 @@ GUI Label definition
             <class>btn btn-warning</class>
         </rename>
         <add>
-            <label>Ajouter</label>
+            <label>Ajouter une sous-communautée</label>
             <icon>icon-white icon-plus</icon>
             <tooltip>Ajouter une sous communauté à</tooltip>
             <title>Ajouter une sous communauté</title>
