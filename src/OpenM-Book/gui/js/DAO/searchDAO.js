@@ -118,11 +118,5 @@ OpenM_BookDAO.search.DAO.parseAndLoadSearch = function(data, result) {
         }
 
         result.update();
-    } else {
-        if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Groups.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les résultats de (search: '" + result.search + "')");
-        }
-    }
+    } 
 };

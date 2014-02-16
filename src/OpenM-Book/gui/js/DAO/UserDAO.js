@@ -196,14 +196,7 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
             }
         }
         user.update();
-    } else {
-        if (data[OpenM_Book.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les données du user (id: " + user.id + ") :(");
-        }
-
-    }
+    } 
 };
 
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
@@ -264,11 +257,5 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
 
             user.updateCommunities();
         }
-    } else {
-        if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Groups.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les communautés du user (id: " + user.id + ") :(");
-        }
-    }
+    } 
 };
