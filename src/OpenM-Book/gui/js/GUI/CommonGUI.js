@@ -65,6 +65,9 @@ OpenM_BookGUI.Pages = {
     removeJSON: function() {
         this.divJSONfloatingWindow.remove();
     },
+    onError: function(errno, error_message) {
+        this.showError(error_message);
+    },
     showError: function(message) {
         $("#div_alert").empty();
         $("#div_alert").append("<div class='alert alert-error alert-block span4 offset4' style='display: none;'><button type='button' class='close'>x</button><h4>Erreur :</h4>" + message + "</div>");
