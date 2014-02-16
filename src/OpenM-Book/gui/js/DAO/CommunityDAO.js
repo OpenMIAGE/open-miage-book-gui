@@ -295,7 +295,7 @@ OpenM_BookDAO.community.DAO = {
             community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             if (data[OpenM_Book.RETURN_COMMUNITIES_CHILDS_FAMILY] !== undefined)
-                community.childsFamiliy = data[OpenM_Book.RETURN_COMMUNITIES_CHILDS_FAMILY];
+                community.childsFamily = data[OpenM_Book.RETURN_COMMUNITIES_CHILDS_FAMILY];
 
             if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] !== 'undefined') {
                 var liste = new Array();
