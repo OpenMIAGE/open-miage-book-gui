@@ -148,6 +148,8 @@ OpenM_BookController.community.Childs.prototype.updateChilds = function() {
             this.communities.splice(i, 1);
         }
     }
+    if (this.community.childsFamily !== undefined)
+        this.gui.childsFamily = this.community.childsFamily;
     this.gui.content();
 };
 
@@ -252,13 +254,12 @@ OpenM_BookController.community.UsersNotValid.prototype.updateUsers = function() 
 OpenM_BookController.community.UserNotValid = function(user, community, isAlreadyAcceptedByUser) {
     this.user = user;
     this.community = community;
-    if (OpenM_BookDAO.user.DAO.me.isAdmin || this.community.userIsModerator)
-        this.isAlreadyAccepted = false;
-    else
-        this.isAlreadyAccepted = (OpenM_BookDAO.user.DAO.me === this.user) ? true : isAlreadyAcceptedByUser;
+    this.isAlreadyAccepted = isAlreadyAcceptedByUser;
     this.gui = new OpenM_BookGUI.community.UserNotValid(this.user.id, this.user.name, this.community.name);
-    this.buttonValidate = new OpenM_BookController.community.button.Validate(this.user, this.community, this.isAlreadyAccepted);
-    this.gui.buttonValidate = this.buttonValidate.gui;
+    if (OpenM_BookDAO.user.DAO.me !== this.user) {
+        this.buttonValidate = new OpenM_BookController.community.button.Validate(this.user, this.community, this.isAlreadyAccepted);
+        this.gui.buttonValidate = this.buttonValidate.gui;
+    }
     this.imageProfile = new OpenM_BookController.community.image.Profile(this.user);
     this.gui.imageProfile = this.imageProfile.gui;
     this.buttonDisplayProfil = new OpenM_BookController.community.button.DisplayProfile(this.user);
@@ -528,4 +529,9 @@ OpenM_BookController.community.button.Delete = function(community) {
             OpenM_BookDAO.community.DAO.removeCommunity(controller.community.id);
         }
     };
+};
+
+OpenM_BookController.community.button.Visibility = function(community) {
+    this.community = community;
+
 };

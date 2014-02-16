@@ -5,7 +5,7 @@ if (OpenM_BookController.commons === undefined)
     OpenM_BookController.commons = {};
 
 OpenM_BookController.commons.URL = {
-    homeSelector: '/home',
+    homeSelector: 'home',
     login: "",
     logout: "",
     menu: {left: {selectCommunity: function() {
@@ -21,7 +21,7 @@ OpenM_BookController.commons.URL = {
     clickToHome: function() {
         window.location.href = this.home();
     },
-    communitySelector: '/community',
+    communitySelector: 'group',
     community: function(community) {
         var url = "#" + this.communitySelector;
         if (community)
@@ -52,7 +52,7 @@ OpenM_BookController.commons.URL = {
             user = OpenM_BookDAO.user.DAO.me;
         window.location.href = this.user(user);
     },
-    userSelector: '/user',
+    userSelector: 'user',
     user: function(user) {
         var url = "#" + this.userSelector;
         if (user)
@@ -78,7 +78,7 @@ OpenM_BookController.commons.URL = {
     clickToSearch: function(search) {
         window.location.href = this.search(search);
     },
-    searchSelector: '/search',
+    searchSelector: 'search',
     search: function(search) {
         var url = "#" + this.searchSelector;
         if (search)
@@ -160,3 +160,9 @@ else {
         }
     }, 100);
 }
+
+OpenM_BookController.error = {
+    onError: function(errno, error_message) {
+        OpenM_BookGUI.error.showError(error_message);
+    }
+};

@@ -65,6 +65,12 @@ class OpenM_CoreView extends OpenM_BookView {
             "OpenM-Book/gui/js/Controller/searchController.js",
             "OpenM-Book/gui/js/GUI/searchGUI.js"
         ));
+        
+        $this->smarty->assign("core_secondary_js", array(
+            "OpenM-Book/gui/js/DAO/GroupsDAO.js",
+            "OpenM-Book/gui/js/Controller/GroupsController.js",
+            "OpenM-Book/gui/js/GUI/GroupsGUI.js"
+        ));
         $this->smarty->display('core.tpl');
     }
 

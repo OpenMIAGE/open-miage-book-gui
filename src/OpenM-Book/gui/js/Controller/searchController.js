@@ -78,7 +78,7 @@ OpenM_BookController.search.Results = function(search) {
         controller.gui.communities.communities = new Array();
         if (controller.search.communities !== undefined) {
             for (var n in controller.search.communities) {
-                var c = OpenM_BookController.community.Child.from(controller.search.communities[n]);
+                var c = OpenM_BookController.search.Community.from(controller.search.communities[n]);
                 controller.gui.communities.communities.push(c.gui);
                 controller.communities.communities.push(c);
             }
@@ -126,4 +126,36 @@ OpenM_BookController.search.ResultGroup.from = function(group) {
     var c = new OpenM_BookController.search.ResultGroup(group);
     OpenM_BookController.search.ResultGroup.all[group.id] = c;
     return c;
+};
+
+OpenM_BookController.search.Community = function(community) {
+    this.community = community;
+
+    var controller = this;
+    this.update = function() {
+        var name = controller.community.name;
+        var c = controller.community.parent;
+        for (var i = 0; c !== undefined && i < 3; i++) {
+            name = c.name + " - " + name;
+            c = c.parent;
+        }
+        controller.gui.updateName(name);
+    };
+    this.community.addUpdateCallBack(this.update);
+
+    this.gui = new OpenM_BookGUI.community.Child(this.community.id, this.community.name);
+    this.update();
+    this.gui.click = function() {
+        OpenM_BookController.commons.URL.clickToCommunity(controller.community);
+    };
+};
+
+OpenM_BookController.search.Community.all = new Array();
+OpenM_BookController.search.Community.from = function(community) {
+    if (OpenM_BookController.search.Community.all[community.id] !== undefined)
+        return OpenM_BookController.search.Community.all[community.id];
+
+    var child = new OpenM_BookController.search.Community(community);
+    OpenM_BookController.search.Community.all[community.id] = child;
+    return child;
 };

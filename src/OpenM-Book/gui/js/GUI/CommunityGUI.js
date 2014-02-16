@@ -60,13 +60,7 @@ OpenM_BookGUI.community.Tree = function(communityId) {
 OpenM_BookGUI.community.Tree.prototype.content = function() {
     var div = OpenM_BookGUI.gen.div();
     div.addClass("book-community-tree");
-    var first = true;
     $.each(this.communities, function(key, value) {
-        if (first === true)
-            first = false;
-        else
-            div.append(" <i class='" + $("tree > separator", OpenM_BookGUI.community.cst).text() + "'></i> ");
-
         div.append(value.content());
     });
     return div;
@@ -107,6 +101,7 @@ OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
 OpenM_BookGUI.community.Childs = function(communityId) {
     this.communityId = communityId;
     this.communities = new Array();
+    this.childsFamily = undefined;
     this.c = OpenM_BookGUI.gen.div();
 };
 
@@ -114,9 +109,20 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
     this.c.empty();
     if (this.communities.length > 0)
         this.c.addClass("book-community-childs");
+    var communitiesSorted = new Array();
     for (var i in this.communities) {
-        this.c.append(this.communities[i].content());
+        communitiesSorted.push(this.communities[i]);
     }
+    communitiesSorted = $(communitiesSorted).sort(function(a, b) {
+        if (a.name !== undefined)
+            return (a.name > b.name) ? 1 : -1;
+    });
+    var c = this.c;
+    communitiesSorted.each(function(k, v) {
+        c.append(v.content());
+    });
+    if (this.childsFamily !== undefined)
+        this.c.append("<br/><p>" + $("childs > family > text", OpenM_BookGUI.community.cst).text() + "'" + this.childsFamily + "'</p>");
     return this.c;
 };
 
@@ -229,9 +235,10 @@ OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
     this.c.empty();
     this.c.addClass("book-community-user-not-valid");
     this.c.append(this.imageProfile.content());
-    this.c.append(this.buttonValidate.content())
-            .append("<br />")
-            .append(this.buttonDisplayProfil.content())
+    if (this.buttonValidate !== undefined)
+        this.c.append(this.buttonValidate.content())
+                .append("<br />");
+    this.c.append(this.buttonDisplayProfil.content())
             .append("<br />")
             .append("<i class='icon-play'></i> ")
             .append(this.buttonDisplayCommunity.content());

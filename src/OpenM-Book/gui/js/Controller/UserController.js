@@ -235,6 +235,7 @@ OpenM_BookController.user.FieldModificationController.close = function(withSave)
 OpenM_BookController.user.Communities = function(user) {
     this.user = user;
     this.communityBlocks = new Array();
+    this.communityNotValidatedBlocks = new Array();
     this.gui = new OpenM_BookGUI.user.Communities();
 
     var controller = this;
@@ -249,7 +250,15 @@ OpenM_BookController.user.Communities = function(user) {
 
 OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function() {
     function ancestors(community, block) {
+        if (community === OpenM_BookDAO.community.DAO.root)
+            return;
         var communityController = block.communities[community.id];
+        if (community.parent !== undefined && community.parent === OpenM_BookDAO.community.DAO.root) {
+            communityController = new OpenM_BookController.user.Community(community);
+            block.category = communityController;
+            block.gui.category = block.category.gui;
+            return;
+        }
         if (communityController === undefined) {
             communityController = new OpenM_BookController.user.Community(community);
             block.communities[community.id] = communityController;
@@ -260,30 +269,53 @@ OpenM_BookController.user.Communities.prototype.updateCommunityBlocks = function
     }
 
     var communities = new Array();
+    var communitiesNotValidated = new Array();
 
     for (var i in this.user.communities) {
         var c = this.user.communities[i];
         communities[c.id] = c;
         var b = this.communityBlocks[c.id];
         if (b === undefined) {
-            b = new OpenM_BookController.user.CommunityBlock();
+            b = new OpenM_BookController.user.CommunityBlock(c);
             this.communityBlocks[c.id] = b;
             this.gui.communityBlocks[c.id] = b.gui;
             ancestors(c, b);
         }
     }
 
+    for (var i in this.user.communitiesNotValidated) {
+        var c = this.user.communitiesNotValidated[i];
+        communitiesNotValidated[c.id] = c;
+        var b = this.communityNotValidatedBlocks[c.id];
+        if (b === undefined) {
+            b = new OpenM_BookController.user.CommunityBlock(c);
+            this.communityNotValidatedBlocks[c.id] = b;
+            this.gui.communityNotValidatedBlocks[c.id] = b.gui;
+            ancestors(c, b);
+        }
+    }
+
     for (var j in this.communityBlocks) {
-        if (communities[j] === undefined) {
-            this.communityBlocks.splice(j, 1);
-            this.gui.communityBlocks.splice(j, 1);
+        var c = this.communityBlocks[j].community;
+        if (communities[c.id] === undefined) {
+            delete this.communityBlocks[c.id];
+            delete this.gui.communityBlocks[c.id];
+        }
+    }
+
+    for (var j in this.communityNotValidatedBlocks) {
+        var c = this.communityNotValidatedBlocks[j].community;
+        if (communitiesNotValidated[c.id] === undefined) {
+            delete this.communityNotValidatedBlocks[c.id];
+            delete this.gui.communityNotValidatedBlocks[c.id];
         }
     }
 
     this.gui.update();
 };
 
-OpenM_BookController.user.CommunityBlock = function() {
+OpenM_BookController.user.CommunityBlock = function(community) {
+    this.community = community;
     this.communities = new Array();
     this.gui = new OpenM_BookGUI.user.CommunityBlock();
 };

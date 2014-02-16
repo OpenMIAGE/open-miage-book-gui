@@ -22,6 +22,7 @@ OpenM_BookDAO.community.ExchangeObject = function() {
     this.userIsModerator = false;
     this.forbidenToAddSubCommunity = false;
     this.cantBeRemoved = true;
+    this.childsFamily = undefined;
     this.validationRequired = true;
     this.parent = undefined;
     this.ancestors = new Array();
@@ -46,7 +47,7 @@ OpenM_BookDAO.community.ExchangeObject.prototype.addChild = function(community) 
 
 OpenM_BookDAO.community.ExchangeObject.prototype.removeChild = function(community) {
     if (this.childs[community.id]) {
-        this.childs.splice(community.id, 1);
+        delete this.childs[community.id];
         this.nbChild--;
     }
 };
@@ -122,14 +123,14 @@ OpenM_BookDAO.community.ExchangeObject.prototype.unRegisterMe = function() {
             community.userAlreadyRegistred = false;
             var remove = function(c) {
                 if (c.users[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
-                    c.users.splice(OpenM_BookDAO.user.DAO.me.id, 1);
-                    OpenM_BookDAO.user.DAO.me.communities.splice(c.id, 1);
+                    delete c.users[OpenM_BookDAO.user.DAO.me.id];
+                    delete OpenM_BookDAO.user.DAO.me.communities[c.id];
                     OpenM_BookDAO.user.DAO.me.updateCommunities();
                     c.updateUsers();
                 }
                 if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id] !== undefined) {
                     if (c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][c.id] !== undefined) {
-                        c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id].splice(c.id, 1);
+                        delete c.usersNotValidTree[OpenM_BookDAO.user.DAO.me.id][c.id];
                         c.updateUsersNotValid();
                     }
                 }
@@ -257,15 +258,7 @@ OpenM_BookDAO.community.DAO = {
                     OpenM_BookDAO.community.DAO.allCommunities[c.id] = c;
                     community.addChild(c);
                     community.update();
-                } else {
-                    if (data.hasOwnProperty(OpenM_Book.RETURN_ERROR_PARAMETER)) {
-                        OpenM_BookGUI.Pages.showError("Ajout de la sous communauté impossible : " + data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
-                    }
-                    else {
-                        OpenM_BookGUI.Pages.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
-                    }
                 }
-
             });
         }
     },
@@ -277,15 +270,8 @@ OpenM_BookDAO.community.DAO = {
                 if (data[OpenM_Book_Moderator.RETURN_STATUS_PARAMETER] === OpenM_Book.RETURN_STATUS_OK_VALUE) {
                     var parent = community.parent;
                     parent.removeChild(community);
-                    OpenM_BookDAO.community.DAO.allCommunities.splice(community.id, 1);
+                    delete OpenM_BookDAO.community.DAO.allCommunities[community.id];
                     OpenM_BookController.commons.URL.clickToCommunity(parent);
-                } else {
-                    if (data.hasOwnProperty(OpenM_Book_Moderator.RETURN_ERROR_PARAMETER)) {
-                        OpenM_BookGUI.Pages.showError("Une erreur c'est produites lors de la suppression de la communauté : " + data[OpenM_Book_Moderator.RETURN_ERROR_MESSAGE_PARAMETER]);
-                    }
-                    else {
-                        OpenM_BookGUI.Pages.showError("Une erreur inattendu c'est produites, veuillez nous excuser");
-                    }
                 }
             });
         }
@@ -308,6 +294,8 @@ OpenM_BookDAO.community.DAO = {
             community.userIsModerator = (data[OpenM_Book.RETURN_YOU_ARE_COMMUNITY_MODERATOR_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.cantBeRemoved = (data[OpenM_Book.RETURN_COMMUNITY_CANT_BE_REMOVED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
             community.validationRequired = (data[OpenM_Book.RETURN_REGISTRATION_VALIDATION_REQUIRED_PARAMETER] === OpenM_Book.TRUE_PARAMETER_VALUE) ? true : false;
+            if (data[OpenM_Book.RETURN_COMMUNITIES_CHILDS_FAMILY] !== undefined)
+                community.childsFamily = data[OpenM_Book.RETURN_COMMUNITIES_CHILDS_FAMILY];
 
             if (typeof data[OpenM_Book.RETURN_COMMUNITY_CHILDS_PARAMETER] !== 'undefined') {
                 var liste = new Array();
@@ -341,12 +329,6 @@ OpenM_BookDAO.community.DAO = {
             }
             community.loaded = true;
             community.update();
-        } else {
-            if (data[OpenM_Book.RETURN_ERROR_PARAMETER]) {
-                OpenM_BookGUI.Pages.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
-            } else {
-                OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les données d'une communauté (id: " + community.id + ") :(");
-            }
         }
     },
     parseAndLoadAncestors: function(data, community) {
@@ -386,16 +368,17 @@ OpenM_BookDAO.community.DAO = {
                         }
                     }
                 }
+
+                if (OpenM_BookDAO.community.DAO.root === undefined) {
+                    var c = community;
+                    while (c.parent !== undefined)
+                        c = c.parent;
+                    OpenM_BookDAO.community.DAO.root = c;
+                }
             }
             community.ancestorsLoaded = true;
             for (var k in community.childs) {
                 community.childs[k].ancestorsLoaded = true;
-            }
-        } else {
-            if (data[OpenM_Book.RETURN_ERROR_PARAMETER]) {
-                OpenM_BookGUI.Pages.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
-            } else {
-                OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les données des ancetres d'une communauté (id: " + community.id + ") :(");
             }
         }
     },

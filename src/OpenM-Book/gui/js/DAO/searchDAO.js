@@ -92,12 +92,31 @@ OpenM_BookDAO.search.DAO.parseAndLoadSearch = function(data, result) {
 
             }
         }
-        result.update();
-    } else {
-        if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Groups.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les résultats de (search: '" + result.search + "')");
+
+        if (typeof data[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST] !== 'undefined') {
+            function defineParent(d, c) {
+                c.ancestorsLoaded = true;
+                if (c === undefined)
+                    return;
+                if (c.parent === undefined && d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id] === undefined)
+                    return;
+                if (c.parent === undefined) {
+                    var json = d[OpenM_Groups.RETURN_COMMUNITY_ANCESTORS_LIST][c.id];
+                    c.parent = OpenM_BookDAO.community.DAO.get(json[OpenM_Groups.RETURN_COMMUNITY_ID_PARAMETER], false, false);
+                    c.parent.childs[c.id] = c;
+                    if (c.parent.name !== json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER]) {
+                        c.parent.name = json[OpenM_Groups.RETURN_COMMUNITY_NAME_PARAMETER];
+                        c.parent.update();
+                    }
+                    defineParent(d, c.parent);
+                }
+            }
+            
+            for (var i in result.communities) {
+                defineParent(data, result.communities[i]);
+            }
         }
-    }
+
+        result.update();
+    } 
 };

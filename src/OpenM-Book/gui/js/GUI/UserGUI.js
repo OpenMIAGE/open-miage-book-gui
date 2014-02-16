@@ -128,7 +128,10 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
             .addClass("book-user-field");
     this.c.append(content);
     if (this.isInModificationMode === false) {
-        content.addClass("book-user-field-read");
+        if (this.isModifiable)
+            content.addClass("book-user-field-modifiable");
+        else
+            content.addClass("book-user-field-read");
         var labelVal = OpenM_BookGUI.gen.div()
                 .addClass("book-user-field-read-label");
         labelVal.append(OpenM_BookGUI.gen.i()
@@ -208,19 +211,63 @@ OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
 
 OpenM_BookGUI.user.Communities = function() {
     this.communityBlocks = new Array();
+    this.communityNotValidatedBlocks = new Array();
     this.c = OpenM_BookGUI.gen.div();
+};
+
+OpenM_BookGUI.user.Communities.prototype.sort = function(block) {
+    var communitiesSorted = new Array();
+    for (var i in block) {
+        communitiesSorted.push(block[i]);
+    }
+    communitiesSorted = $(communitiesSorted).sort(function(a, b) {
+        if (a.category !== undefined)
+            return (a.category.name > b.category.name) ? 1 : -1;
+    });
+    return communitiesSorted;
 };
 
 OpenM_BookGUI.user.Communities.prototype.content = function() {
     this.c.empty();
-    if (this.communityBlocks.length === 0)
-        return this.c;
-    var div = OpenM_BookGUI.gen.div();
-    div.addClass("book-user-communities");
-    div.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
-    this.c.append(div);
-    for (var i in this.communityBlocks) {
-        div.append(this.communityBlocks[i].content());
+    if (this.communityBlocks.length > 0) {
+        var divCommunities = OpenM_BookGUI.gen.div();
+        divCommunities.addClass("book-user-communities");
+        divCommunities.append($("communities > label", OpenM_BookGUI.user.cst).text() + " :");
+        this.c.append(divCommunities);
+        var community = {name: ""};
+        this.sort(this.communityBlocks).each(function(k, v) {
+            if (v.category !== undefined) {
+                if (community.name !== v.category.name) {
+                    divCommunities.append("<br/>");
+                    community = v.category;
+                    divCommunities.append(OpenM_BookGUI.gen.div()
+                            .addClass("book-user-community-categorie")
+                            .append(v.category.content()));
+                }
+                divCommunities.append(v.content());
+            }
+        });
+    }
+    if (this.communityNotValidatedBlocks.length > 0) {
+        if (this.communityBlocks.length > 0)
+            this.c.append("<br/>");
+        var divCommunitiesNotValidated = OpenM_BookGUI.gen.div();
+        divCommunitiesNotValidated.addClass("book-user-communities-not-validated");
+        divCommunitiesNotValidated.append($("communities > label-not-validated", OpenM_BookGUI.user.cst).text() + " :");
+        this.c.append(divCommunitiesNotValidated);
+        var community = {name: ""};
+        this.sort(this.communityNotValidatedBlocks).each(function(k, v) {
+            if (v.category !== undefined) {
+                if (community.name !== v.category.name) {
+                    divCommunitiesNotValidated.append("<br/>");
+                    community = v.category;
+                    divCommunitiesNotValidated.append(OpenM_BookGUI.gen.div()
+                            .addClass("book-user-community-categorie")
+                            .append(v.category.content()));
+                }
+                divCommunitiesNotValidated.append(v.content());
+            }
+        });
     }
     return this.c;
 };
@@ -229,8 +276,9 @@ OpenM_BookGUI.user.Communities.prototype.update = function() {
     this.content();
 };
 
-OpenM_BookGUI.user.CommunityBlock = function() {
+OpenM_BookGUI.user.CommunityBlock = function(community) {
     this.communities = new Array();
+    this.category = community;
 };
 
 OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
@@ -240,10 +288,6 @@ OpenM_BookGUI.user.CommunityBlock.prototype.content = function() {
     div.append(c);
     var first = true;
     for (var i in this.communities) {
-        if (first)
-            first = false;
-        else
-            c.append(" <i class='icon-play'></i> ");
         c.append(this.communities[i].content());
     }
     return div;

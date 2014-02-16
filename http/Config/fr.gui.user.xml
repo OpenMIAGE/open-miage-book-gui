@@ -68,6 +68,7 @@ GUI Label definition
     </properties>
     <communities>
         <label>Communauté(s)</label>
+        <label-not-validated>Communauté(s) en attente de validation</label-not-validated>
         <class>btn</class>
     </communities>
 </gui>

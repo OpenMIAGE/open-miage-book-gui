@@ -1,6 +1,7 @@
 {if $debug}
     <script src="{$clients_js}"></script>
     <script src="{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}"></script>
+    <script src="{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}"></script>
 {/if}
 <script type="text/javascript">
     {literal}
@@ -26,7 +27,8 @@
                 OpenM_SSOConnectionProxy.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";
                 OpenM_SSOConnectionProxy.session_mode = OpenM_SSOConnectionProxy.MODE_API_SELECTION;
                 OpenM_SSOConnectionProxy.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
-                OpenM_SSOConnectionProxy.timer_interval_reconnection = 2000;
+                OpenM_SSOConnectionProxy.waitingReConnectionTimeOut = 40;
+                OpenM_APIProxy_AJAXController.addErrorListener(function(e,m){OpenM_BookController.error.onError(e,m)});
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
                         OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
@@ -35,6 +37,9 @@
                             location.reload("{/literal}{$links.registration}{literal}");
                         OpenM_BookController.commons.URL.menu.left = new OpenM_BookController.menu.Left($("#button-navbar-left"));
                         OpenM_BookController.commons.URL.load();
+{/literal}{if !$debug}
+                        OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
+{/if}{literal}
                     }
                     else {
                         location.reload();
@@ -42,8 +47,8 @@
                 });
             };
 {/literal}{if !$debug}
-            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");    
-            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");    
+            OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
+            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");
 {else}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished();
 {/literal}{/if}{literal}

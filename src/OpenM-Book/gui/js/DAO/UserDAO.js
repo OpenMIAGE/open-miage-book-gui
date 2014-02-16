@@ -27,7 +27,7 @@ OpenM_BookDAO.user.ExchangeObject.prototype.removePropertyValue = function(field
     OpenM_Book_User.removePropertyValue(value.id, function(data) {
         OpenM_BookGUI.Pages.showJSON(data);
         if (data[OpenM_Book_User.RETURN_STATUS_PARAMETER] === OpenM_Book_User.RETURN_STATUS_OK_VALUE) {
-            controller.otherProperties[field.id].values.splice(value.id, 1);
+            delete controller.otherProperties[field.id].values[value.id];
             controller.update();
         }
     });
@@ -196,14 +196,7 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
             }
         }
         user.update();
-    } else {
-        if (data[OpenM_Book.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Book.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les données du user (id: " + user.id + ") :(");
-        }
-
-    }
+    } 
 };
 
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
@@ -211,6 +204,7 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
     if (data[OpenM_Groups.RETURN_STATUS_PARAMETER] === OpenM_Groups.RETURN_STATUS_OK_VALUE) {
         if (data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER] !== undefined) {
             user.communities = new Array();
+            user.communitiesNotValidated = new Array();
             var defaultCommunity = undefined;
             for (var i in data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER]) {
                 var json = data[OpenM_Groups.RETURN_GROUP_LIST_PARAMETER][i];
@@ -220,7 +214,10 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
                     community.name = json[OpenM_Groups.RETURN_GROUP_NAME_PARAMETER];
                     community.update();
                 }
-                user.communities[community.id] = community;
+                if (json[OpenM_Groups.RETURN_USER_VALIDATED_IN_COMMUNITY_PARAMETER] === OpenM_Groups.TRUE_PARAMETER_VALUE)
+                    user.communities[community.id] = community;
+                else
+                    user.communitiesNotValidated[community.id] = community;
             }
 
             function defineParent(d, c) {
@@ -245,6 +242,9 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
                 for (var i in user.communities) {
                     defineParent(data, user.communities[i]);
                 }
+                for (var i in user.communitiesNotValidated) {
+                    defineParent(data, user.communitiesNotValidated[i]);
+                }
             }
             if (defaultCommunity !== undefined) {
                 function getRoot(c) {
@@ -257,11 +257,5 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
 
             user.updateCommunities();
         }
-    } else {
-        if (data[OpenM_Groups.RETURN_ERROR_PARAMETER]) {
-            OpenM_BookGUI.Pages.showError(data[OpenM_Groups.RETURN_ERROR_MESSAGE_PARAMETER]);
-        } else {
-            OpenM_BookGUI.Pages.showError("une erreur inattendue s'est produite. Impossible de chager les communautés du user (id: " + user.id + ") :(");
-        }
-    }
+    } 
 };
