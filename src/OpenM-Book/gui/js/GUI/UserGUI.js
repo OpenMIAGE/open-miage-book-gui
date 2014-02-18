@@ -38,7 +38,7 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
     bandeauProfil.append(photoUser);
     var userProperties = "<blockquote><p>" + this.name + "</p>";
     if (this.birthday !== undefined)
-        userProperties += "<p><i class='icon-gift'></i> " + this.birthday + "<p>";
+        userProperties += "<p><span class='glyphicon glyphicon-gift'></span> " + this.birthday + "<p>";
     bandeauProfil.append(userProperties + "</blockquote>");
 
     this.page.append(bandeauProfil);
@@ -134,7 +134,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
             content.addClass("book-user-field-read");
         var labelVal = OpenM_BookGUI.gen.div()
                 .addClass("book-user-field-read-label");
-        labelVal.append(OpenM_BookGUI.gen.i()
+        labelVal.append(OpenM_BookGUI.gen.span()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text()));
         var span = OpenM_BookGUI.gen.span()
                 .append(this.value);
@@ -147,7 +147,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
         content.addClass("control-group book-user-field-modification");
         var div = OpenM_BookGUI.gen.div()
                 .addClass("controls");
-        div.append(OpenM_BookGUI.gen.i()
+        div.append(OpenM_BookGUI.gen.span()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text())
                 .addClass("hidden-phone"))
                 .append(" ");
@@ -194,7 +194,7 @@ OpenM_BookGUI.user.FieldAdd.prototype.content = function() {
             .addClass("book-user-fieldadd");
     var labelVal = OpenM_BookGUI.gen.span()
             .addClass("book-user-fieldadd-label");
-    var i = OpenM_BookGUI.gen.i()
+    var i = OpenM_BookGUI.gen.span()
             .addClass($("properties > add > icon", OpenM_BookGUI.user.cst).text());
     labelVal.append(i);
     var j = OpenM_BookGUI.gen.span()

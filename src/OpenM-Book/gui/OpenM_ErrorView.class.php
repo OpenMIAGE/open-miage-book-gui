@@ -31,7 +31,6 @@ class OpenM_ErrorView extends OpenM_BookView {
 
     public function error($message, $code = null, $titre = null) {
         $this->addLinks();
-        $this->addNavBarItems();
         $this->smarty->assign(self::ERROR_DEFAULT_MESSAGE, self::DEFAULT_MESSAGE);
         $this->smarty->assign(self::ERROR_MESSAGE, $message);
         //on rajoute les lien de proposition

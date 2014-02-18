@@ -122,7 +122,7 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
         c.append(v.content());
     });
     if (this.childsFamily !== undefined)
-        this.c.append("<br/><p>" + $("childs > family > text", OpenM_BookGUI.community.cst).text() + "'" + this.childsFamily + "'</p>");
+        this.c.append("<br/><p>" + $("childs > family > text", OpenM_BookGUI.community.cst).text() + "'<b>" + this.childsFamily + "</b>'</p>");
     return this.c;
 };
 
@@ -240,7 +240,7 @@ OpenM_BookGUI.community.UserNotValid.prototype.content = function() {
                 .append("<br />");
     this.c.append(this.buttonDisplayProfil.content())
             .append("<br />")
-            .append("<i class='icon-play'></i> ")
+            .append("<span class='glyphicon glyphicon-play'></span> ")
             .append(this.buttonDisplayCommunity.content());
     return this.c;
 };
@@ -271,7 +271,7 @@ OpenM_BookGUI.community.button.Validate = function() {
 OpenM_BookGUI.community.button.Validate.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons validate class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons validate icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip");
@@ -310,7 +310,7 @@ OpenM_BookGUI.community.button.DisplayProfile = function(name) {
 OpenM_BookGUI.community.button.DisplayProfile.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > displayProfile > class", OpenM_BookGUI.community.cst).text());
     this.a.css("margin-bottom", 5)
             .append(icon)
@@ -333,8 +333,8 @@ OpenM_BookGUI.community.button.DisplayCommunity = function(name) {
 OpenM_BookGUI.community.button.DisplayCommunity.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > displayCommunity > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
-    icon.addClass($("buttons displayCommunity icon", OpenM_BookGUI.community.cst).text());
+    var icon = OpenM_BookGUI.gen.span();
+    icon.addClass($("buttons > displayCommunity > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.text(this.name);
     this.a.click(this.click);
@@ -392,7 +392,7 @@ OpenM_BookGUI.community.button.Register = function(communityId) {
 OpenM_BookGUI.community.button.Register.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > register > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > register > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
@@ -426,7 +426,7 @@ OpenM_BookGUI.community.button.UnRegister = function(communityId) {
 OpenM_BookGUI.community.button.UnRegister.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > unRegister > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > unRegister > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
@@ -459,7 +459,7 @@ OpenM_BookGUI.community.button.AddCommunity = function(communityName) {
 OpenM_BookGUI.community.button.AddCommunity.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > add > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > add > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
 
@@ -498,7 +498,7 @@ OpenM_BookGUI.community.button.Refresh = function(communityName) {
 OpenM_BookGUI.community.button.Refresh.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > refresh > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > refresh > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip")
@@ -520,7 +520,7 @@ OpenM_BookGUI.community.button.Rename = function(communityId) {
 OpenM_BookGUI.community.button.Rename.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > rename > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > rename > icon", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip");
@@ -557,7 +557,7 @@ OpenM_BookGUI.community.button.Delete = function() {
 OpenM_BookGUI.community.button.Delete.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > delete > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.i();
+    var icon = OpenM_BookGUI.gen.span();
     icon.addClass($("buttons > delete > tooltip", OpenM_BookGUI.community.cst).text());
     this.a.append(icon);
     this.a.attr("rel", "tooltip")
@@ -599,13 +599,13 @@ OpenM_BookGUI.community.popover.Name.prototype.content = function() {
     this.a.empty();
     this.a.addClass("btn").addClass("btn-primary").addClass("btn-small");
     this.a.attr('type', 'submit');
-    var i = OpenM_BookGUI.gen.i();
-    i.addClass("icon-white").addClass("icon-ok-circle");
+    var i = OpenM_BookGUI.gen.span();
+    i.addClass("glyphicon glyphicon-ok-circle");
     this.a.append(i);
     this.a.append(" Enregistrer");
 
     var cancel = OpenM_BookGUI.gen.a().addClass("btn btn-primary btn-small");
-    var icancel = OpenM_BookGUI.gen.i().addClass("icon-white icon-remove");
+    var icancel = OpenM_BookGUI.gen.span().addClass("glyphicon glyphicon-remove");
     cancel.append(icancel);
     cancel.append(" Annuler");
     this.popover.append(this.a);

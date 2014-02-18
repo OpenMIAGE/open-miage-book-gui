@@ -147,17 +147,14 @@ class OpenM_RegistrationView extends OpenM_BookView {
         }
 
         $this->addLinks();
-        $this->addNavBarItems();
         $this->showAlert();
         $this->setDebugMode();
         $this->setLang();
-        $this->smarty->assign("btn_navbar_left", false);
         $this->smarty->display('register.tpl');
     }
 
     public function condition() {
         $this->addLinks();
-        $this->addNavBarItems();
         $this->setLang();
         $this->smarty->display('condition.tpl');
     }

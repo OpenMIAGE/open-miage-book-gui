@@ -6,61 +6,61 @@ GUI Label definition
     <buttons>
         <rename>
             <label>Renommer</label>
-            <icon>icon-white icon-refresh</icon>
+            <icon>glyphicon glyphicon-refresh</icon>
             <tooltip>Renommer la communauté</tooltip>
             <class>btn btn-warning</class>
         </rename>
         <add>
             <label>Ajouter une sous-communautée</label>
-            <icon>icon-white icon-plus</icon>
+            <icon>glyphicon glyphicon-plus</icon>
             <tooltip>Ajouter une sous communauté à</tooltip>
             <title>Ajouter une sous communauté</title>
-            <class>btn btn-inverse</class>
+            <class>btn btn-info</class>
         </add>
         <delete>
             <label>Supprimer</label>
-            <icon>icon-white icon-trash</icon>
+            <icon>glyphicon glyphicon-trash</icon>
             <tooltip>Supprimer la communauté (définitivement)</tooltip>
             <class>btn btn-danger</class>
         </delete>
         <refresh>
             <label>Rafraichir</label>
             <tooltip>Rafraichir la communauté</tooltip>
-            <icon>icon-white icon-refresh</icon>
-            <class>btn btn-inverse</class>
+            <icon>glyphicon glyphicon-refresh</icon>
+            <class>btn btn-info</class>
         </refresh>
         <register>
             <label>S'inscrire</label>
             <tooltip>S'inscrire dans cette communauté</tooltip>
             <tooltipAlreadyRegistered>Vous étes déja enregistré</tooltipAlreadyRegistered>
-            <icon>icon-white icon-star-empty</icon>
-            <class>btn btn-inverse</class>
+            <icon>glyphicon glyphicon-star-empty</icon>
+            <class>btn btn-info</class>
         </register>
         <unRegister>
             <label>Se désinscrire</label>
             <tooltip>Se désinscrire s cette communauté</tooltip>
             <tooltipAlreadyUnRegistered>Vous n'étes pas enregistré dans cette communauté</tooltipAlreadyUnRegistered>
-            <icon>icon-white icon-remove</icon>
-            <class>btn btn-inverse</class>
+            <icon>glyphicon glyphicon-remove</icon>
+            <class>btn btn-info</class>
         </unRegister>
         <validate>
             <title>Valider l'utilisateur</title>
             <tooltip>Accepter l'utilisateur dans la communauté</tooltip>
-            <icon>icon-white icon-ok</icon>
+            <icon>glyphicon glyphicon-ok</icon>
             <class>btn btn-success</class>
         </validate>
         <displayProfile>
-            <icon>icon-white icon-zoom-in</icon>
+            <icon>glyphicon glyphicon-zoom-in</icon>
             <class>btn btn-info</class>
         </displayProfile>        
         <displayCommunity>
-            <icon>icon-white icon-zoom-in</icon>
+            <icon>glyphicon glyphicon-zoom-in</icon>
             <class>btn btn-info</class>
         </displayCommunity>
     </buttons>
     <child>
         <tooltip>Naviguer dans la communauté</tooltip>
-        <class>btn btn-large</class>
+        <class>btn btn-default</class>
     </child>  
     <childs>
         <family>
@@ -68,12 +68,12 @@ GUI Label definition
         </family>
     </childs> 
     <tree>
-        <separator>icon-play</separator>
+        <separator>glyphicon glyphicon-play</separator>
     </tree>   
     <inTree>
         <tooltip>Naviguer dans la communauté</tooltip>
-        <class>btn btn-large</class>
-        <classDisabled>btn btn-large disabled</classDisabled>
+        <class>btn btn-default</class>
+        <classDisabled>btn btn-default disabled</classDisabled>
     </inTree>
     <users>
         <label>Membre(s)</label>
