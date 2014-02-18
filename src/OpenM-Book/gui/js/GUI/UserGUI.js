@@ -146,7 +146,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
     } else {
         content.addClass("control-group book-user-field-modification");
         var div = OpenM_BookGUI.gen.div()
-                .addClass("controls");
+                .addClass("form-inline controls");
         div.append(OpenM_BookGUI.gen.span()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text())
                 .addClass("hidden-phone"))
@@ -155,7 +155,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .attr("type", $("properties > multi-values > " + this.name + " > type", OpenM_BookGUI.user.cst).text())
                 .attr("placeholder", $("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text())
                 .val(this.value)
-                .addClass("input-large")
+                .addClass("form-control "+$("properties > multi-values > " + this.name + " > input-class", OpenM_BookGUI.user.cst).text())
                 .addClass("book-user-field-modification-input");
         this.input.click(function(e) {
             e.stopPropagation();

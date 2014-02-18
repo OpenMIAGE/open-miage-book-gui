@@ -24,35 +24,41 @@ GUI Label definition
                 <add>Ajouter un email</add>
                 <icon>glyphicon glyphicon-envelope</icon>
                 <type>email</type>
+                <input-class></input-class>
             </mail>
             <phone_number>
                 <label>Numéro(s) de téléphone</label>
                 <add>Ajouter un numéro de téléphone</add>
                 <icon>glyphicon glyphicon-user</icon>
                 <type>tel</type>
+                <input-class></input-class>
             </phone_number>
             <adress>
                 <label>Adresse(s)</label>
                 <add>Ajouter une adresse</add>
                 <icon>glyphicon glyphicon-map-marker</icon>
                 <type>text</type>
+                <input-class></input-class>
             </adress>
             <url>
                 <label>Site(s)</label>
                 <add>Ajouter un site</add>
                 <icon>glyphicon glyphicon-globe</icon>
                 <type>url</type>
+                <input-class></input-class>
             </url>
             <note>
                 <label>Note(s)</label>
                 <add>Ajouter une note</add>
                 <icon>glyphicon glyphicon-pencil</icon>
                 <type>text</type>
+                <input-class></input-class>
             </note>
             <other>
                 <label>Autre(s)</label>
                 <add>Ajouter une propriété autre</add>
                 <type>text</type>
+                <input-class></input-class>
             </other>            
         </multi-values>
         <add>
