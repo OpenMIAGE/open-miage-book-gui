@@ -41,15 +41,16 @@
 {/if}{literal}
                         $("#OpenM_Book_CommonMenuBar_User").removeClass("hidden").click(function() {
                             OpenM_BookController.commons.URL.clickToUser();
-                        });
+                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > profile > text", OpenM_BookGUI.community.cst).text());
                         $("#OpenM_Book_CommonMenuBar_Search").removeClass("hidden").click(function() {
                             OpenM_BookController.commons.URL.clickToSearch();
-                        });
+                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > search > text", OpenM_BookGUI.community.cst).text());
                         $("#OpenM_Book_CommonMenuBar_Logout").removeClass("hidden").click(function() {
                             if (confirm($("logout > confirm-message", OpenM_BookGUI.community.cst).text())) {
                                 OpenM_BookController.commons.URL.clickToLogout();
                             }
-                        });
+                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > logout > text", OpenM_BookGUI.community.cst).text());
+                        $("#OpenM_Book_CommonMenuBar_Home_Title").find("span[class=hidden-xs]").text(" " + $("menu-bar > home > text", OpenM_BookGUI.community.cst).text());
                     }
                     else {
                         location.reload();

@@ -6,5 +6,6 @@
         Purpose of the stylesheet follows.
 */
 .home { 
-    margin: 50px; 
+    margin: 50px;
+    margin-top: 100px;
 }
