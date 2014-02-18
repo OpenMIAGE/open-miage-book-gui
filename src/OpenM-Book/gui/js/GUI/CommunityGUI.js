@@ -101,6 +101,7 @@ OpenM_BookGUI.community.InTree.prototype.updateName = function(name) {
 OpenM_BookGUI.community.Childs = function(communityId) {
     this.communityId = communityId;
     this.communities = new Array();
+    this.childsFamily = undefined;
     this.c = OpenM_BookGUI.gen.div();
 };
 
@@ -120,6 +121,8 @@ OpenM_BookGUI.community.Childs.prototype.content = function() {
     communitiesSorted.each(function(k, v) {
         c.append(v.content());
     });
+    if (this.childsFamily !== undefined)
+        this.c.append("<br/><p>" + $("childs > family > text", OpenM_BookGUI.community.cst).text() + "'" + this.childsFamily + "'</p>");
     return this.c;
 };
 

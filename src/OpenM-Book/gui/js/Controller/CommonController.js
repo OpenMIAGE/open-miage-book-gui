@@ -160,3 +160,9 @@ else {
         }
     }, 100);
 }
+
+OpenM_BookController.error = {
+    onError: function(errno, error_message) {
+        OpenM_BookGUI.error.showError(error_message);
+    }
+};
