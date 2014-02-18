@@ -1,46 +1,32 @@
-body {
-    background-color: white;
-}
-.input-micro {
-    width: 40px;
-}
-.edit:hover {
-    border: darkgoldenrod solid 1px;
-}
-
-.navbar-fixed-top{
+.OpenM_Book_CommonMenuBar {
+    background-color: black;
+    width: 100%;
+    height: 50px;
     position: fixed;
-    margin-left: 0;
-    margin-right: 0;
+    top: 0px;
+    z-index: 10;
 }
 
-.navbar-inner{
-    border-radius: 0px;
+.OpenM_Book_CommonMenuBar_left {
+    left: 10px;
+    top: 7px;
+    position:absolute;
 }
-.nav-tabs-menunavigation{
-    position: absolute;
-    padding-left: 10px;
-    min-height: 100%;
-    width: 162px;
-    background-color: #1B1B1B;
-    background-image: linear-gradient(to bottom,#111111, #222222 );
-    background-repeat: repeat-x;
-    word-break: break-all;
+.OpenM_Book_CommonMenuBar_right {
+    right: 10px;
+    top: 7px;
+    position:absolute;
 }
 
-.book-commons-menu-left-cadre-nom {
-    padding-right: 20px;
-    color: #777777;
+body {
+    padding: 0px;
 }
 
 /**
 * css pour affichage mobile
 */
 @media (max-width: 767px){
-    body {
-        padding-right: 0px;
-        padding-left: 0px;
-    }
+
     .hero-unit{
         padding: 20px;
         -webkit-border-radius: 0px;
@@ -52,47 +38,4 @@ body {
     .well{
         margin: 0;
     }
-}
-
-.container-withmenunavigation{
-    margin-top: 40px;
-}
-
-/**
-Pour affichage seulement Ordinateur
-*/
-@media (min-width : 979px){
-    .container-withmenunavigation{
-        margin-left: 162px;
-        margin-top: 50px;
-    }
-}
-
-.book-commons-menu-left {
-    position: fixed;
-    top: 40px;
-    bottom: 0px;
-    background-color: white;
-}
-
-.book-commons-menu-left-first-name, .book-commons-menu-left-last-name,
-.book-commons-menu-left-profile, .book-commons-menu-left-community,
-.book-commons-menu-left-logout, .book-commons-menu-left-search {
-    cursor: pointer;
-}
-
-.book-commons-menu-left-mobile {
-    z-index: 10000;
-    position: fixed;
-    top: 50px;
-    bottom: 0px;
-    left: -200px;
-    background-color: white;
-}
-
-.book-commons-menu-left-logout {
-    z-index: 10001;
-    position: fixed;
-    left: 15px;
-    bottom: 10px;    
 }

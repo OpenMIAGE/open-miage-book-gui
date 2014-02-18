@@ -22,31 +22,31 @@ GUI Label definition
             <mail>
                 <label>Email(s)</label>
                 <add>Ajouter un email</add>
-                <icon>icon-envelope</icon>
+                <icon>glyphicon glyphicon-envelope</icon>
                 <type>email</type>
             </mail>
             <phone_number>
                 <label>Numéro(s) de téléphone</label>
                 <add>Ajouter un numéro de téléphone</add>
-                <icon>icon-user</icon>
+                <icon>glyphicon glyphicon-user</icon>
                 <type>tel</type>
             </phone_number>
             <adress>
                 <label>Adresse(s)</label>
                 <add>Ajouter une adresse</add>
-                <icon>icon-map-marker</icon>
+                <icon>glyphicon glyphicon-map-marker</icon>
                 <type>text</type>
             </adress>
             <url>
                 <label>Site(s)</label>
                 <add>Ajouter un site</add>
-                <icon>icon-globe</icon>
+                <icon>glyphicon glyphicon-globe</icon>
                 <type>url</type>
             </url>
             <note>
                 <label>Note(s)</label>
                 <add>Ajouter une note</add>
-                <icon>icon-pencil</icon>
+                <icon>glyphicon glyphicon-pencil</icon>
                 <type>text</type>
             </note>
             <other>
@@ -56,12 +56,12 @@ GUI Label definition
             </other>            
         </multi-values>
         <add>
-            <icon>icon-plus</icon>
+            <icon>glyphicon glyphicon-plus</icon>
         </add>
         <buttons>
             <cancel>
                 <label></label>
-                <icon>icon-white icon-trash</icon>
+                <icon>glyphicon glyphicon-trash</icon>
                 <class>btn btn-danger</class>
             </cancel>
         </buttons>
@@ -69,6 +69,6 @@ GUI Label definition
     <communities>
         <label>Communauté(s)</label>
         <label-not-validated>Communauté(s) en attente de validation</label-not-validated>
-        <class>btn</class>
+        <class>btn btn-default</class>
     </communities>
 </gui>

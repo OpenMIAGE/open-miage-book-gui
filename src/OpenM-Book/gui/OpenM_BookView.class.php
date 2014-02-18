@@ -143,37 +143,6 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
                 . (($this->bookProperties->get(self::BOOK_HMI_DEBUG_MODE) == self::BOOK_HMI_DEBUG_MODE_ON_VALUE) ? "" : "-min") . ".js");
     }
 
-    protected function addNavBarItems() {
-        $this->smarty->assign("nav_bar", array(
-            array(
-                "label" => "account",
-                "items" => array(
-                    array(
-                        "label" => "register",
-                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL()
-                    ),
-                    array(
-                        "label" => "logout",
-                        "link" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGOUT_FORM)->getURL()
-                    )
-                )),
-            array(
-                "label" => "?",
-                "items" => array(
-                    array(
-                        "label" => "Open-MIAGE.org",
-                        "link" => "http://www.open-miage.org",
-                        "target" => "_blank"
-                    ),
-                    array(
-                        "label" => "La Team Open-MIAGE",
-                        "link" => "http://www.open-miage.org/team.html",
-                        "target" => "_blank"
-                    )
-                ))
-        ));
-    }
-
     /**
      * Affiche une alert, peut etre utilisé deux deux façons. 
      * 1 - avec les parametres, affichage normal

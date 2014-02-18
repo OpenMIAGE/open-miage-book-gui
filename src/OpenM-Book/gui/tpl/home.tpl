@@ -6,7 +6,7 @@
         {include file='include/homeCSS.tpl'}
     </head>
     <body>
-        {include file='include/navBar.tpl'}
+        {include file='include/commonMenuBar.tpl'}
         <form id="home" class="home" action="{$links.login}" method="POST">
             <input type="hidden" name="login" value="new"/>
         </form>

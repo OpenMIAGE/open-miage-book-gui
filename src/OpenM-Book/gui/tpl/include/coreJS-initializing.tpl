@@ -22,24 +22,34 @@
                 OpenM_BookGUI.Pages.divParentId = "divParent";
                 OpenM_BookGUI.Pages.divJSON = "divJSON";
 {/literal}{if $debug}OpenM_BookGUI.Pages.divJSONactivated = true;{/if}{literal}
-                OpenM_BookGUI.menu.Left.menuId = "menuDesktop";
-                OpenM_BookGUI.menu.Left.menuMobileId = "menuMobile";
                 OpenM_SSOConnectionProxy.url = "{/literal}{$OpenM_ID_proxy.url}{literal}";
                 OpenM_SSOConnectionProxy.session_mode = OpenM_SSOConnectionProxy.MODE_API_SELECTION;
                 OpenM_SSOConnectionProxy.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
                 OpenM_SSOConnectionProxy.waitingReConnectionTimeOut = 40;
-                OpenM_APIProxy_AJAXController.addErrorListener(function(e,m){OpenM_BookController.error.onError(e,m)});
+                OpenM_APIProxy_AJAXController.addErrorListener(function(e, m) {
+                    OpenM_BookController.error.onError(e, m);
+                });
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
                         OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
                         OpenM_BookDAO.user.DAO.parseAndLoad($.parseJSON('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
                         if (!OpenM_BookDAO.user.DAO.me.loaded)
                             location.reload("{/literal}{$links.registration}{literal}");
-                        OpenM_BookController.commons.URL.menu.left = new OpenM_BookController.menu.Left($("#button-navbar-left"));
                         OpenM_BookController.commons.URL.load();
 {/literal}{if !$debug}
                         OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
 {/if}{literal}
+                        $("#OpenM_Book_CommonMenuBar_User").removeClass("hidden").click(function() {
+                            OpenM_BookController.commons.URL.clickToUser();
+                        });
+                        $("#OpenM_Book_CommonMenuBar_Search").removeClass("hidden").click(function() {
+                            OpenM_BookController.commons.URL.clickToSearch();
+                        });
+                        $("#OpenM_Book_CommonMenuBar_Logout").removeClass("hidden").click(function() {
+                            if (confirm($("logout > confirm-message", OpenM_BookGUI.community.cst).text())) {
+                                OpenM_BookController.commons.URL.clickToLogout();
+                            }
+                        });
                     }
                     else {
                         location.reload();

@@ -148,7 +148,7 @@ OpenM_BookController.community.Childs.prototype.updateChilds = function() {
             this.communities.splice(i, 1);
         }
     }
-    if (this.community.childsFamily !== undefined)
+    if (this.community.childs.length === 0 && this.community.childsFamily !== undefined)
         this.gui.childsFamily = this.community.childsFamily;
     this.gui.content();
 };

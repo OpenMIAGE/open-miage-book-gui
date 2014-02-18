@@ -7,7 +7,7 @@
     </head>
 </head>
 <body>
-    {include file='include/navBar.tpl'}
+    {include file='include/commonMenuBar.tpl'}
     <div class="container-fluid register">
         {include file='include/alert.tpl'}
         <div class="row-fluid">

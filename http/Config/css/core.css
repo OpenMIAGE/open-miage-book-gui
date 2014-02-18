@@ -1,3 +1,7 @@
+.divParent {
+    margin-top: 50px;
+}
+
 .book-user-photo, .book-community-user-photo, book-search-user-photo {
     background-color:#fafbfc; 
     padding:5px; 
@@ -51,7 +55,7 @@ input.book-user-field-modification-input {
     margin-top: 10px;
 }
 
-.book-community-page, .book-user-page, .book-search-page {
+.book-user-page, .book-search-page {
     margin-bottom: 5px;
 }
 .book-community-childs {
@@ -78,5 +82,10 @@ input.book-user-field-modification-input {
 @media (max-width: 767px){
     .book-community-childs, .book-search-results-users , .book-search-results-communities, .book-search-results-groups {
         text-align: center;
-    }     
+    }
+
+    .container-fluid-book {
+        margin: 0px;
+        padding: 0px;
+    }
 }
