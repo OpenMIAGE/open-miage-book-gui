@@ -3,6 +3,9 @@
 GUI Label definition
 -->
 <gui>
+    <logout>
+        <confirm-message>Êtes-vous sur de vouloir vous déconnecter ?</confirm-message>
+    </logout>
     <buttons>
         <rename>
             <label>Renommer</label>

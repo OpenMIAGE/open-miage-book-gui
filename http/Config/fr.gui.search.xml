@@ -5,12 +5,12 @@ GUI Label definition
 <gui>
     <search>
         <input>
-            <class>input-large search-query</class>
+            <class>form-control</class>
         </input>
         <btn>
             <label> Rechercher</label>
-            <icon>icon-search</icon>
-            <class>btn</class>
+            <icon>glyphicon glyphicon-search</icon>
+            <class>btn btn-default</class>
         </btn>
     </search>
     <results>

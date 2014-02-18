@@ -27,7 +27,7 @@
                 OpenM_SSOConnectionProxy.api_selected = "{/literal}{$OpenM_ID_proxy.api_selected}{literal}";
                 OpenM_SSOConnectionProxy.waitingReConnectionTimeOut = 40;
                 OpenM_APIProxy_AJAXController.addErrorListener(function(e, m) {
-                    OpenM_BookController.error.onError(e, m)
+                    OpenM_BookController.error.onError(e, m);
                 });
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
@@ -41,6 +41,14 @@
 {/if}{literal}
                         $("#OpenM_Book_CommonMenuBar_User").removeClass("hidden").click(function() {
                             OpenM_BookController.commons.URL.clickToUser();
+                        });
+                        $("#OpenM_Book_CommonMenuBar_Search").removeClass("hidden").click(function() {
+                            OpenM_BookController.commons.URL.clickToSearch();
+                        });
+                        $("#OpenM_Book_CommonMenuBar_Logout").removeClass("hidden").click(function() {
+                            if (confirm($("logout > confirm-message", OpenM_BookGUI.community.cst).text())) {
+                                OpenM_BookController.commons.URL.clickToLogout();
+                            }
                         });
                     }
                     else {
