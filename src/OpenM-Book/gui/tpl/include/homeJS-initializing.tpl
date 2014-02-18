@@ -1,11 +1,11 @@
 <script type="text/javascript">{literal}
     $(function() {
-    if (OpenM_BookController === undefined)
-        var OpenM_BookController = {};
-    if (OpenM_BookController.commons === undefined)
-        OpenM_BookController.commons = {};
-    if (OpenM_BookController.commons.URL === undefined)
-        OpenM_BookController.commons.URL = {};
+        if (OpenM_BookController === undefined)
+            var OpenM_BookController = {};
+        if (OpenM_BookController.commons === undefined)
+            OpenM_BookController.commons = {};
+        if (OpenM_BookController.commons.URL === undefined)
+            OpenM_BookController.commons.URL = {};
     {/literal}{include file='include/commonJS-initializing.tpl'}{literal}
         OpenM_BookGUI.home = {cst: undefined};
         OpenM_BookGUI.commons.initConst(OpenM_BookGUI.home, "{/literal}{$config_path}{$lang}{literal}.gui.home.xml", false);
