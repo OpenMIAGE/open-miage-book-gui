@@ -20,7 +20,7 @@
     {/literal}{include file='include/commonJS-initializing.tpl'}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 clearInterval(progressBarTimer);
-                progressBar = 95;
+                progressBar = 90;
                 $("#loader div div[class=progress-bar]").css("width", "" + progressBar + "%");
                 OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 };
@@ -29,8 +29,7 @@
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{$lang}{literal}.gui.user.xml");
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}{$lang}{literal}.gui.search.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
-                OpenM_BookGUI.Pages.ressource_loader = 'OpenM-Book/gui/img/loader.gif';
-                OpenM_BookGUI.Pages.userPhotoDefault = 'OpenM-Book/gui/img/userDefault.png';
+                OpenM_BookGUI.Pages.userPhotoDefault = ressource+'OpenM-Book/gui/img/userDefault.jpg';
                 OpenM_BookGUI.Pages.divParentId = "divParent";
                 OpenM_BookGUI.Pages.divJSON = "divJSON";
 {/literal}{if $debug}OpenM_BookGUI.Pages.divJSONactivated = true;{/if}{literal}

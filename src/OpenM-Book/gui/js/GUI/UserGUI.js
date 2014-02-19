@@ -33,7 +33,7 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
     var photoUser = OpenM_BookGUI.gen.div().append(OpenM_BookGUI.gen.img().attr({
         alt: "Photo du Profil",
         title: "Photo du profil",
-        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+        src: OpenM_BookGUI.Pages.userPhotoDefault
     }).addClass("book-user-photo"));
     bandeauProfil.append(photoUser);
     var userProperties = "<blockquote><p>" + this.name + "</p>";
