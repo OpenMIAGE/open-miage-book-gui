@@ -7,8 +7,12 @@
     </head>
     <body>
         {include file='include/commonMenuBar.tpl'}
-        <div id="loader" style="z-index: -1; position: absolute;left: 50%; top: 50%; margin-left: -16px; margin-top: -16px; ">
-            <img src="{$resources_dir}OpenM-Book/gui/img/loader.gif"/>
+        <div id="loader"  style="z-index: 10; position: absolute;left: 20%; top: 50%; margin-top: -16px; width:60%">
+            Loading in progress...
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                </div>
+            </div>
         </div>
         <div class="container-fluid container-fluid-book">
             {include file='include/alert.tpl'}

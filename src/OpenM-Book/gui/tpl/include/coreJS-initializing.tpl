@@ -6,10 +6,22 @@
 <script type="text/javascript">
     {literal}
         $(function() {
+            var progressBar = 0;
+            var progressBarTimer = setInterval(function() {
+                if (progressBar < 90) {
+                    progressBar++;
+                    $("#loader div div[class=progress-bar]").css("width", "" + progressBar + "%");
+                }
+                else
+                    clearInterval(progressBarTimer);
+            }, 100);
             OpenM_BookController.commons.URL.loader = "loader";
             var ressource = "{/literal}{$resources_dir}{literal}";
     {/literal}{include file='include/commonJS-initializing.tpl'}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished = function() {
+                clearInterval(progressBarTimer);
+                progressBar = 95;
+                $("#loader div div[class=progress-bar]").css("width", "" + progressBar + "%");
                 OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 };
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.commons, "{/literal}{$config_path}{$lang}{literal}.gui.home.xml", true);
@@ -29,28 +41,50 @@
                 OpenM_APIProxy_AJAXController.addErrorListener(function(e, m) {
                     OpenM_BookController.error.onError(e, m);
                 });
+                progressBarTimer = setInterval(function() {
+                    if (progressBar < 100) {
+                        progressBar++;
+                        $("#loader div div[class=progress-bar]").css("width", "" + progressBar + "%");
+                    }
+                    else
+                        clearInterval(progressBarTimer);
+                }, 100);
                 OpenM_SSOConnectionProxy.isConnected(function() {
                     if (OpenM_SSOConnectionProxy.connected) {
                         OpenM_BookDAO.user.DAO.me = new OpenM_BookDAO.user.ExchangeObject();
                         OpenM_BookDAO.user.DAO.parseAndLoad($.parseJSON('{/literal}{$me}{literal}'), OpenM_BookDAO.user.DAO.me);
-                        if (!OpenM_BookDAO.user.DAO.me.loaded)
-                            location.reload("{/literal}{$links.registration}{literal}");
-                        OpenM_BookController.commons.URL.load();
+                        var allLoaded = function() {
+                            if (!OpenM_BookDAO.user.DAO.me.loaded)
+                                location.reload("{/literal}{$links.registration}{literal}");
+                            OpenM_BookController.commons.URL.load();
 {/literal}{if !$debug}
-                        OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
+                            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
 {/if}{literal}
-                        $("#OpenM_Book_CommonMenuBar_User").removeClass("hidden").click(function() {
-                            OpenM_BookController.commons.URL.clickToUser();
-                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > profile > text", OpenM_BookGUI.community.cst).text());
-                        $("#OpenM_Book_CommonMenuBar_Search").removeClass("hidden").click(function() {
-                            OpenM_BookController.commons.URL.clickToSearch();
-                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > search > text", OpenM_BookGUI.community.cst).text());
-                        $("#OpenM_Book_CommonMenuBar_Logout").removeClass("hidden").click(function() {
-                            if (confirm($("logout > confirm-message", OpenM_BookGUI.community.cst).text())) {
-                                OpenM_BookController.commons.URL.clickToLogout();
-                            }
-                        }).find("span[class=hidden-xs]").text(" " + $("menu-bar > logout > text", OpenM_BookGUI.community.cst).text());
-                        $("#OpenM_Book_CommonMenuBar_Home_Title").find("span[class=hidden-xs]").text(" " + $("menu-bar > home > text", OpenM_BookGUI.community.cst).text());
+                            $("#OpenM_Book_CommonMenuBar_User").removeClass("hidden").click(function() {
+                                OpenM_BookController.commons.URL.clickToUser();
+                            }).find("span[class=hidden-xs]").text(" " + $("menu-bar > profile > text", OpenM_BookGUI.community.cst).text());
+                            $("#OpenM_Book_CommonMenuBar_Search").removeClass("hidden").click(function() {
+                                OpenM_BookController.commons.URL.clickToSearch();
+                            }).find("span[class=hidden-xs]").text(" " + $("menu-bar > search > text", OpenM_BookGUI.community.cst).text());
+                            $("#OpenM_Book_CommonMenuBar_Logout").removeClass("hidden").click(function() {
+                                if (confirm($("logout > confirm-message", OpenM_BookGUI.community.cst).text())) {
+                                    OpenM_BookController.commons.URL.clickToLogout();
+                                }
+                            }).find("span[class=hidden-xs]").text(" " + $("menu-bar > logout > text", OpenM_BookGUI.community.cst).text());
+                            $("#OpenM_Book_CommonMenuBar_Home_Title").find("span[class=hidden-xs]").text(" " + $("menu-bar > home > text", OpenM_BookGUI.community.cst).text());
+                        };
+                        if (OpenM_BookController.commons.URL.isCommunityHash()) {
+                            var community = OpenM_BookDAO.community.DAO.get(OpenM_BookController.commons.URL.getCommunityId(), false, false);
+                            OpenM_BookDAO.community.DAO.getAncestors(community);
+                            var communityAncestorLoaded = setInterval(function() {
+                                if (community.ancestorsLoaded === true) {
+                                    clearInterval(communityAncestorLoaded);
+                                    allLoaded();
+                                }
+                            }, 10);
+                        }
+                        else
+                            allLoaded();
                     }
                     else {
                         location.reload();
@@ -59,10 +93,9 @@
             };
 {/literal}{if !$debug}
             OpenM_BookController.commons.URL.jsLoad("{$clients_js}");
-            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");
-{else}{literal}
+            OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_js item=js}{$js};{/foreach}&min");{else}{literal}
             OpenM_BookController.commons.URL.jsLoadFinished();
-{/literal}{/if}{literal}
+    {/literal}{/if}{literal}
         });
-{/literal}
-</script>
+            {/literal}
+        </script>

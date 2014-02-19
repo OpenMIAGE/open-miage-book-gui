@@ -45,7 +45,7 @@ OpenM_BookController.commons.URL = {
             return undefined;
     },
     isCommunityHash: function() {
-        return (window.location.hash.slice(1, this.communitySelector.length + 1) === this.communitySelector);
+        return (window.location.hash.slice(1, this.communitySelector.length + 1) === this.communitySelector || window.location.hash === "#" || window.location.hash === "");
     },
     clickToUser: function(user) {
         if (user === undefined)
