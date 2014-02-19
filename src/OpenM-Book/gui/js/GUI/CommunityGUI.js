@@ -358,7 +358,7 @@ OpenM_BookGUI.community.image.Profile.prototype.content = function() {
     this.img.css("cursor", "pointer").attr({
         alt: "Photo du Profil",
         title: "Photo du profil",
-        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+        src: OpenM_BookGUI.Pages.userPhotoDefault
     }).addClass("book-community-user-photo");
     this.img.click(this.click);
     return this.img;

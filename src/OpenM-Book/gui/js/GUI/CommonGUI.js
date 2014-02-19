@@ -22,16 +22,12 @@ OpenM_BookGUI.commons.initConst = function(stub, url, async) {
 OpenM_BookGUI.Pages = {
     divParentId: '',
     ressource_dir: '',
-    ressource_loader: '',
     userPhotoDefault: '',
     divJSON: 'divJSON',
     divJSONContent: '',
     divJSONInitialized: false,
     divJSONcount: 1,
     divJSONactivated: false,
-    showPageLoading: function() {
-        $("#" + this.div_id).empty().append("<img src='" + this.ressource_dir + this.ressource_loader + "' >");
-    },
     divJSONfloatingWindow: undefined,
     floatingWindow: undefined,
     showJSON: function(data) {

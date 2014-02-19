@@ -3,6 +3,20 @@
 GUI Label definition
 -->
 <gui>
+    <menu-bar>
+        <home>
+            <text>OpenMIAGE-Book</text>
+        </home>
+        <profile>
+            <text>Mon Profil</text>
+        </profile>
+        <logout>
+            <text>Se déconnecter</text>
+        </logout>
+        <search>
+            <text>Recherche</text>
+        </search>
+    </menu-bar>
     <logout>
         <confirm-message>Êtes-vous sur de vouloir vous déconnecter ?</confirm-message>
     </logout>

@@ -8,10 +8,6 @@ OpenM_BookController.commons.URL = {
     homeSelector: 'home',
     login: "",
     logout: "",
-    menu: {left: {selectCommunity: function() {
-            }, selectUser: function() {
-            }, selectSearch: function() {
-            }}},
     clickToLogout: function() {
         window.location.href = this.logout;
     },
@@ -45,7 +41,7 @@ OpenM_BookController.commons.URL = {
             return undefined;
     },
     isCommunityHash: function() {
-        return (window.location.hash.slice(1, this.communitySelector.length + 1) === this.communitySelector);
+        return (window.location.hash.slice(1, this.communitySelector.length + 1) === this.communitySelector || window.location.hash === "#" || window.location.hash === "");
     },
     clickToUser: function(user) {
         if (user === undefined)
@@ -104,17 +100,11 @@ OpenM_BookController.commons.URL = {
     },
     load: function() {
         if (this.isCommunityHash()) {
-            this.menu.left.selectCommunity();
             OpenM_BookController.community.Pages.communityPage(this.getCommunityId()).display();
         } else if (this.isUserHash()) {
-            this.menu.left.selectUser();
             OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
         } else if (this.isSearchHash()) {
-            this.menu.left.selectSearch();
             OpenM_BookController.search.Pages.searchPage(this.getSearch()).display();
-        } else {
-            this.menu.left.selectCommunity();
-            OpenM_BookController.community.Pages.communityPage().display();
         }
         if (this.loader !== '')
             $("#" + this.loader).remove();

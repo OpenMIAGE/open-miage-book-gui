@@ -33,7 +33,7 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
     var photoUser = OpenM_BookGUI.gen.div().append(OpenM_BookGUI.gen.img().attr({
         alt: "Photo du Profil",
         title: "Photo du profil",
-        src: "http://us.cdn1.123rf.com/168nwm/mikefirsov/mikefirsov1205/mikefirsov120500001/13917063-icone-illustration-profil.jpg"
+        src: OpenM_BookGUI.Pages.userPhotoDefault
     }).addClass("book-user-photo"));
     bandeauProfil.append(photoUser);
     var userProperties = "<blockquote><p>" + this.name + "</p>";
@@ -146,7 +146,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
     } else {
         content.addClass("control-group book-user-field-modification");
         var div = OpenM_BookGUI.gen.div()
-                .addClass("controls");
+                .addClass("form-inline controls");
         div.append(OpenM_BookGUI.gen.span()
                 .addClass($("properties > multi-values > " + this.name + " > icon", OpenM_BookGUI.user.cst).text())
                 .addClass("hidden-phone"))
@@ -155,7 +155,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .attr("type", $("properties > multi-values > " + this.name + " > type", OpenM_BookGUI.user.cst).text())
                 .attr("placeholder", $("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text())
                 .val(this.value)
-                .addClass("input-large")
+                .addClass("form-control "+$("properties > multi-values > " + this.name + " > input-class", OpenM_BookGUI.user.cst).text())
                 .addClass("book-user-field-modification-input");
         this.input.click(function(e) {
             e.stopPropagation();
