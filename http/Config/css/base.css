@@ -21,6 +21,17 @@
 body {
     padding: 0px;
 }
+.book-div-parent-error{
+}
+
+.book-error {
+    position: fixed;
+    top: 38px;
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
+    z-index: 100;
+}
 
 /**
 * css pour affichage mobile
@@ -51,5 +62,10 @@ body {
     .OpenM_Book_CommonMenuBar a.btn :hover {
         border-color: white;
         color: #5bc0de;
+    }
+
+    .book-error {
+        width: 600px;
+        margin-left: -300px;
     }
 }
