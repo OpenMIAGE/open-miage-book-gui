@@ -4,6 +4,7 @@ GUI Label definition
 -->
 <gui>
     <search>
+        <class>form-inline book-search-input-block</class>
         <input>
             <class>form-control book-search-input</class>
         </input>

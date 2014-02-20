@@ -89,14 +89,15 @@ input.book-user-field-modification-input {
         margin: 0px;
         padding: 0px;
     }
-    
-    .book-search-input {
-        z-index: 99;
-    }
+
 }
 
 @media (min-width: 600px){
     input.book-user-field-modification-input {
         min-width: 400px; 
+    }
+
+    .book-search-input {
+        min-width: 500px;
     }
 }
