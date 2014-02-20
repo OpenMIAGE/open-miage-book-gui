@@ -29,7 +29,7 @@
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{$lang}{literal}.gui.user.xml");
                 OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}{$lang}{literal}.gui.search.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
-                OpenM_BookGUI.Pages.userPhotoDefault = ressource+'OpenM-Book/gui/img/userDefault.jpg';
+                OpenM_BookGUI.Pages.userPhotoDefault = ressource + 'OpenM-Book/gui/img/userDefault.jpg';
                 OpenM_BookGUI.Pages.divParentId = "divParent";
                 OpenM_BookGUI.Pages.divJSON = "divJSON";
 {/literal}{if $debug}OpenM_BookGUI.Pages.divJSONactivated = true;{/if}{literal}
@@ -55,6 +55,7 @@
                         var allLoaded = function() {
                             if (!OpenM_BookDAO.user.DAO.me.loaded)
                                 location.reload("{/literal}{$links.registration}{literal}");
+                            $("#loader").remove();
                             OpenM_BookController.commons.URL.load();
 {/literal}{if !$debug}
                             OpenM_BookController.commons.URL.jsLoad("{$root}js/?js={foreach from=$core_secondary_js item=js}{$js};{/foreach}&min");
@@ -74,13 +75,19 @@
                         };
                         if (OpenM_BookController.commons.URL.isCommunityHash()) {
                             var community = OpenM_BookDAO.community.DAO.get(OpenM_BookController.commons.URL.getCommunityId(), false, false);
-                            OpenM_BookDAO.community.DAO.getAncestors(community);
-                            var communityAncestorLoaded = setInterval(function() {
-                                if (community.ancestorsLoaded === true) {
-                                    clearInterval(communityAncestorLoaded);
-                                    allLoaded();
-                                }
-                            }, 10);
+                            if (OpenM_BookController.commons.URL.getCommunityId() === undefined) {
+                                community.ancestorsLoaded = true;
+                                allLoaded();
+                            }
+                            else {
+                                OpenM_BookDAO.community.DAO.getAncestors(community, false);
+                                var communityAncestorLoaded = setInterval(function() {
+                                    if (community.ancestorsLoaded === true) {
+                                        clearInterval(communityAncestorLoaded);
+                                        allLoaded();
+                                    }
+                                }, 10);
+                            }
                         }
                         else
                             allLoaded();

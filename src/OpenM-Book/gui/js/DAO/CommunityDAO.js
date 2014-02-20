@@ -214,8 +214,8 @@ OpenM_BookDAO.community.DAO = {
         return community;
     },
     getAncestors: function(community, synchro) {
-        if (!synchro) {
-            OpenM_Book.getCommunity(community.Id, function(data) {
+        if (synchro !== true) {
+            OpenM_Book.getCommunityAncestors(community.id, function(data) {
                 OpenM_BookDAO.community.DAO.parseAndLoadAncestors(data, community);
             });
             return null;
@@ -376,10 +376,10 @@ OpenM_BookDAO.community.DAO = {
                     OpenM_BookDAO.community.DAO.root = c;
                 }
             }
-            community.ancestorsLoaded = true;
             for (var k in community.childs) {
                 community.childs[k].ancestorsLoaded = true;
             }
+            community.ancestorsLoaded = true;
         }
     },
     parseUsers: function(data, community) {

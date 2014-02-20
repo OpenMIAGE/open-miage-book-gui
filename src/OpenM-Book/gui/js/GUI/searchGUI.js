@@ -18,7 +18,8 @@ OpenM_BookGUI.search.Page.prototype.content = function() {
     this.page.empty();
     this.page.addClass("row-fluid");
     var div = OpenM_BookGUI.gen.div().addClass("row10 well book-search-page");
-    var divSearch = OpenM_BookGUI.gen.div().addClass("book-search-input-block");
+    var divSearch = OpenM_BookGUI.gen.div()
+            .addClass($("search > class", OpenM_BookGUI.search.cst).text());
     var gui = this;
     divSearch
             .append(this.input.addClass($("search > input > class", OpenM_BookGUI.search.cst).text())
@@ -38,6 +39,10 @@ OpenM_BookGUI.search.Page.prototype.content = function() {
     this.page.append(div);
     if (this.results !== undefined)
         div.append("</br>").append(this.results.content());
+    var input = this.input;
+    setTimeout(function() {
+        input.focus();
+    }, 50);
     return this.page;
 };
 

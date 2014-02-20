@@ -105,13 +105,9 @@ OpenM_BookController.commons.URL = {
             OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
         } else if (this.isSearchHash()) {
             OpenM_BookController.search.Pages.searchPage(this.getSearch()).display();
-        }
-        if (this.loader !== '')
-            $("#" + this.loader).remove();
-        $('html body').animate({scrollTop: 0});
+        }        
     },
     storedHash: window.location.hash,
-    loader: '',
     jsLoaderPipe: new Array(),
     jsLoad: function(jsPath) {
         var jsLoadedTarget = this.jsLoaderPipe.length;

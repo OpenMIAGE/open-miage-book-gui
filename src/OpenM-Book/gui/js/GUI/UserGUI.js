@@ -36,10 +36,12 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
         src: OpenM_BookGUI.Pages.userPhotoDefault
     }).addClass("book-user-photo"));
     bandeauProfil.append(photoUser);
-    var userProperties = "<blockquote><p>" + this.name + "</p>";
+    var userProperties = OpenM_BookGUI.gen.div()
+            .addClass($("one-value > block > class", OpenM_BookGUI.user.cst).text())
+            .append("<p>" + this.name + "</p>");
     if (this.birthday !== undefined)
-        userProperties += "<p><span class='glyphicon glyphicon-gift'></span> " + this.birthday + "<p>";
-    bandeauProfil.append(userProperties + "</blockquote>");
+        userProperties.append("<p><span class='glyphicon glyphicon-gift'></span> " + this.birthday + "<p>");
+    bandeauProfil.append(userProperties);
 
     this.page.append(bandeauProfil);
 
@@ -155,7 +157,7 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
                 .attr("type", $("properties > multi-values > " + this.name + " > type", OpenM_BookGUI.user.cst).text())
                 .attr("placeholder", $("properties > multi-values > " + this.name + " > label", OpenM_BookGUI.user.cst).text())
                 .val(this.value)
-                .addClass("form-control "+$("properties > multi-values > " + this.name + " > input-class", OpenM_BookGUI.user.cst).text())
+                .addClass("form-control " + $("properties > multi-values > " + this.name + " > input-class", OpenM_BookGUI.user.cst).text())
                 .addClass("book-user-field-modification-input");
         this.input.click(function(e) {
             e.stopPropagation();
