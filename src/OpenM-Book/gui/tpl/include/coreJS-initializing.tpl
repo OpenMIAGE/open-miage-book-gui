@@ -74,11 +74,12 @@
                             $("#OpenM_Book_CommonMenuBar_Home_Title").find("span[class=hidden-xs]").text(" " + $("menu-bar > home > text", OpenM_BookGUI.community.cst).text());
                         };
                         if (OpenM_BookController.commons.URL.isCommunityHash()) {
+                            var community = OpenM_BookDAO.community.DAO.get(OpenM_BookController.commons.URL.getCommunityId(), false, false);
                             if (OpenM_BookController.commons.URL.getCommunityId() === undefined) {
+                                community.ancestorsLoaded = true;
                                 allLoaded();
                             }
                             else {
-                                var community = OpenM_BookDAO.community.DAO.get(OpenM_BookController.commons.URL.getCommunityId(), false, false);
                                 OpenM_BookDAO.community.DAO.getAncestors(community, false);
                                 var communityAncestorLoaded = setInterval(function() {
                                     if (community.ancestorsLoaded === true) {

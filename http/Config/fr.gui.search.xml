@@ -5,7 +5,7 @@ GUI Label definition
 <gui>
     <search>
         <input>
-            <class>form-control</class>
+            <class>form-control book-search-input</class>
         </input>
         <btn>
             <label> Rechercher</label>

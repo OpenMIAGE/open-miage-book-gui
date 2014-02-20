@@ -38,6 +38,10 @@ OpenM_BookGUI.search.Page.prototype.content = function() {
     this.page.append(div);
     if (this.results !== undefined)
         div.append("</br>").append(this.results.content());
+    var input = this.input;
+    setTimeout(function() {
+        input.focus();
+    }, 500);
     return this.page;
 };
 

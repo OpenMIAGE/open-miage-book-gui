@@ -1,5 +1,5 @@
 .divParent {
-    margin-top: 50px;
+    margin-top: 36px;
 }
 
 .book-user-photo, .book-community-user-photo, book-search-user-photo {
@@ -55,8 +55,9 @@ input.book-user-field-modification-input {
     margin-top: 10px;
 }
 
-.book-user-page, .book-search-page {
-    margin-bottom: 5px;
+.book-user-page, .book-search-page, .book-community-page {
+    margin: auto auto 5px;
+    max-width: 1100px;    
 }
 .book-community-childs {
     margin-top: 10px;
@@ -87,6 +88,10 @@ input.book-user-field-modification-input {
     .container-fluid-book {
         margin: 0px;
         padding: 0px;
+    }
+    
+    .book-search-input {
+        z-index: 99;
     }
 }
 
