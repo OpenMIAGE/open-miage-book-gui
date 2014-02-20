@@ -9,6 +9,8 @@
     height: 100px;
     position: relative;
     z-index: 2;
+    display: block;
+    float: left;
 }
 
 .book-user-field {
@@ -78,6 +80,12 @@ input.book-user-field-modification-input {
 
 .book-community-users-any-user-message {
     margin-left: 20px;
+}
+
+.book-user-unique-property-block {
+    display: block;
+    height: 110px;
+    padding: 15px;
 }
 
 @media (max-width: 767px){

@@ -5,6 +5,9 @@ GUI Label definition
 <gui>
     <properties>
         <one-value>
+            <block>
+                <class>book-user-unique-property-block</class>
+            </block>
             <firstName>
                 <label>Prénom</label>
                 <type>text</type>
