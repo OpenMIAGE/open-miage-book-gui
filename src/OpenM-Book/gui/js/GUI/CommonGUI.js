@@ -96,7 +96,7 @@ OpenM_BookGUI.error = {
         c.error.show("slow");
         this.timer = setTimeout(function() {
             c.error.hide("slow");
-        }, 40 * 1000);
+        }, 5 * 1000);
         $("body").prepend(c.error);
     }
 };
