@@ -51,14 +51,14 @@ GUI Label definition
             <tooltip>S'inscrire dans cette communauté</tooltip>
             <tooltipAlreadyRegistered>Vous étes déja enregistré</tooltipAlreadyRegistered>
             <icon>glyphicon glyphicon-star-empty</icon>
-            <class>btn btn-info</class>
+            <class>btn btn-success</class>
         </register>
         <unRegister>
             <label>Se désinscrire</label>
             <tooltip>Se désinscrire s cette communauté</tooltip>
             <tooltipAlreadyUnRegistered>Vous n'étes pas enregistré dans cette communauté</tooltipAlreadyUnRegistered>
             <icon>glyphicon glyphicon-remove</icon>
-            <class>btn btn-info</class>
+            <class>btn btn-danger</class>
         </unRegister>
         <validate>
             <title>Valider l'utilisateur</title>

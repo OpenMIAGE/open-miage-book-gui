@@ -75,21 +75,29 @@ OpenM_BookGUI.Pages = {
 };
 
 OpenM_BookGUI.error = {
-    div: "div_alert",
-    showErrorTimer: undefined,
+    error: undefined,
+    timer: undefined,
     showError: function(message) {
-        $("#" + this.div).empty();
-        if (this.showErrorTimer !== undefined)
-            clearTimeout(this.showErrorTimer);
-        $("#" + this.div).append("<div class='alert alert-error alert-block span4 offset4' style='display: none;'><button type='button' class='close'>x</button><h4>Erreur :</h4>" + message + "</div>");
-        $(".close").on("click", function(e) {
-            $("#" + this.div + ' .alert').hide('slow');
-        });
-        $("#" + this.div + " .alert").show("slow");
+        if (this.error === undefined)
+            this.error = OpenM_BookGUI.gen.div();
+        clearTimeout(this.timer);
+        this.error.empty();
+        this.error.append(OpenM_BookGUI.gen.div()
+                .addClass("book-div-parent-error")
+                .append(OpenM_BookGUI.gen.div()
+                .addClass("alert  alert-danger book-error")
+                .append(OpenM_BookGUI.gen.a().addClass("close").append("&times;"))
+                .append("<h4>Erreur :</h4>" + message)));
         var c = this;
-        this.showErrorTimer = setTimeout(function() {
-            $("#" + c.div + " .alert").hide("slow");
+        $(c.error, ".close").click(function(e) {
+            c.error.hide('slow');
+            clearTimeout(c.timer);
+        });
+        c.error.show("slow");
+        this.timer = setTimeout(function() {
+            c.error.hide("slow");
         }, 5 * 1000);
+        $("body").prepend(c.error);
     }
 };
 
