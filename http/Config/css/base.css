@@ -1,7 +1,7 @@
 .OpenM_Book_CommonMenuBar {
     background-color: black;
     width: 100%;
-    height: 50px;
+    height: 37px;
     position: fixed;
     top: 0px;
     z-index: 10;
@@ -9,17 +9,25 @@
 
 .OpenM_Book_CommonMenuBar_left {
     left: 10px;
-    top: 7px;
+    top: 1px;
     position:absolute;
 }
 .OpenM_Book_CommonMenuBar_right {
     right: 10px;
-    top: 7px;
+    top: 1px;
     position:absolute;
 }
 
 body {
     padding: 0px;
+}
+
+.book-error {
+    position: fixed;
+    top: 38px;
+    width: 100%;
+    margin: 0px;
+    z-index: 100;
 }
 
 /**
@@ -37,5 +45,25 @@ body {
 
     .well{
         margin: 0;
+    }
+}
+
+@media (min-width:767px){
+    .OpenM_Book_CommonMenuBar a.btn {
+        -webkit-border-radius: 0px;
+        border-color: black;
+        background-color: black;
+        color: white;
+    }
+
+    .OpenM_Book_CommonMenuBar a.btn :hover {
+        border-color: white;
+        color: #5bc0de;
+    }
+
+    .book-error {
+        width: 600px;
+        margin-left: -300px;
+        left: 50%;
     }
 }

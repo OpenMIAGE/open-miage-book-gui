@@ -105,7 +105,7 @@ OpenM_BookController.commons.URL = {
             OpenM_BookController.user.Pages.userPage(this.getUserId()).display();
         } else if (this.isSearchHash()) {
             OpenM_BookController.search.Pages.searchPage(this.getSearch()).display();
-        }        
+        }
     },
     storedHash: window.location.hash,
     jsLoaderPipe: new Array(),
@@ -149,6 +149,7 @@ else {
 
 OpenM_BookController.error = {
     onError: function(errno, error_message) {
-        OpenM_BookGUI.error.showError(error_message);
+        if (errno !== OpenM_APIProxy_AJAXController.CONNECTION_LOST)
+            OpenM_BookGUI.error.showError(error_message);
     }
 };
