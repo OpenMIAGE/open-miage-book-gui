@@ -61,8 +61,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     public function __construct() {
         parent::__construct();
-        $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
-        $this->bookProperties = Properties::fromFile($this->properties->get(self::BOOK_CONFIG_FILE));
+        $this->ssoProperties = Properties::fromFile(dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::SSO_CONFIG_FILE_PATH));
+        $this->bookProperties = Properties::fromFile(dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::BOOK_CONFIG_FILE));
         $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book");
