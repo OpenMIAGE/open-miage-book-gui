@@ -32,7 +32,6 @@ class OpenM_CoreView extends OpenM_BookView {
         if ($this->sso->isConnected()) {
             $this->core();
         } else {
-            $this->addLinks();
             $this->addClientsJS();
             $this->showAlert();
             $this->setDebugMode();
@@ -44,7 +43,6 @@ class OpenM_CoreView extends OpenM_BookView {
     public function core() {
         $me = $this->isRegistered();
         $this->smarty->assign("me", OpenM_MapConvertor::mapToJSON($me));
-        $this->addLinks();
         $this->addClientsJS();
         $this->showAlert();
         $this->setDebugMode();
