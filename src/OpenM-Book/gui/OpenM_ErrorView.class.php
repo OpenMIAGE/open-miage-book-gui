@@ -30,7 +30,6 @@ class OpenM_ErrorView extends OpenM_BookView {
     const DEFAULT_MESSAGE = "<h4>Ouups !!</h4><br/> Il semblerait que des lutins veuillent nuire au site :-(. <br/>Une erreur vient de ce produire.";
 
     public function error($message, $code = null, $titre = null) {
-        $this->addLinks();
         $this->smarty->assign(self::ERROR_DEFAULT_MESSAGE, self::DEFAULT_MESSAGE);
         $this->smarty->assign(self::ERROR_MESSAGE, $message);
         //on rajoute les lien de proposition

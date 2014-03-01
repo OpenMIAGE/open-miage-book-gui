@@ -61,8 +61,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     public function __construct() {
         parent::__construct();
-        $this->ssoProperties = Properties::fromFile($this->properties->get(self::SSO_CONFIG_FILE_PATH));
-        $this->bookProperties = Properties::fromFile($this->properties->get(self::BOOK_CONFIG_FILE));
+        $this->ssoProperties = Properties::fromFile(dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::SSO_CONFIG_FILE_PATH));
+        $this->bookProperties = Properties::fromFile(dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::BOOK_CONFIG_FILE));
         $api_name = $this->ssoProperties->get(OpenM_SSOClientSessionManager::OpenM_SSO_API_PREFIX . OpenM_SSOClientPoolSessionManager::OpenM_SSO_API_NAME_SUFFIX);
         $this->sso = $this->manager->get($api_name, FALSE);
         $this->bookClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book");
@@ -71,6 +71,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Moderator");
         $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Admin");
         $this->setDirs();
+        $this->addLinks();
     }
 
     /**
@@ -133,7 +134,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->smarty->assign("links", array(
             "registration" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL(),
             "login" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGIN_FORM)->getURL(),
-            "logout" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGOUT_FORM)->getURL()
+            "logout" => OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::LOGOUT_FORM)->getURL(),
+            "OpenM_ID_Account" => $this->sso->getOpenM_ID_MyAccount_URL()
         ));
     }
 

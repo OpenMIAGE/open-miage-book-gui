@@ -146,7 +146,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
             $this->showAlert($error_message, null, self::ALERT_TYPE_DISPLAY_ERROR);
         }
 
-        $this->addLinks();
         $this->showAlert();
         $this->setDebugMode();
         $this->setLang();
@@ -154,7 +153,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
     }
 
     public function condition() {
-        $this->addLinks();
         $this->setLang();
         $this->smarty->display('condition.tpl');
     }

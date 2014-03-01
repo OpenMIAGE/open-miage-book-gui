@@ -16,6 +16,9 @@ GUI Label definition
         <search>
             <text>Recherche</text>
         </search>
+        <OpenM-ID_Account>
+            <text>Mon compte</text>
+        </OpenM-ID_Account>
     </menu-bar>
     <logout>
         <confirm-message>Êtes-vous sur de vouloir vous déconnecter ?</confirm-message>
