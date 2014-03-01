@@ -6,9 +6,22 @@
         Purpose of the stylesheet follows.
 */
 
+.openm-book-form {
+    padding: 0px;
+}
+
+.register { 
+    margin: 50px auto;    
+}
+
+.form-register {
+    max-width: 480px;
+    padding: 19px 29px 29px;
+    background-color: whitesmoke;
+}
+
 @media (min-width: 480px) {
-    .form-custom {
-        margin: 0 auto 20px;        
+    .form-register {
         border: 1px solid #e5e5e5;
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
@@ -20,9 +33,13 @@
 
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
     .container-fluid {
         padding: 0px;
+    }
+
+    .form-register {
+        margin: 0px;
     }
 
     .body {
@@ -30,21 +47,32 @@
     }
 }
 
-@media (min-width: 767px){
-    .register { 
-        margin-top: 60px;
-    }
-}
-
 /**
 * css pour affichage mobile
 */
 @media (max-width: 767px){
-    .form-custom {
+    .form-register {
         margin: 0px;
     }
 
     .register { 
-        margin-top: 50px;
+        margin-top: 37px;
     }
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin input[type="text"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+
+.checkbox-middle {
+    vertical-align: top;
+    margin-top: 10px;
 }
