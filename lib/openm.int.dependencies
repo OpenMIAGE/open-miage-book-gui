@@ -1,4 +1,5 @@
 openm.internal.repository=http://open-miage.org/download/
 OpenM-Commons/gui/1.0.6=*.zip
-OpenM-Book/api/1.0.8=*.zip
+OpenM-Book/api/1.0.9=*.zip
 OpenM-SSO/client/1.1.0=*.zip
+OpenM-Mail/api/1.0.0=*.zip
