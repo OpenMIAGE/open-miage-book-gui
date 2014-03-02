@@ -6,7 +6,7 @@
         Purpose of the stylesheet follows.
 */
 
-.openm-book-form {
+.openm-book-form,.openm-book-text {
     padding: 0px;
 }
 
@@ -14,10 +14,15 @@
     margin: 50px auto 0px;    
 }
 
+.openm-book-text-container {
+    margin: auto;
+}
+
 .form-register {
     max-width: 480px;
     padding: 19px 29px 29px;
     background-color: whitesmoke;
+    margin: auto;    
 }
 
 @media (min-width: 480px) {
@@ -30,7 +35,6 @@
         -moz-box-shadow: 5px 5px 5px #888;
         box-shadow: 5px 5px 5px #888;
     }
-
 }
 
 @media (max-width: 480px) {
@@ -38,25 +42,26 @@
         padding: 0px;
     }
 
-    .form-register {
-        margin: 0px;
-    }
-
     .body {
         padding: 0px;
     }
 }
 
-/**
-* css pour affichage mobile
-*/
 @media (max-width: 767px){
-    .form-register {
-        margin: 0px;
-    }
-
     .register { 
         margin-top: 37px;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 991px){
+    .openm-book-text-container {
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 992px){
+    .openm-book-text-container {
+        margin-top: auto;
     }
 }
 
