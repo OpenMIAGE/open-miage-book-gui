@@ -40,12 +40,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
         if ($_POST["login"] == "new")
             $this->sso->init();
         $this->sso->login(array(OpenM_ID::EMAIL_PARAMETER), true);
-        OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+        $this->_redirect();
     }
 
     public function logout() {
         $this->sso->logout(false);
-        OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+        $this->_redirect();
     }
 
     const MAIL_PARAMETER = "mail";
@@ -70,7 +70,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
     public function register() {
         OpenM_Log::debug("check if a user is connected", __CLASS__, __METHOD__, __LINE__);
         if (!$this->isConnected())
-            OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+            $this->_redirect();
 
         $error = array();
 
@@ -108,10 +108,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
                     OpenM_Log::debug("Given mail is valid", __CLASS__, __METHOD__, __LINE__);
                     try {
                         $this->userClient->registerMe($post->get(self::FIRST_NAME_PARAMETER), $post->get(self::LAST_NAME_PARAMETER), $time, $post->get(self::MAIL_PARAMETER));
-                        OpenM_Header::redirect(OpenM_URLViewController::getRoot());
-                    } catch (OpenM_HttpError_Forbidden $e) {
-                        $this->sso->init();
-                        $this->_redirect(self::LOGIN_FORM);
+                        $this->_redirect();
                     } catch (OpenM_HttpError_BadRequest $e) {
                         $arrayCode = array();
                         preg_match("/\[ERRNO:-?[0-9]+\]/", $e->getMessage(), $arrayCode);
@@ -151,7 +148,8 @@ class OpenM_RegistrationView extends OpenM_BookView {
                                 break;
                         }
                     } catch (Exception $e) {
-                        
+                        $this->sso->init();
+                        $this->_redirect();
                     }
                 }
             }
