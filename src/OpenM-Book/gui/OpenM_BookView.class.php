@@ -45,6 +45,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     const BOOK_CONFIG_FILE = "OpenM_Book.hmi.config.path";
     const BOOK_HMI_DEBUG_MODE_ON_VALUE = "ON";
     const BOOK_HMI_DEBUG_MODE = "OpenM_Book.debug.mode";
+    const VERSION = "0.0.5";
 
     /**
      *
@@ -94,7 +95,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
             return $me;
         } catch (Exception $e) {
             if ($retirectToRegistered === true)
-                OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_RegistrationView::getClass(), OpenM_RegistrationView::REGISTER_FORM)->getURL());
+                $this->_redirect(OpenM_RegistrationView::REGISTER_FORM, OpenM_RegistrationView::getClass());
             $message = "Une errueur interne viens d'etre déclanché.<br> Message : " . $e->getMessage();
             OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
             $errorView = new OpenM_ErrorView();
@@ -115,7 +116,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function setDirs() {
         $this->smarty->setTemplateDir(dirname(__FILE__) . '/tpl/');
-        $this->smarty->setConfigDir(dirname(__FILE__) . '/config/');
+        $this->smarty->setConfigDir('Config/properties');
         $this->smarty->setCompileDir($this->template_c);
         $this->smarty->assign(self::SMARTY_RESOURCES_DIR_VAR_NAME, $this->ressources_dir);
         $this->smarty->assign(self::SMARTY_OPENM_ID_PROXY_PATH, array(

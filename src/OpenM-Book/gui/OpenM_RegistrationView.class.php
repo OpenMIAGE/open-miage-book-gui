@@ -3,6 +3,7 @@
 Import::php("OpenM-Book.gui.OpenM_BookView");
 Import::php("OpenM-Controller.gui.OpenM_URLViewController");
 Import::php("OpenM-Services.client.OpenM_ServiceSSOClientImpl");
+Import::php("OpenM-Mail.api.OpenM_MailTool");
 Import::php("util.session.OpenM_SessionController");
 
 /**
@@ -26,21 +27,10 @@ Import::php("util.session.OpenM_SessionController");
  */
 class OpenM_RegistrationView extends OpenM_BookView {
 
-    const LAST_NAME = "last_name";
-    const FIRST_NAME = "first_name";
-    const YEAR = "year";
-    const MONTH = "month";
-    const MONTHNUM = "monthNum";
-    const DAY = "day";
-    const EMAIL = "mail";
-    const CGU = "cgu";
-    const BIRTHDAY = "birthday";
     const REGISTER_FORM = "register";
     const CONDITION_FORM = "condition";
     const LOGIN_FORM = "login";
     const LOGOUT_FORM = "logout";
-    const SMARTY_REGISTER_KEYS_ARRAY = "form";
-    const ERROR_SUFFIX = ".error";
 
     public function _default() {
         $this->login();
@@ -58,97 +48,128 @@ class OpenM_RegistrationView extends OpenM_BookView {
         OpenM_Header::redirect(OpenM_URLViewController::getRoot());
     }
 
-    private function checkForm($param, &$mail, &$error, &$error_message) {
-        $mail = "";
-        if ($param->containsKey("submit")) {
-            if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME) == "") {
-                $error = true;
-                $error_message = self::LAST_NAME . self::ERROR_SUFFIX;
-                return false;
-            }
-            if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME) == "") {
-                $error = true;
-                $error_message = self::FIRST_NAME . self::ERROR_SUFFIX;
-                return false;
-            }
-            $birthday = $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::BIRTHDAY);
-            if ($birthday == "") {
-                $error = true;
-                $error_message = self::BIRTHDAY . self::ERROR_SUFFIX;
-                return false;
-            } else {
-                $time = date_parse($birthday);
-                if ($time === false) {
-                    $error = true;
-                    $error_message = self::BIRTHDAY . self::ERROR_SUFFIX;
-                    return false;
-                }
-            }
-            $mail = $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::EMAIL);
-            if ($mail == "") {
-                $mail = $this->sso->getProperties()->get(OpenM_ID::EMAIL_PARAMETER);
-                if ($mail == null) {
-                    $error = true;
-                    $error_message = self::EMAIL . self::ERROR_SUFFIX;
-                    return false;
-                }
-            }
-
-            if ($param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::CGU) != "on") {
-                $error = true;
-                $error_message = self::CGU . self::ERROR_SUFFIX;
-                return false;
-            }
-        } else {
-            $mail = $this->sso->getProperties()->get(OpenM_ID::EMAIL_PARAMETER);
-            return false;
-        }
-
-        return true;
-    }
+    const MAIL_PARAMETER = "mail";
+    const SMARTY_MAIL = self::MAIL_PARAMETER;
+    const FIRST_NAME_PARAMETER = "first_name";
+    const SMARTY_FIRST_NAME = self::FIRST_NAME_PARAMETER;
+    const LAST_NAME_PARAMETER = "last_name";
+    const SMARTY_LAST_NAME = self::LAST_NAME_PARAMETER;
+    const BIRTHDAY_PARAMETER = "birthday";
+    const SMARTY_BIRTHDAY = self::BIRTHDAY_PARAMETER;
+    const SMARTY_ERROR = "error";
+    const SMARTY_HEAD = "head";
+    const SMARTY_ACTION = "action";
+    const SMARTY_MAIL_NOT_VALID = "mail_not_valid";
+    const SMARTY_FIRST_NAME_NOT_VALID = "first_name_not_valid";
+    const SMARTY_LAST_NAME_NOT_VALID = "last_name_not_valid";
+    const SMARTY_BIRTHDAY_NOT_VALID = "birthday_not_valid";
+    const SMARTY_BIRTHDAY_TO_YOUNG = "birthday_to_young";
+    const SMARTY_IS_RESPONSE = "isResponse";
+    const SMARTY_VERSION = "version";
 
     public function register() {
+        OpenM_Log::debug("check if a user is connected", __CLASS__, __METHOD__, __LINE__);
         if (!$this->isConnected())
             OpenM_Header::redirect(OpenM_URLViewController::getRoot());
 
-        $error = false;
-        $error_message = "";
-        $param = HashtableString::from($_POST);
-        $mail = "";
-        if ($this->checkForm($param, $mail, $error, $error_message)) {
-            try {
-                $date = date_parse_from_format("Y-m-d", $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::BIRTHDAY));
+        $error = array();
+
+        OpenM_Log::debug("no user registered", __CLASS__, __METHOD__, __LINE__);
+        $post = HashtableString::from($_POST);
+        if ($post->containsKey(self::FIRST_NAME_PARAMETER)) {
+            $this->smarty->assign(self::SMARTY_IS_RESPONSE, true);
+            if ($post->get(self::FIRST_NAME_PARAMETER) == "") {
+                OpenM_Log::debug("first name not defined", __CLASS__, __METHOD__, __LINE__);
+                $error = array(
+                    self::SMARTY_FIRST_NAME => self::SMARTY_FIRST_NAME_NOT_VALID
+                );
+            } else if ($post->get(self::LAST_NAME_PARAMETER) == "") {
+                OpenM_Log::debug("last name not defined", __CLASS__, __METHOD__, __LINE__);
+                $error = array(
+                    self::SMARTY_LAST_NAME => self::SMARTY_LAST_NAME_NOT_VALID
+                );
+            } else if ($post->get(self::BIRTHDAY_PARAMETER) == "") {
+                OpenM_Log::debug("birthday not defined", __CLASS__, __METHOD__, __LINE__);
+                $error = array(
+                    self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
+                );
+            } else {
+                $date = date_parse_from_format("Y-m-d", $post->get(self::BIRTHDAY_PARAMETER));
                 $time = mktime(0, 0, 0, $date["month"], $date["day"], $date["year"]);
                 if ($time === false) {
-                    $error = true;
-                    $error_message = "bad date format";
+                    $error = array(
+                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
+                    );
+                } else if (!OpenM_MailTool::isEMailValid($post->get(self::MAIL_PARAMETER))) {
+                    $error = array(
+                        self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
+                    );
+                } else {
+                    OpenM_Log::debug("Given mail is valid", __CLASS__, __METHOD__, __LINE__);
+                    try {
+                        $this->userClient->registerMe($post->get(self::FIRST_NAME_PARAMETER), $post->get(self::LAST_NAME_PARAMETER), $time, $post->get(self::MAIL_PARAMETER));
+                        OpenM_Header::redirect(OpenM_URLViewController::getRoot());
+                    } catch (OpenM_HttpError_Forbidden $e) {
+                        $this->sso->init();
+                        $this->_redirect(self::LOGIN_FORM);
+                    } catch (OpenM_HttpError_BadRequest $e) {
+                        $arrayCode = array();
+                        preg_match("/\[ERRNO:-?[0-9]+\]/", $e->getMessage(), $arrayCode);
+                        $softwareCode = null;
+                        if (sizeof($arrayCode) > 0)
+                            $softwareCode = intval(substr($arrayCode[0], 7, -1));
+                        switch ($softwareCode) {
+                            case OpenM_Book_User::RETURN_ERROR_CODE_FIRST_NAME_BAD_FORMAT_VALUE;
+                                $error = array(
+                                    self::SMARTY_FIRST_NAME => self::SMARTY_FIRST_NAME_NOT_VALID
+                                );
+                                break;
+                            case OpenM_Book_User::RETURN_ERROR_CODE_LAST_NAME_BAD_FORMAT_VALUE;
+                                $error = array(
+                                    self::SMARTY_LAST_NAME => self::SMARTY_LAST_NAME_NOT_VALID
+                                );
+                                break;
+                            case OpenM_Book_User::RETURN_ERROR_CODE_BIRTHDAY_BAD_FORMAT_VALUE;
+                                $error = array(
+                                    self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
+                                );
+                                break;
+                            case OpenM_Book_User::RETURN_ERROR_CODE_TO_YOUNG_VALUE;
+                                $error = array(
+                                    self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
+                                );
+                                break;
+                            case OpenM_Book_User::RETURN_ERROR_CODE_MAIL_BAD_FORMAT_VALUE;
+                                $error = array(
+                                    self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
+                                );
+                                break;
+                            default:
+                                $error = array(
+                                    self::SMARTY_HEAD => self::SMARTY_BIRTHDAY_NOT_VALID
+                                );
+                                break;
+                        }
+                    } catch (Exception $e) {
+                        
+                    }
                 }
-                $this->userClient->registerMe(
-                        $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME), $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME), $time, $mail);
-                OpenM_Header::redirect(OpenM_URLViewController::getRoot());
-            } catch (Exception $e) {
-                $error = true;
-                $error_message = $e->getMessage();
             }
         }
 
-        $this->smarty->assign(self::SMARTY_REGISTER_KEYS_ARRAY, array(
-            self::LAST_NAME => $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::LAST_NAME) . "",
-            self::FIRST_NAME => $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::FIRST_NAME) . "",
-            self::BIRTHDAY => $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::BIRTHDAY) . "",
-            self::EMAIL => $mail . "",
-            self::CGU => $param->get(self::SMARTY_REGISTER_KEYS_ARRAY . "_" . self::CGU) == "on",
-        ));
+        if ($post->containsKey(self::MAIL_PARAMETER) && $post->get(self::MAIL_PARAMETER) != "")
+            $this->smarty->assign(self::SMARTY_MAIL, $post->get(self::MAIL_PARAMETER));
+        else
+            $this->smarty->assign(self::SMARTY_MAIL, $this->sso->getProperties()->get(OpenM_ID::EMAIL_PARAMETER));
 
-        $this->smarty->assign(self::SMARTY_REGISTER_KEYS_ARRAY . "_condition", OpenM_URLViewController::from(self::getClass(), self::CONDITION_FORM)->getURL());
-
-        if ($error) {
-            $this->showAlert($error_message, null, self::ALERT_TYPE_DISPLAY_ERROR);
-        }
-
-        $this->showAlert();
+        $this->smarty->assign(self::SMARTY_FIRST_NAME, $post->get(self::FIRST_NAME_PARAMETER));
+        $this->smarty->assign(self::SMARTY_LAST_NAME, $post->get(self::LAST_NAME_PARAMETER));
+        $this->smarty->assign(self::SMARTY_BIRTHDAY, $post->get(self::BIRTHDAY_PARAMETER));
+        $this->smarty->assign(self::SMARTY_ERROR, $error);
         $this->setDebugMode();
         $this->setLang();
+        $this->smarty->assign(self::SMARTY_VERSION, self::VERSION);
+        $this->smarty;
         $this->smarty->display('register.tpl');
     }
 

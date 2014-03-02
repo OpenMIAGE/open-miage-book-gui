@@ -11,7 +11,7 @@
 }
 
 .register { 
-    margin: 50px auto;    
+    margin: 50px auto 0px;    
 }
 
 .form-register {
@@ -60,14 +60,14 @@
     }
 }
 
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
+.form-register .form-register-heading,
+.form-register .checkbox {
     margin-bottom: 10px;
 }
 
-.form-signin input[type="text"] {
-    font-size: 16px;
-    height: auto;
+.form-register input[type="text"],
+.form-register input[type="date"],
+.form-register input[type="email"] {
     margin-bottom: 15px;
     padding: 7px 9px;
 }
