@@ -38,7 +38,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
     public function login() {
         if ($_POST["login"] == "new")
-            $this->sso->init();
+            $this->sso->reset();
         $this->sso->login(array(OpenM_ID::EMAIL_PARAMETER), true);
         $this->_redirect();
     }
@@ -94,62 +94,81 @@ class OpenM_RegistrationView extends OpenM_BookView {
                     self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
                 );
             } else {
-                $date = date_parse_from_format("Y-m-d", $post->get(self::BIRTHDAY_PARAMETER));
-                $time = mktime(0, 0, 0, $date["month"], $date["day"], $date["year"]);
-                if ($time === false) {
+                if (!RegExp::preg("/^[1-9]{4}-[0-9]{2}-[0-9]{2}$/", $post->get(self::BIRTHDAY_PARAMETER)) &&
+                        !RegExp::preg("/^[0-9]{2}\/[0-9]{2}\/[1-9]{4}$/", $post->get(self::BIRTHDAY_PARAMETER))) {
+                    OpenM_Log::debug("birthday bad defined", __CLASS__, __METHOD__, __LINE__);
                     $error = array(
                         self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
                     );
-                } else if (!OpenM_MailTool::isEMailValid($post->get(self::MAIL_PARAMETER))) {
-                    $error = array(
-                        self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
-                    );
                 } else {
-                    OpenM_Log::debug("Given mail is valid", __CLASS__, __METHOD__, __LINE__);
-                    try {
-                        $this->userClient->registerMe($post->get(self::FIRST_NAME_PARAMETER), $post->get(self::LAST_NAME_PARAMETER), $time, $post->get(self::MAIL_PARAMETER));
-                        $this->_redirect();
-                    } catch (OpenM_HttpError_BadRequest $e) {
-                        $arrayCode = array();
-                        preg_match("/\[ERRNO:-?[0-9]+\]/", $e->getMessage(), $arrayCode);
-                        $softwareCode = null;
-                        if (sizeof($arrayCode) > 0)
-                            $softwareCode = intval(substr($arrayCode[0], 7, -1));
-                        switch ($softwareCode) {
-                            case OpenM_Book_User::RETURN_ERROR_CODE_FIRST_NAME_BAD_FORMAT_VALUE;
-                                $error = array(
-                                    self::SMARTY_FIRST_NAME => self::SMARTY_FIRST_NAME_NOT_VALID
-                                );
-                                break;
-                            case OpenM_Book_User::RETURN_ERROR_CODE_LAST_NAME_BAD_FORMAT_VALUE;
-                                $error = array(
-                                    self::SMARTY_LAST_NAME => self::SMARTY_LAST_NAME_NOT_VALID
-                                );
-                                break;
-                            case OpenM_Book_User::RETURN_ERROR_CODE_BIRTHDAY_BAD_FORMAT_VALUE;
-                                $error = array(
-                                    self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
-                                );
-                                break;
-                            case OpenM_Book_User::RETURN_ERROR_CODE_TO_YOUNG_VALUE;
-                                $error = array(
-                                    self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
-                                );
-                                break;
-                            case OpenM_Book_User::RETURN_ERROR_CODE_MAIL_BAD_FORMAT_VALUE;
-                                $error = array(
-                                    self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
-                                );
-                                break;
-                            default:
-                                $error = array(
-                                    self::SMARTY_HEAD => self::SMARTY_BIRTHDAY_NOT_VALID
-                                );
-                                break;
+                    if (RegExp::preg("/^[0-9]{2}\/[0-9]{2}\/[1-9]{4}$/", $post->get(self::BIRTHDAY_PARAMETER)))
+                        $date = date_parse_from_format("m/d/Y", $post->get(self::BIRTHDAY_PARAMETER));
+                    else
+                        $date = date_parse_from_format("Y-m-d", $post->get(self::BIRTHDAY_PARAMETER));
+                    if(intval(substr($date, 0,4)))
+                    OpenM_Log::debug("birthday correctly defined : " . $post->get(self::BIRTHDAY_PARAMETER), __CLASS__, __METHOD__, __LINE__);
+                    $time = mktime(0, 0, 0, $date["month"], $date["day"], $date["year"]);
+                    OpenM_Log::debug("birthday parse : $time", __CLASS__, __METHOD__, __LINE__);
+                    if ($time === false) {
+                        $error = array(
+                            self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
+                        );
+                    } else if (!OpenM_MailTool::isEMailValid($post->get(self::MAIL_PARAMETER))) {
+                        $error = array(
+                            self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
+                        );
+                    } else {
+                        OpenM_Log::debug("Given mail is valid", __CLASS__, __METHOD__, __LINE__);
+                        try {
+                            $this->userClient->registerMe($post->get(self::FIRST_NAME_PARAMETER), $post->get(self::LAST_NAME_PARAMETER), $time, $post->get(self::MAIL_PARAMETER));
+                            $this->_redirect();
+                        } catch (OpenM_HttpError_BadRequest $e) {
+                            $arrayCode = array();
+                            preg_match("/\[ERRNO:-?[0-9]+\]/", $e->getMessage(), $arrayCode);
+                            $softwareCode = null;
+                            if (sizeof($arrayCode) > 0)
+                                $softwareCode = intval(substr($arrayCode[0], 7, -1));
+                            switch ($softwareCode) {
+                                case OpenM_Book_User::RETURN_ERROR_CODE_FIRST_NAME_BAD_FORMAT_VALUE;
+                                    $error = array(
+                                        self::SMARTY_FIRST_NAME => self::SMARTY_FIRST_NAME_NOT_VALID
+                                    );
+                                    break;
+                                case OpenM_Book_User::RETURN_ERROR_CODE_LAST_NAME_BAD_FORMAT_VALUE;
+                                    $error = array(
+                                        self::SMARTY_LAST_NAME => self::SMARTY_LAST_NAME_NOT_VALID
+                                    );
+                                    break;
+                                case OpenM_Book_User::RETURN_ERROR_CODE_BIRTHDAY_BAD_FORMAT_VALUE;
+                                    $error = array(
+                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_NOT_VALID
+                                    );
+                                    break;
+                                case OpenM_Book_User::RETURN_ERROR_CODE_TOO_YOUNG_VALUE;
+                                    $error = array(
+                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
+                                    );
+                                    break;
+                                case OpenM_Book_User::RETURN_ERROR_CODE_TOO_OLD_VALUE;
+                                    $error = array(
+                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
+                                    );
+                                    break;
+                                case OpenM_Book_User::RETURN_ERROR_CODE_MAIL_BAD_FORMAT_VALUE;
+                                    $error = array(
+                                        self::SMARTY_MAIL => self::SMARTY_MAIL_NOT_VALID
+                                    );
+                                    break;
+                                default:
+                                    $error = array(
+                                        self::SMARTY_HEAD => self::SMARTY_BIRTHDAY_NOT_VALID
+                                    );
+                                    break;
+                            }
+                        } catch (Exception $e) {
+                            $this->sso->reset();
+                            $this->_redirect();
                         }
-                    } catch (Exception $e) {
-                        $this->sso->init();
-                        $this->_redirect();
                     }
                 }
             }
