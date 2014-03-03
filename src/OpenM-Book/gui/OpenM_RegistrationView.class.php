@@ -45,6 +45,7 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
     public function logout() {
         $this->sso->logout(false);
+        $this->sso->reset();
         $this->_redirect();
     }
 
@@ -70,8 +71,10 @@ class OpenM_RegistrationView extends OpenM_BookView {
 
     public function register() {
         OpenM_Log::debug("check if a user is connected", __CLASS__, __METHOD__, __LINE__);
-        if (!$this->isConnected())
+        if (!$this->isConnected()){
+            $this->sso->reset();
             $this->_redirect();
+        }
 
         $error = array();
 
