@@ -63,7 +63,8 @@ class OpenM_RegistrationView extends OpenM_BookView {
     const SMARTY_FIRST_NAME_NOT_VALID = "first_name_not_valid";
     const SMARTY_LAST_NAME_NOT_VALID = "last_name_not_valid";
     const SMARTY_BIRTHDAY_NOT_VALID = "birthday_not_valid";
-    const SMARTY_BIRTHDAY_TO_YOUNG = "birthday_to_young";
+    const SMARTY_BIRTHDAY_TOO_YOUNG = "birthday_too_young";
+    const SMARTY_BIRTHDAY_TOO_OLD = "birthday_too_old";
     const SMARTY_IS_RESPONSE = "isResponse";
     const SMARTY_VERSION = "version";
 
@@ -105,7 +106,6 @@ class OpenM_RegistrationView extends OpenM_BookView {
                         $date = date_parse_from_format("m/d/Y", $post->get(self::BIRTHDAY_PARAMETER));
                     else
                         $date = date_parse_from_format("Y-m-d", $post->get(self::BIRTHDAY_PARAMETER));
-                    if(intval(substr($date, 0,4)))
                     OpenM_Log::debug("birthday correctly defined : " . $post->get(self::BIRTHDAY_PARAMETER), __CLASS__, __METHOD__, __LINE__);
                     $time = mktime(0, 0, 0, $date["month"], $date["day"], $date["year"]);
                     OpenM_Log::debug("birthday parse : $time", __CLASS__, __METHOD__, __LINE__);
@@ -146,12 +146,12 @@ class OpenM_RegistrationView extends OpenM_BookView {
                                     break;
                                 case OpenM_Book_User::RETURN_ERROR_CODE_TOO_YOUNG_VALUE;
                                     $error = array(
-                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
+                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TOO_YOUNG
                                     );
                                     break;
                                 case OpenM_Book_User::RETURN_ERROR_CODE_TOO_OLD_VALUE;
                                     $error = array(
-                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TO_YOUNG
+                                        self::SMARTY_BIRTHDAY => self::SMARTY_BIRTHDAY_TOO_OLD
                                     );
                                     break;
                                 case OpenM_Book_User::RETURN_ERROR_CODE_MAIL_BAD_FORMAT_VALUE;
