@@ -22,7 +22,7 @@
             <p>{$error_message}</p> 
             <br><br>
             <blockquote>
-                <p>Permetez nous de vous proposer des liens :</p>
+                <p>Vous pouvez vous diriger vers :</p>
                 <dl>
                     {foreach from=$error_links item=other_links}
                         <dt>{$other_links.label}</dt>
