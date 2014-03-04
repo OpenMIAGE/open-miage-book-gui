@@ -24,10 +24,10 @@
                 $("#loader div div[class=progress-bar]").css("width", "" + progressBar + "%");
                 OpenM_BookController.commons.URL.jsLoadFinished = function() {
                 };
-                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.commons, "{/literal}{$config_path}{$lang}{literal}.gui.home.xml", true);
-                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.community, "{/literal}{$config_path}{$lang}{literal}.gui.community.xml");
-                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}{$lang}{literal}.gui.user.xml");
-                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}{$lang}{literal}.gui.search.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.commons, "{/literal}{$config_path}home.{$lang}{literal}.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.community, "{/literal}{$config_path}community.{$lang}{literal}.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.user, "{/literal}{$config_path}user.{$lang}{literal}.xml");
+                OpenM_BookGUI.commons.initConst(OpenM_BookGUI.search, "{/literal}{$config_path}search.{$lang}{literal}.xml");
                 OpenM_BookGUI.Pages.ressource_dir = ressource;
                 OpenM_BookGUI.Pages.userPhotoDefault = ressource + 'OpenM-Book/gui/img/userDefault.jpg';
                 OpenM_BookGUI.Pages.divParentId = "divParent";

@@ -45,8 +45,9 @@
                 <button type="submit" class="btn btn-success button-inline" name="submit" id="submit"><span class="glyphicon glyphicon-ok"></span> {#registration_label#}</button>
             </form>
         </div>
-        <div class="col-md-7 hidden-xs">
-            <div class="well jumbotron">
+        <div class="col-md-1"></div>
+        <div class="col-md-6 openm-book-text">
+            <div class="well jumbotron openm-book-text-container">
                 <a name="Explication"></a>
                 <h2>Explication </h2>
                 <legend></legend>

@@ -128,6 +128,8 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     }
 
     protected function setLang() {
+        if (!is_file("Config/properties/register." . OpenM_URLViewController::getLang() . ".properties"))
+            OpenM_ViewDefaultServer::get404()->redirect();
         $this->smarty->assign("lang", OpenM_URLViewController::getLang());
     }
 

@@ -29,18 +29,16 @@ class OpenM_ErrorView extends OpenM_BookView {
     const ERROR_LINKS = "error_links";
     const DEFAULT_MESSAGE = "<h4>Ouups !!</h4><br/> Il semblerait que des lutins veuillent nuire au site :-(. <br/>Une erreur vient de ce produire.";
 
-    public function error($message, $code = null, $titre = null) {
-        $this->smarty->assign(self::ERROR_DEFAULT_MESSAGE, self::DEFAULT_MESSAGE);
-        $this->smarty->assign(self::ERROR_MESSAGE, $message);
-        //on rajoute les lien de proposition
+    public function error($message = null, $code = null, $titre = null) {
+        if ($message == null)
+            $this->smarty->assign(self::ERROR_DEFAULT_MESSAGE, self::DEFAULT_MESSAGE);
+        else
+            $this->smarty->assign(self::ERROR_MESSAGE, $message);
         OpenM_Log::debug($message, __CLASS__, __METHOD__, __LINE__);
-        /**
-         * @todo faire la detection si on est en http ou https
-         */
-         $this->smarty->assign(self::ERROR_LINKS, array(
+        $this->smarty->assign(self::ERROR_LINKS, array(
             array(
-                "label" => "Profile : ",
-                "link" => "http://".$_SERVER['HTTP_HOST'].OpenM_URLViewController::getRoot())
+                "label" => "Root : ",
+                "link" => OpenM_URL::getHost() . OpenM_URLViewController::getRoot())
         ));
 
         if ($titre)
@@ -57,7 +55,7 @@ class OpenM_ErrorView extends OpenM_BookView {
     }
 
     public function display404() {
-        $this->error("La page que vous tenter d'acceder n'existe pas. (URL : " . "http://".$_SERVER['HTTP_HOST'].$_SERVER["REQUEST_URI"] . ")", 404);
+        $this->error("Vous tentez d'acceder à une page qui n'existe pas.", 404);
     }
 
 }
