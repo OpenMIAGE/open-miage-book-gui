@@ -59,6 +59,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
     protected $adminClient;
     protected $ssoProperties;
     protected $bookProperties;
+    protected $viewServer;
 
     public function __construct() {
         parent::__construct();
@@ -71,6 +72,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
         $this->groupClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Groups");
         $this->moderatorClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Moderator");
         $this->adminClient = new OpenM_ServiceSSOClientImpl($this->sso, "OpenM_Book_Admin");
+        $this->viewServer = new OpenM_ViewDefaultServer();
         $this->setDirs();
         $this->addLinks();
     }
@@ -129,7 +131,7 @@ abstract class OpenM_BookView extends OpenM_ServiceViewSSO {
 
     protected function setLang() {
         if (!is_file("Config/properties/register." . OpenM_URLViewController::getLang() . ".properties"))
-            OpenM_ViewDefaultServer::get404()->redirect();
+            $this->viewServer->get404()->redirect();
         $this->smarty->assign("lang", OpenM_URLViewController::getLang());
     }
 
