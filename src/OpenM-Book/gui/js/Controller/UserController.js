@@ -147,9 +147,14 @@ OpenM_BookController.user.Field = function(user, field, value, isModifiable, isV
     this.value = value;
     this.isModifiable = isModifiable;
     this.gui = new OpenM_BookGUI.user.Field(field.name, value.value, this.isModifiable);
+    this.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton();
+    var controller = this;
+    this.visibilityButton.setVisibility = function(enabled) {
+        controller.user.setPropertyVisibility(value.id, (enabled === true) ? ((OpenM_BookDAO.community.DAO.root !== undefined) ? OpenM_BookDAO.community.DAO.root.id : "") : "");
+    };
+    this.gui.visibilityButton = this.visibilityButton.gui;
     this.isVirtual = (isVirtual !== undefined) ? isVirtual : false;
 
-    var controller = this;
     this.gui.click = function(event) {
         OpenM_BookController.user.FieldModificationController.open(controller);
         controller.gui.isInModificationMode = true;

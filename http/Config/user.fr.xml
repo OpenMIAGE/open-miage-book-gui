@@ -32,7 +32,7 @@ GUI Label definition
             <phone_number>
                 <label>Numéro(s) de téléphone</label>
                 <add>Ajouter un numéro de téléphone</add>
-                <icon>glyphicon glyphicon-user</icon>
+                <icon>glyphicon glyphicon-earphone</icon>
                 <type>tel</type>
                 <input-class></input-class>
             </phone_number>

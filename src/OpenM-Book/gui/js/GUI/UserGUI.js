@@ -118,6 +118,7 @@ OpenM_BookGUI.user.Field = function(name, value, isModifiable) {
     this.remove = undefined;
     this.input = OpenM_BookGUI.gen.input();
     this.enter = undefined;
+    this.visibilityButton = undefined;
 };
 
 OpenM_BookGUI.user.Field.prototype.val = function() {
@@ -144,6 +145,8 @@ OpenM_BookGUI.user.Field.prototype.content = function() {
         content.append(labelVal);
         if (this.isModifiable) {
             span.click(this.click);
+            if (this.visibilityButton !== undefined)
+                labelVal.append(" ").append(this.visibilityButton.content());
         }
     } else {
         content.addClass("control-group book-user-field-modification");
