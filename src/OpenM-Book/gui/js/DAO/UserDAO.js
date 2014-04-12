@@ -63,10 +63,8 @@ OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyValue = function(fieldId,
 };
 
 OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyVisibility = function(propertyValueId, visibilityGroupJSONList) {
-    var controller = this;
-    var user = this;
-    OpenM_Book_User.setPropertyVisibility(propertyValueId, visibilityGroupJSONList, function(data) {         
-         user.update();
+    OpenM_Book_User.setPropertyVisibility(propertyValueId, visibilityGroupJSONList, function(data) {
+        
     });
 };
 
@@ -196,15 +194,20 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
                         "values": new Array()
                     };
                 if (property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER] !== undefined) {
-                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]].values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
+                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]]
+                            .values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
                         "id": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
                         "value": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_PARAMETER]
                     };
+                    if (property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER] !== undefined)
+                        user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]]
+                                .values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]]
+                                .visibility = property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER];
                 }
             }
         }
         user.update();
-    } 
+    }
 };
 
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
@@ -265,5 +268,5 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
 
             user.updateCommunities();
         }
-    } 
+    }
 };

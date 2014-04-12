@@ -147,7 +147,7 @@ OpenM_BookController.user.Field = function(user, field, value, isModifiable, isV
     this.value = value;
     this.isModifiable = isModifiable;
     this.gui = new OpenM_BookGUI.user.Field(field.name, value.value, this.isModifiable);
-    this.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton();
+    this.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton(OpenM_BookDAO.group.DAO.get(value.visibility), user);
     var controller = this;
     this.visibilityButton.setVisibility = function(enabled) {
         controller.user.setPropertyVisibility(value.id, (enabled === true) ? ((OpenM_BookDAO.community.DAO.root !== undefined) ? OpenM_BookDAO.community.DAO.root.id : "") : "");
