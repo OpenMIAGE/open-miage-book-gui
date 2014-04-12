@@ -36,7 +36,6 @@ OpenM_BookGUI.group.VisibilityOnOffButton = function() {
 OpenM_BookGUI.group.VisibilityOnOffButton.prototype.content = function() {
     this.c.empty();
     var a = OpenM_BookGUI.gen.a();
-    var gui = this;
     if (this.initialized) {
 
         a.addClass(this.class);

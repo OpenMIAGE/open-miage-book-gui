@@ -52,7 +52,14 @@ OpenM_BookController.user.Page = function(user) {
 
     var controller = this;
     this.update = function() {
-        controller.gui.update(controller.user.name, controller.user.firstName, controller.user.lastName, controller.user.birthday);
+        if (OpenM_BookDAO.user.DAO.me === controller.user && controller.visibilityButton === undefined && controller.user.birthdayVisibility !== undefined) {
+            controller.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton(controller.user.birthdayVisibility, controller.user);
+            controller.visibilityButton.setVisibility = function(enabled) {
+                controller.user.setPropertyVisibility(OpenM_Book_User.BIRTHDAY_VISIBILITY_PROPERTY_VALUE_ID, (enabled === true) ? ((OpenM_BookDAO.community.DAO.root !== undefined) ? OpenM_BookDAO.community.DAO.root.id : "") : "");
+            };
+            controller.gui.visibilityButton = controller.visibilityButton.gui;
+        }
+        controller.gui.update(controller.user.name, controller.user.firstName, controller.user.lastName, controller.user.birthday);        
     };
 
     this.fields = new OpenM_BookController.user.Fields(this.user);
@@ -147,12 +154,14 @@ OpenM_BookController.user.Field = function(user, field, value, isModifiable, isV
     this.value = value;
     this.isModifiable = isModifiable;
     this.gui = new OpenM_BookGUI.user.Field(field.name, value.value, this.isModifiable);
-    this.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton(OpenM_BookDAO.group.DAO.get(value.visibility), user);
-    var controller = this;
-    this.visibilityButton.setVisibility = function(enabled) {
-        controller.user.setPropertyVisibility(value.id, (enabled === true) ? ((OpenM_BookDAO.community.DAO.root !== undefined) ? OpenM_BookDAO.community.DAO.root.id : "") : "");
-    };
-    this.gui.visibilityButton = this.visibilityButton.gui;
+    if (this.value.visibility !== undefined) {
+        this.visibilityButton = new OpenM_BookController.group.VisibilityOnOffButton(this.value.visibility, user);
+        var controller = this;
+        this.visibilityButton.setVisibility = function(enabled) {
+            controller.user.setPropertyVisibility(value.id, (enabled === true) ? ((OpenM_BookDAO.community.DAO.root !== undefined) ? OpenM_BookDAO.community.DAO.root.id : "") : "");
+        };
+        this.gui.visibilityButton = this.visibilityButton.gui;
+    }
     this.isVirtual = (isVirtual !== undefined) ? isVirtual : false;
 
     this.gui.click = function(event) {

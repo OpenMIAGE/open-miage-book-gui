@@ -42,6 +42,10 @@ OpenM_BookController.group.VisibilityOnOffButton = function(group, user) {
             controller.gui.content();
     };
 
+    setTimeout(function() {
+        controller.group.getContent();
+    }, 500);
+
     this.group.addUpdateCallBack(this.update);
 };
 

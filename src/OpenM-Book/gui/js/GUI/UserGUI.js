@@ -16,6 +16,7 @@ OpenM_BookGUI.user.Page = function() {
     this.birthday = '';
     this.page = OpenM_BookGUI.gen.div();
     this.click = undefined;
+    this.visibilityButton = undefined;
 };
 
 OpenM_BookGUI.user.Page.prototype.update = function(name, firstName, lastName, birthday) {
@@ -39,8 +40,17 @@ OpenM_BookGUI.user.Page.prototype.content = function() {
     var userProperties = OpenM_BookGUI.gen.div()
             .addClass($("one-value > block > class", OpenM_BookGUI.user.cst).text())
             .append("<p>" + this.name + "</p>");
-    if (this.birthday !== undefined)
-        userProperties.append("<p><span class='glyphicon glyphicon-gift'></span> " + this.birthday + "<p>");
+    if (this.birthday !== undefined) {
+        var p = OpenM_BookGUI.gen.p();
+        userProperties.append(p.append(OpenM_BookGUI.gen.span()
+                .addClass("glyphicon glyphicon-gift"))
+                .append(OpenM_BookGUI.gen.span()
+                .append(" ")
+                .append(this.birthday)));
+        if (this.visibilityButton !== undefined) {
+            p.append(" ").append(this.visibilityButton.content());
+        }
+    }
     bandeauProfil.append(userProperties);
 
     this.page.append(bandeauProfil);

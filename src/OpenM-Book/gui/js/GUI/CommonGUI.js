@@ -142,3 +142,7 @@ OpenM_BookGUI.gen.img = function() {
 OpenM_BookGUI.gen.input = function() {
     return OpenM_BookGUI.gen.create("input");
 };
+
+OpenM_BookGUI.gen.p = function() {
+    return OpenM_BookGUI.gen.create("p");
+};
