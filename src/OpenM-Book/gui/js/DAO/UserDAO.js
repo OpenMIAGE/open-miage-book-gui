@@ -64,9 +64,12 @@ OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyValue = function(fieldId,
     });
 };
 
-OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyVisibility = function(propertyValueId, visibilityGroupJSONList) {
+OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyVisibility = function(propertyValueId, visibilityGroup, visibilities) {
+    var visibilityGroupJSONList = JSON.stringify(visibilities);
+    var v = visibilityGroup;
     OpenM_Book_User.setPropertyVisibility(propertyValueId, visibilityGroupJSONList, function(data) {
-
+        
+        v.update();
     });
 };
 
