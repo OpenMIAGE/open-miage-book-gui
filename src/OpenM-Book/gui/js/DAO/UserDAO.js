@@ -11,6 +11,7 @@ OpenM_BookDAO.user.ExchangeObject = function() {
     this.lastName = '';
     this.birthday = undefined;
     this.birthdayDisplayYear = false;
+    this.birthdayVisibility = undefined;
     this.isAdmin = false;
     this.loaded = false;
     this.validIn = new Array();
@@ -41,7 +42,8 @@ OpenM_BookDAO.user.ExchangeObject.prototype.addPropertyValue = function(field, v
             controller.otherProperties[field.id]
                     .values[data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
                 "id": data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
-                "value": value
+                "value": value,
+                "visibility": OpenM_BookDAO.group.DAO.get(data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER])
             },
             controller.update();
         }
@@ -59,6 +61,20 @@ OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyValue = function(fieldId,
             controller.otherProperties[fieldId].values[valueId].value = v;
             controller.update();
         }
+    });
+};
+
+OpenM_BookDAO.user.ExchangeObject.prototype.setPropertyVisibility = function(propertyValueId, visibilityGroup, visibilities) {
+    var visibilityGroupJSONList = JSON.stringify(visibilities);
+    var v = visibilityGroup;
+    var vs = visibilities;
+    OpenM_Book_User.setPropertyVisibility(propertyValueId, visibilityGroupJSONList, function(data) {
+        v.groupChilds = new Array();
+        $.each(vs, function(k, va) {
+            if (va !== undefined)
+                v.groupChilds[va] = OpenM_BookDAO.group.DAO.get(va);
+        });
+        v.update();
     });
 };
 
@@ -171,8 +187,13 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
 
         if (typeof data[OpenM_Book_User.RETURN_USER_BIRTHDAY_PARAMETER] !== 'undefined') {
             user.birthday = data[OpenM_Book_User.RETURN_USER_BIRTHDAY_PARAMETER];
+            user.birthdayVisibility = OpenM_BookDAO.group.DAO.get(data[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER]);
             if (typeof data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] !== 'undefined')
                 user.birthdayDisplayYear = (data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] === OpenM_Book_User.TRUE_PARAMETER_VALUE) ? true : false;
+        }
+        else{
+            user.birthday = undefined;
+            user.birthdayVisibility = undefined;
         }
 
         if (typeof data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER] !== 'undefined') {
@@ -188,15 +209,20 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
                         "values": new Array()
                     };
                 if (property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER] !== undefined) {
-                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]].values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
+                    user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]]
+                            .values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]] = {
                         "id": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER],
                         "value": property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_PARAMETER]
                     };
+                    if (property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER] !== undefined)
+                        user.otherProperties[property[OpenM_Book_User.RETURN_USER_PROPERTY_ID_PARAMETER]]
+                                .values[property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_ID_PARAMETER]]
+                                .visibility = OpenM_BookDAO.group.DAO.get(property[OpenM_Book_User.RETURN_USER_PROPERTY_VALUE_VISIBILITY_PARAMETER]);
                 }
             }
         }
         user.update();
-    } 
+    }
 };
 
 OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
@@ -257,5 +283,5 @@ OpenM_BookDAO.user.DAO.parseAndLoadCommunities = function(data, user) {
 
             user.updateCommunities();
         }
-    } 
+    }
 };
