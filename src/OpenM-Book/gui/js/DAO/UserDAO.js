@@ -191,6 +191,10 @@ OpenM_BookDAO.user.DAO.parseAndLoad = function(data, user) {
             if (typeof data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] !== 'undefined')
                 user.birthdayDisplayYear = (data[OpenM_Book_User.RETURN_USER_BIRTHDAY_DISPLAY_YEAR_PARAMETER] === OpenM_Book_User.TRUE_PARAMETER_VALUE) ? true : false;
         }
+        else{
+            user.birthday = undefined;
+            user.birthdayVisibility = undefined;
+        }
 
         if (typeof data[OpenM_Book_User.RETURN_USER_PROPERTY_LIST_PARAMETER] !== 'undefined') {
             user.otherProperties = new Array();
