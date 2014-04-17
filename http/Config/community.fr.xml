@@ -26,7 +26,7 @@ GUI Label definition
     <buttons>
         <rename>
             <label>Renommer</label>
-            <icon>glyphicon glyphicon-refresh</icon>
+            <icon>glyphicon glyphicon-cog</icon>
             <tooltip>Renommer la communauté</tooltip>
             <class>btn btn-warning</class>
         </rename>

@@ -557,9 +557,7 @@ OpenM_BookGUI.community.button.Delete = function() {
 OpenM_BookGUI.community.button.Delete.prototype.content = function() {
     this.a.empty();
     this.a.addClass($("buttons > delete > class", OpenM_BookGUI.community.cst).text());
-    var icon = OpenM_BookGUI.gen.span();
-    icon.addClass($("buttons > delete > tooltip", OpenM_BookGUI.community.cst).text());
-    this.a.append(icon);
+    this.a.append(OpenM_BookGUI.gen.span().addClass($("buttons > delete > icon", OpenM_BookGUI.community.cst).text()));
     this.a.attr("rel", "tooltip")
             .attr("data-placement", "top")
             .attr("data-toggle", "tooltip")
